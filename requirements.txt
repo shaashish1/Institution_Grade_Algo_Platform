@@ -1,0 +1,14 @@
+ccxt==3.0.59
+numpy==1.26.0
+tradingview_ta==3.2.6
+backtrader==1.9.76.123
+
+# Use only pandas <2.0 as required by tvdatafeed
+pandas>=1.3,<2.0
+requests>=2.31
+pyyaml
+
+# Local package
+tvdatafeed @ file:libs/tvdatafeed
+
+# Removed tradingview-scraper to avoid conflict

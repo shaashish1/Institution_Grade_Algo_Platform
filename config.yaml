@@ -1,0 +1,14 @@
+asset_type: crypto  # or 'stocks'
+# asset_type: stocks  # or 'crypto'
+assets:
+  crypto: crypto_assets.csv
+  stocks: stock_assets.csv
+strategy:
+  file: VWAPSigma2Strategy.py
+  class: VWAPSigma2Strategy
+exchange: KRAKEN
+interval: 5m
+bars: 9000  # ~1 month of 5m bars (approx 12 bars/hour * 24 * 30)
+data_source: tvdatafeed
+start_date: 2024-06-01  # Set your desired backtest start date (YYYY-MM-DD or YYYY-MM-DD HH:MM)
+trading_amount: 1000    # USD amount per trade
