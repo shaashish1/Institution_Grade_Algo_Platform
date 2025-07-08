@@ -1,0 +1,34 @@
+# === AlgoProject Crypto Configuration (Test) ===
+
+asset_type: crypto  # Only crypto supported in this config
+
+# List of crypto symbols to scan (CSV file, one symbol per line, header: symbol)
+assets:
+  crypto: input/crypto_assets.csv
+
+# Trading parameters
+interval: "5m"                # Bar interval for OHLCV data (e.g., "5m", "1h")
+bars: 100                     # Number of bars to fetch for each scan
+trading_amount: 1000          # USD value to simulate per trade
+
+# Data source: "ccxt" or "tvdatafeed"
+data_source: "ccxt"           # Use CCXT for more reliable data
+
+# Backtest and scan output files
+scan_results_file: "output/scan_results_crypto.csv"
+backtest_trades_file: "output/backtest_trades_crypto.csv"
+
+# Exchange and strategy
+exchange: "kraken"            # Exchange name for ccxt (e.g., "kraken", "binance")
+strategy:
+  file: VWAPSigma2Strategy.py # Python file for the strategy (in src/strategies/)
+  class: VWAPSigma2Strategy   # Class name of the strategy
+
+# Data fetch settings
+fetch_timeout: 15             # Seconds to wait for data fetch before timeout
+sleep_between_symbols: 60     # Seconds to sleep between each symbol scan (60 seconds for 37 symbols)
+
+# (Optional) Start date for backtest (format: YYYY-MM-DD)
+# start_date: "2024-01-01"
+
+# === End of Configuration ===

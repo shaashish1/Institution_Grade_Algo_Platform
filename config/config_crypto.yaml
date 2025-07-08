@@ -1,0 +1,27 @@
+asset_type: crypto
+
+assets:
+  crypto: input/crypto_assets.csv
+
+interval: "5m"
+bars: 100
+trading_amount: 1000
+
+scan_results_file: output/scan_results_crypto.csv
+backtest_trades_file: output/backtest_trades_crypto.csv
+
+exchange: "kraken"
+data_source: "ccxt"  # Always use CCXT for crypto
+
+strategy:
+  file: VWAPSigma2Strategy.py
+  class: VWAPSigma2Strategy
+
+fetch_timeout: 15
+sleep_between_symbols: 1
+
+# Uncomment and set for live trading
+# api_key: "your_api_key"
+# api_secret: "your_api_secret"
+
+# start_date: "2024-01-01"

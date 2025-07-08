@@ -416,3 +416,161 @@ No real orders are placed; this is a dry-run simulation for live trading perform
   4. Run `git --version` in the terminal to verify Git is available.
 
 - Now you can use all Git commands in VSCode and the terminal.
+
+## Configuration
+
+All parameters for demo/live trading are now in `config.yaml`.  
+**Edit this file to change trading symbols, strategy, exchange, scan interval, and more.**
+
+Example:
+```yaml
+crypto_assets_file: "crypto_assets.csv"   # CSV file with symbols to scan
+timeframe: "5m"                           # Bar interval for OHLCV data
+window: 30                                # Number of bars to fetch
+trading_amount: 1000                      # USD value per trade
+demo_iterations: 10                       # Number of scan cycles (set high for continuous)
+sleep_seconds: 300                        # Seconds between scans
+exchange: "kraken"                        # Exchange name for ccxt
+strategy_file: "VWAPSigma2Strategy.py"    # Strategy file (in src/strategies/)
+strategy_class: "VWAPSigma2Strategy"      # Strategy class name
+display_live_pnl: true                    # Show live PnL for open trades
+log_trades_to_csv: true                   # Save trades to CSV at end
+trades_csv_file: "demo_live_trades.csv"   # Output CSV file for trades
+```
+
+**To change trading behavior, just edit `config.yaml` and restart the script.**
+
+## Orderbook Columns Explained
+
+- **symbol**: Trading pair (e.g., BTC/USD)
+- **side**: LONG or SHORT (currently only LONG is supported)
+- **entry_time**: When the trade was opened
+- **entry_price**: Price at which the trade was opened
+- **quantity**: Number of units bought (calculated as trading_amount / entry_price)
+- **exit_time**: When the trade was closed (empty if still open)
+- **exit_price**: Price at which the trade was closed (empty if still open)
+- **pnl**: Profit/loss per unit (only filled when trade is closed)
+- **pnl_usd**: Total profit/loss in USD (only filled when trade is closed)
+- **live_pnl_usd**: *Unrealized* profit/loss in USD for open trades, calculated using the latest price (shows how the trade is performing right now)
+- **trade_action**: "OPEN" or "CLOSE"
+
+> **Why do we need `live_pnl_usd` and not just `pnl`?**  
+> `pnl` and `pnl_usd` are only filled when a trade is closed (i.e., both entry and exit prices are known).  
+> `live_pnl_usd` is calculated for open trades using the current/latest price, so you can monitor the real-time performance of your open positions.
+
+# Project Structure
+
+```
+/AlgoProject
+  /input
+    crypto_assets.csv
+    stocks_assets.csv
+  /output
+    scan_results_crypto.csv
+    backtest_trades_crypto.csv
+    scan_results_stocks.csv
+    backtest_trades_stocks.csv
+  /src
+    /strategies
+      VWAPSigma2Strategy.py
+      ...
+  config_crypto.yaml
+  config_stocks.yaml
+  crypto_backtest.py
+  stocks_backtest.py
+  # ...other scripts...
+```
+
+- **input/**: All input asset lists (crypto, stocks)
+- **output/**: All output files (scan results, backtest trades, logs, future db files)
+- **src/strategies/**: All trading strategies
+- **config_crypto.yaml**: Config for crypto trading/backtest
+- **config_stocks.yaml**: Config for stocks trading/backtest
+- **crypto_backtest.py**: Crypto backtest/demo/live script
+- **stocks_backtest.py**: Stocks backtest/demo/live script
+
+## Usage
+
+- For crypto backtest:
+  ```
+  python crypto_backtest.py --config config_crypto.yaml
+  ```
+- For stocks backtest:
+  ```
+  python stocks_backtest.py --config config_stocks.yaml
+  ```
+
+- Edit the config files to set trading parameters, input/output files, and (for live trading) exchange keys.
+
+---
+Here are the complete commands to run all the Python files in the AlgoProject:
+
+🚀 Main Trading Scripts
+1. Backtest Mode (Historical Analysis)
+
+# Run backtest with default config (all 37 USDT pairs)
+python scripts/realtime_trader.py
+
+# Run backtest with specific config
+python scripts/realtime_trader.py --config config/config_test.yaml
+python scripts/realtime_trader.py --config config/config_crypto.yaml
+python scripts/realtime_trader.py --config config/config_stocks.yaml
+
+2. Forward Testing Mode (Real-time Live Trading Simulation)
+
+# Run forward testing with default config
+python scripts/realtime_trader.py --forward
+
+# Run forward testing with specific config
+python scripts/realtime_trader.py --config config/config_test.yaml --forward
+python scripts/realtime_trader.py --config config/config_crypto.yaml --forward
+
+🔧 Utility Scripts
+3. List Available Exchanges
+
+python scripts/list_ccxt_exchanges.py
+
+4. Update Crypto Asset List
+
+# Updates input/crypto_assets.csv with all available Kraken USDT pairs
+python scripts/list_crypto_assets.py
+
+5. Standalone Backtest Runner
+
+# If you have the separate backtest runner
+python scripts/backtest_runner.py
+python scripts/backtest_runner.py --config config/config_crypto.yaml
+
+📂 File Structure Reference
+
+AlgoProject/
+├── scripts/
+│   ├── realtime_trader.py      # Main trading script (backtest + forward)
+│   ├── backtest_runner.py      # Standalone backtest runner
+│   ├── list_ccxt_exchanges.py  # List supported exchanges
+│   └── list_crypto_assets.py   # Update crypto asset list
+├── config/
+│   ├── config.yaml             # Default configuration
+│   ├── config_test.yaml        # Test configuration
+│   ├── config_crypto.yaml      # Crypto-specific config
+│   └── config_stocks.yaml      # Stocks-specific config
+└── input/
+    ├── crypto_assets.csv       # 37 USDT trading pairs
+    └── stocks_assets.csv       # Stock symbols
+
+🎯 Most Common Commands
+Quick Test Run:
+
+cd AlgoProject
+python scripts/realtime_trader.py --config config/config_test.yaml
+
+Live Forward Testing:
+
+cd AlgoProject
+python scripts/realtime_trader.py --config config/config_test.yaml --forward
+
+Full Backtest (All 37 Pairs):
+
+cd AlgoProject
+python scripts/realtime_trader.py --config config/config_crypto.yaml
+
