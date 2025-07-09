@@ -1,7 +1,62 @@
+# AlgoProject .gitignore
+
+# Python
 __pycache__/
-algo_env/
 *.py[cod]
+*$py.class
+*.so
+.Python
 build/
+develop-eggs/
 dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
 *.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+algo_env/
+
+# IDE & Editors
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs & Data
 *.log
+log/
+
+# Trading Outputs (keep structure, ignore content)
+output/*.csv
+storage/
+
+# Sensitive Configuration (keep templates)
+config/*_local.yaml
+config/*_prod.yaml
+.env
+*.key
+
+# Temporary Files
+*.tmp
+*.temp
+.cache/
