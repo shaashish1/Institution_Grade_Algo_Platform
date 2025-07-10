@@ -13,7 +13,7 @@ import pytz
 # Add parent directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from data_acquisition import fetch_data
+from src.data_acquisition import fetch_data
 from tabulate import tabulate
 
 

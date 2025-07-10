@@ -16,7 +16,7 @@ import threading
 import logging
 
 # Add parent directory to path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.data_acquisition import fetch_data
 from tabulate import tabulate

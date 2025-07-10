@@ -1,137 +1,106 @@
 #!/usr/bin/env python3
 """
-AlgoProject Launcher
-Simple menu to choose which trading script to run.
+AlgoProject Launcher Script
+===========================
+
+Main launcher for the AlgoProject trading platform.
+Provides easy access to all crypto and stock trading functionalities.
 """
 
 import os
-import subprocess
 import sys
+import argparse
+from pathlib import Path
 
+def print_banner():
+    print("=" * 80)
+    print("🚀 AlgoProject - Advanced Trading Strategy Platform")
+    print("=" * 80)
+    print("📊 Multi-Asset Trading: Crypto + Stocks")
+    print("⚡ Advanced Backtesting & Live Trading")
+    print("🔧 Strategy Development & Optimization")
+    print("=" * 80)
 
-def print_header():
-    """Print the application header."""
-    print("🚀 AlgoProject Trading Platform")
-    print("=" * 70)
-    print("Progressive Testing: Test → Backtest → Demo → Live")
-    print("Choose your trading mode:")
+def show_crypto_options():
+    print("\n🪙 CRYPTO TRADING OPTIONS:")
+    print("=" * 50)
+    print("1. Enhanced Crypto Backtest")
+    print("   → cd crypto/scripts && python enhanced_crypto_backtest.py")
+    print("   → Example: python enhanced_crypto_backtest.py --symbols BTC/USDT ETH/USDT --compare")
     print()
+    print("2. Crypto Demo Live Trading")
+    print("   → cd crypto/scripts && python crypto_demo_live.py")
+    print()
+    print("3. Crypto Live Scanner")
+    print("   → cd crypto/scripts && python crypto_live_scanner.py")
+    print()
+    print("4. Batch Runner (Multiple Strategies)")
+    print("   → cd crypto/scripts && python batch_runner.py")
+    print("   → Example: python batch_runner.py --symbols BTC/USDT ETH/USDT --strategies BB_RSI,MACD_Only")
 
+def show_stock_options():
+    print("\n📈 STOCK TRADING OPTIONS:")
+    print("=" * 50)
+    print("1. Stock Backtest")
+    print("   → cd stocks/scripts && python stocks_backtest.py")
+    print("   → Example: python stocks_backtest.py --symbols RELIANCE TCS")
+    print()
+    print("2. Stock Demo Live Trading")
+    print("   → cd stocks/scripts && python stocks_demo_live.py")
+    print()
+    print("3. Stock Live Scanner")
+    print("   → cd stocks/scripts && python stocks_live_scanner.py")
 
-def print_menu():
-    """Print the main menu."""
-    print("🧪 **TESTING & VALIDATION**")
-    print("   1. Quick Test           - Test 3 crypto symbols (30 seconds)")
-    print("   2. Detailed Test        - Detailed backtest test (1 minute)")
+def show_setup_options():
+    print("\n⚙️ SETUP & CONFIGURATION:")
+    print("=" * 50)
+    print("1. Initial Setup")
+    print("   → Run: setup.bat")
     print()
-    print("📊 **BACKTEST (Historical Analysis)**")
-    print("   3. Crypto Backtest      - All crypto pairs historical analysis")
-    print("   4. Stocks Backtest      - Stock historical analysis")
+    print("2. API Configuration")
+    print("   → Fyers API (Stocks): docs/FYERS_SETUP.md")
+    print("   → CCXT (Crypto): Automatic configuration")
     print()
-    print("🔴 **LIVE DEMO (Real Data, NO Real Trades)**")
-    print("   5. Crypto Live Demo     - Real-time crypto demo trading")
-    print("   6. Stocks Live Demo     - Real-time stock demo trading")
-    print()
-    print("⚡ **LIVE SCANNERS (Real-time Alerts)**")
-    print("   7. Crypto Live Scanner  - Continuous crypto signal alerts")
-    print("   8. Stocks Live Scanner  - Continuous stock signal alerts")
-    print()
-    print("🛠️  **SYMBOL MANAGEMENT**")
-    print("   9. Crypto Symbol Manager - Fetch & select crypto pairs from exchanges")
-    print("  10. Stock Symbol Manager  - Fetch & select stocks from NIFTY indices")
-    print()
-    print("🔧 **UTILITIES**")
-    print("  11. List Crypto Assets   - Show current crypto pairs")
-    print("  12. List Exchanges       - Show supported exchanges")
-    print("  13. Live NSE Quotes      - Real-time NSE stock prices")
-    print()
-    print("   0. Exit")
-    print("=" * 70)
-
-
-def run_script(script_name, folder="scripts"):
-    """Run a specific script."""
-    script_path = f"{folder}/{script_name}"
-    
-    if not os.path.exists(script_path):
-        print(f"❌ Error: {script_path} not found!")
-        return
-    
-    print(f"🏃 Running {script_name}...")
-    print("=" * 60)
-    
-    try:
-        # Run the script
-        result = subprocess.run([sys.executable, script_path], cwd=os.getcwd())
-        
-        if result.returncode == 0:
-            print(f"\n✅ {script_name} completed successfully!")
-        else:
-            print(f"\n❌ {script_name} exited with error code {result.returncode}")
-    
-    except KeyboardInterrupt:
-        print(f"\n⚠️  {script_name} interrupted by user")
-    except Exception as e:
-        print(f"\n❌ Error running {script_name}: {e}")
-
+    print("3. Documentation")
+    print("   → All guides available in: docs/")
 
 def main():
-    """Main launcher function."""
-    while True:
-        print_header()
-        print_menu()
-        
-        try:
-            choice = input("Enter your choice (0-13): ").strip()
-            
-            if choice == "0":
-                print("👋 Goodbye!")
-                break
-            elif choice == "1":
-                run_script("quick_test.py", "tests")
-            elif choice == "2":
-                run_script("test_backtest.py", "tests")
-            elif choice == "3":
-                run_script("crypto_backtest.py", "crypto/scripts")
-            elif choice == "4":
-                run_script("stocks_backtest.py", "stocks/scripts")
-            elif choice == "5":
-                run_script("crypto_demo_live.py", "crypto/scripts")
-            elif choice == "6":
-                run_script("stocks_demo_live.py", "stocks/scripts")
-            elif choice == "7":
-                run_script("crypto_live_scanner.py", "crypto/scripts")
-            elif choice == "8":
-                run_script("stocks_live_scanner.py", "stocks/scripts")
-            elif choice == "9":
-                print("📊 Crypto symbols are managed in input/crypto_assets.csv")
-                print("💡 You can edit this file to add/remove crypto pairs")
-                input("Press Enter to continue...")
-                continue
-            elif choice == "10":
-                print("📈 Stock symbols are managed via Fyers API and stored in input/stocks_assets.csv")
-                print("💡 You can manually edit this file to add/remove stock symbols")
-                input("Press Enter to continue...")
-                continue
-            elif choice == "11":
-                run_script("list_crypto_assets.py", "crypto")
-            elif choice == "12":
-                run_script("list_ccxt_exchanges.py", "crypto")
-            elif choice == "13":
-                run_script("live_nse_quotes.py", "stocks")
-            else:
-                print("❌ Invalid choice! Please enter 0-13.")
-            
-            if choice != "0":
-                input("\nPress Enter to continue...")
-                print("\n" * 2)  # Clear screen
-        
-        except KeyboardInterrupt:
-            print("\n👋 Goodbye!")
-            break
-        except Exception as e:
-            print(f"❌ Error: {e}")
-
+    parser = argparse.ArgumentParser(
+        description="AlgoProject Launcher - Access all trading functionalities",
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    
+    parser.add_argument("--crypto", action="store_true", help="Show crypto trading options")
+    parser.add_argument("--stocks", action="store_true", help="Show stock trading options")
+    parser.add_argument("--setup", action="store_true", help="Show setup and configuration options")
+    parser.add_argument("--all", action="store_true", help="Show all available options")
+    
+    args = parser.parse_args()
+    
+    print_banner()
+    
+    if args.crypto or args.all:
+        show_crypto_options()
+    
+    if args.stocks or args.all:
+        show_stock_options()
+    
+    if args.setup or args.all:
+        show_setup_options()
+    
+    if not any([args.crypto, args.stocks, args.setup, args.all]):
+        print("\n📋 QUICK START:")
+        print("=" * 50)
+        print("• For crypto trading: python launcher.py --crypto")
+        print("• For stock trading:  python launcher.py --stocks")
+        print("• For setup help:     python launcher.py --setup")
+        print("• For all options:    python launcher.py --all")
+        print()
+        print("💡 TIP: Start with setup.bat if this is your first time!")
+    
+    print("\n" + "=" * 80)
+    print("📚 Documentation: docs/ | 🔧 Setup: setup.bat | 🎯 Happy Trading!")
+    print("=" * 80)
 
 if __name__ == "__main__":
     main()
