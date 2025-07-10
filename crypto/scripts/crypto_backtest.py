@@ -20,6 +20,15 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 
 from data_acquisition import fetch_data
 from tabulate import tabulate
+from src.backtest_evaluator import BacktestEvaluator
+
+try:
+    from colorama import Fore, Style, init
+    init(autoreset=True)
+    COLORAMA_AVAILABLE = True
+except ImportError:
+    COLORAMA_AVAILABLE = False
+    print("⚠️  Colorama not available. Install with: pip install colorama")
 
 
 class AdvancedPortfolioTracker:

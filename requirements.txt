@@ -20,9 +20,15 @@ pytz>=2023.3             # Timezone handling
 # Networking & WebSocket
 websocket-client>=1.0.0  # WebSocket connections for real-time data
 
-# Visualization (Optional)
+# Visualization & Display
 matplotlib>=3.5.0        # Plotting and charts
+colorama>=0.4.6          # Colored terminal output
+rich>=13.0.0             # Rich text and beautiful formatting
 
 # Development & Testing (Optional)
 # pytest>=7.0.0          # Testing framework
 # jupyter>=1.0.0         # Jupyter notebooks
+
+# Performance Analysis
+scipy>=1.10.0            # Statistical functions for advanced metrics
+scikit-learn>=1.3.0      # Machine learning metrics (optional)
