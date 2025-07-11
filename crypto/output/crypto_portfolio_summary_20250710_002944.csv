@@ -1,2 +1,0 @@
-analysis_timestamp,strategy_name,total_symbols,portfolio_return_pct,symbol_win_rate_pct,total_trades,initial_capital,position_size,interval,bars,exchange
-2025-07-10 00:29:44.825550,BB_RSI,1,0.528276857691948,100.0,3,100000,10000,1h,500,kraken

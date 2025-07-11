@@ -1,0 +1,3 @@
+symbol,strategy,timeframe,total_trades,win_rate,total_return,avg_return
+BTC/USDT,Optimized_Crypto_V2,15m,11,27.27272727272727,-0.8938926208698967,-0.08126296553362698
+ETH/USDT,Optimized_Crypto_V2,15m,6,16.666666666666664,-3.0920464775574836,-0.515341079592914

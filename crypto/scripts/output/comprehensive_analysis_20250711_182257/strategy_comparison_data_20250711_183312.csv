@@ -1,0 +1,25 @@
+Strategy,Timeframe,Total Return (%),Max Drawdown (%),Sharpe Ratio,Win Rate (%),Total Trades,Risk-Adjusted Return
+BB_RSI,5m,-39.1,0,0,19.86,272,-3.91
+BB_RSI,15m,-63.75,0,0,22.19,205,-6.37
+BB_RSI,30m,-36.15,0,0,25.54,203,-3.62
+BB_RSI,1h,14.72,0,0,28.92,194,1.47
+BB_RSI,4h,257.23,0,0,31.51,166,25.72
+BB_RSI,1d,-249.89,0,0,27.6,183,-24.99
+MACD_Only,5m,27.87,0,0,33.06,3430,2.79
+MACD_Only,15m,-32.22,0,0,34.24,3087,-3.22
+MACD_Only,30m,-8.56,0,0,40.2,3087,-0.86
+MACD_Only,1h,31.07,0,0,45.34,2744,3.11
+MACD_Only,4h,101.14,0,0,49.13,2622,10.11
+MACD_Only,1d,50.62,0,0,48.78,2767,5.06
+Optimized_Crypto_V2,5m,-22.73,0,0,23.64,589,-2.27
+Optimized_Crypto_V2,15m,-92.51,0,0,17.47,399,-9.25
+Optimized_Crypto_V2,30m,-19.88,0,0,25.21,364,-1.99
+Optimized_Crypto_V2,1h,26.77,0,0,32.26,305,2.68
+Optimized_Crypto_V2,4h,83.02,0,0,34.08,240,8.3
+Optimized_Crypto_V2,1d,-41.66,0,0,33.53,255,-4.17
+RSI_MACD_VWAP,5m,-32.54,0,0,9.1,112,-3.25
+RSI_MACD_VWAP,15m,16.26,0,0,11.32,56,1.63
+RSI_MACD_VWAP,30m,-3.21,0,0,41.84,28,-0.32
+RSI_MACD_VWAP,1h,8.69,0,0,26.19,11,0.87
+RSI_MACD_VWAP,4h,-16.52,0,0,0.0,5,-1.65
+RSI_MACD_VWAP,1d,-18.09,0,0,41.67,11,-1.81

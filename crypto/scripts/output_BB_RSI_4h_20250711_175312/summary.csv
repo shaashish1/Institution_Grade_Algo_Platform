@@ -1,0 +1,3 @@
+symbol,strategy,timeframe,total_trades,win_rate,total_return,avg_return
+BTC/USDT,BB_RSI,4h,3,0.0,-2.390163651205654,-0.7967212170685514
+ETH/USDT,BB_RSI,4h,3,0.0,-12.22211042621094,-4.07403680873698

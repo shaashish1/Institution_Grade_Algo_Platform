@@ -351,9 +351,8 @@ class EnhancedCryptoBacktest:
         try:
             # Initialize evaluator
             evaluator = BacktestEvaluator(
-                strategy_name=self.strategy,
-                symbol=symbol,
-                initial_capital=self.initial_capital
+                initial_capital=self.initial_capital,
+                commission=0.001  # 0.1% commission
             )
             
             # Store evaluator for later use
@@ -481,7 +480,7 @@ class EnhancedCryptoBacktest:
         
         if not results:
             print("No results to analyze!")
-            return [], []  # Return empty lists instead of None
+            return
         
         # Generate summary
         self.generate_summary(results, all_trades)
