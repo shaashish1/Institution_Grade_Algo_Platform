@@ -2,17 +2,17 @@
 
 A comprehensive algorithmic trading platform focused on cryptocurrency markets with advanced backtesting, live trading, and portfolio management capabilities.
 
-================================================================================
+=====================================
 🚀 AlgoProject - Crypto Trading Platform (Personal Laptop Edition)
-================================================================================
+=====================================
 � Crypto Trading: 100+ Exchanges via CCXT
 ⚡ Advanced Backtesting & Live Trading
 🔧 Strategy Development & Optimization
 🏠 Optimized for Personal Use (No Corporate Restrictions)
-================================================================================
+=====================================
 
 📋 QUICK START:
-==================================================
+=====================================
 • Setup everything:     setup.bat
 • Launch crypto platform: python crypto_launcher.py
 • Direct crypto trading: python crypto_main.py
@@ -23,9 +23,9 @@ A comprehensive algorithmic trading platform focused on cryptocurrency markets w
 � NOTE: Stocks/Fyers disabled due to corporate firewall restrictions.
          Focus on crypto trading for unrestricted market access.
 
-================================================================================
+=====================================
 📚 Documentation: docs/ | 🔧 Setup: setup.bat | 💰 Happy Crypto Trading!
-================================================================================
+=====================================
 
 ## 🏠 Personal Laptop Setup
 
