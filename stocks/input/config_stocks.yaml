@@ -1,0 +1,27 @@
+asset_type: stocks
+
+assets:
+  stocks: input/stocks_assets.csv
+
+interval: "in_5_minute"
+bars: 100
+trading_amount: 1000
+
+scan_results_file: stocks/output/scan_results_stocks.csv
+backtest_trades_file: stocks/output/backtest_trades_stocks.csv
+
+exchange: "NSE"
+data_source: "tvdatafeed"  # Always use TradingView for stocks
+
+strategy:
+  file: VWAPSigma2Strategy.py
+  class: VWAPSigma2Strategy
+
+fetch_timeout: 15
+sleep_between_symbols: 1
+
+# Uncomment and set for live trading
+tv_username: "ashish.sharma14@gmail.com"
+tv_password: "BlockTrade5$1"
+
+start_date: "2024-01-01"

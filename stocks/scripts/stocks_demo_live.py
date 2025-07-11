@@ -21,7 +21,7 @@ from src.data_acquisition import fetch_data, get_live_quote, test_fyers_connecti
 
 def load_stock_assets():
     """Load stock assets from CSV file."""
-    assets_file = "input/stocks_assets.csv"
+    assets_file = "stocks/input/stocks_assets.csv"
     if not os.path.exists(assets_file):
         print(f"❌ Error: {assets_file} not found!")
         return []
@@ -33,7 +33,7 @@ def load_stock_assets():
 def load_strategy():
     """Load the trading strategy."""
     sys.path.append('src/strategies')
-    from strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
+    from src.strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
     return VWAPSigma2Strategy()
 
 

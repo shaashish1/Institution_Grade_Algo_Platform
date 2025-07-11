@@ -23,8 +23,8 @@ except ImportError:
 try:
     import sys
     import os
-    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'input'))
+    # Add the fyers directory to path to import access_token
+    sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fyers'))
     import access_token
 except ImportError:
     access_token = None

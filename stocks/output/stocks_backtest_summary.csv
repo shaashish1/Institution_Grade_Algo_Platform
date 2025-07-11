@@ -1,0 +1,30 @@
+Metric,Value
+Start Date,2025-02-11
+End Date,2025-07-08
+Duration (Days),147
+Exposure Time (%),603.06
+Equity Final (₹),117983.81
+Equity Peak (₹),118363.69
+Return (%),17.98
+Buy & Hold Return (%),5.05
+Return (Ann.) (%),7.02
+Volatility (Ann.) (%),0.81
+CAGR (%),50.82
+Sharpe Ratio,8.594
+Sortino Ratio,32.906
+Calmar Ratio,51.62
+Alpha (%),1.97
+Beta,1.0
+Max. Drawdown (%),-0.98
+Avg. Drawdown (%),-0.46
+Max. Drawdown Duration,7
+Avg. Drawdown Duration,2.4
+# Trades,64
+Win Rate (%),64.06
+Best Trade (%),8.45
+Worst Trade (%),-7.76
+Avg. Trade (%),2.81
+Max. Trade Duration,57.25
+Avg. Trade Duration,13.85
+Profit Factor,3.04
+Expectancy (%),2.81

@@ -1,9 +1,15 @@
 #!/bin/bash
 
 # AlgoProject - Automated Setup Script (Linux/macOS)
-# This script will set up the entire AlgoProject trading platform automatically
-
-echo ""
+# This script will set up the entire AlgoProject trading platform automat# Check if configuration files exist
+echo
+echo "🔧 Checking configuration files..."
+if [ ! -f "crypto/input/config_crypto.yaml" ]; then
+    echo "⚠️  Crypto configuration files not found - this may indicate setup issues"
+fi
+if [ ! -f "stocks/fyers/access_token.py" ]; then
+    echo "⚠️  Fyers access token not found - you'll need to set this up for stock trading"
+ficho ""
 echo "=================================================================================="
 echo "               🚀 AlgoProject - Enterprise Trading Platform Setup"
 echo "=================================================================================="

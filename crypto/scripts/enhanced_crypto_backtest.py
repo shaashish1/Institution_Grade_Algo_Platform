@@ -21,11 +21,11 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 from src.data_acquisition import fetch_data
 from tabulate import tabulate
 from src.backtest_evaluator import BacktestEvaluator
-from strategies.enhanced_multi_factor import EnhancedMultiFactorStrategy
-from strategies.optimized_crypto_v2 import OptimizedCryptoStrategy
-from strategies.bb_rsi_strategy import BB_RSI_Strategy
-from strategies.macd_only_strategy import MACD_Only_Strategy
-from strategies.rsi_macd_vwap_strategy import RSI_MACD_VWAP_Strategy
+from src.strategies.enhanced_multi_factor import EnhancedMultiFactorStrategy
+from src.strategies.optimized_crypto_v2 import OptimizedCryptoStrategy
+from src.strategies.bb_rsi_strategy import BB_RSI_Strategy
+from src.strategies.macd_only_strategy import MACD_Only_Strategy
+from src.strategies.rsi_macd_vwap_strategy import RSI_MACD_VWAP_Strategy
 
 try:
     from colorama import Fore, Style, init
@@ -66,10 +66,10 @@ class EnhancedCryptoBacktest:
     def load_strategy_config(self):
         """Load strategy configuration."""
         try:
-            config_file = os.path.join(os.path.dirname(__file__), '..', '..', 'config', 'config.yaml')
+            config_file = os.path.join(os.path.dirname(__file__), '..', 'input', 'config_crypto.yaml')
             with open(config_file, 'r') as f:
                 config = yaml.safe_load(f)
-            return config.get('crypto_strategy', {})
+            return config.get('strategy', {})
         except Exception as e:
             print(f"⚠️  Error loading strategy config: {e}")
             return {}

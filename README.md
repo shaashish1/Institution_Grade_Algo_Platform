@@ -73,7 +73,7 @@ AlgoProject/
 │   └── stocks_live_scanner.py
 ├── src/                 # 🔧 Core modules
 │   ├── data_acquisition.py    # Unified data fetching
-│   ├── strategies/            # Trading strategies
+│   ├── src/strategies/        # Trading strategies (all strategies)
 │   └── ...
 ├── docs/                # 📚 Documentation
 ├── input/               # 📊 Asset lists and configuration

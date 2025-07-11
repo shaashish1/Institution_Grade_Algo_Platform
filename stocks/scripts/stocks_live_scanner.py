@@ -19,7 +19,7 @@ from tabulate import tabulate
 
 def load_stock_assets():
     """Load stock assets from CSV file."""
-    assets_file = "input/stocks_assets.csv"
+    assets_file = "stocks/input/stocks_assets.csv"
     if not os.path.exists(assets_file):
         print(f"❌ Error: {assets_file} not found!")
         return []

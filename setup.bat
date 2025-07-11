@@ -135,10 +135,10 @@ echo ✅ Project directories created
 REM Check if configuration files exist
 echo.
 echo 🔧 Checking configuration files...
-if not exist "config\config.yaml" (
-    echo ⚠️  Configuration files not found - this is normal for a fresh installation
+if not exist "crypto\input\config_crypto.yaml" (
+    echo ⚠️  Crypto configuration files not found - this may indicate setup issues
 )
-if not exist "input\access_token.py" (
+if not exist "stocks\fyers\access_token.py" (
     echo ⚠️  Fyers access token not found - you'll need to set this up for stock trading
 )
 

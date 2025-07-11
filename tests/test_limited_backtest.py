@@ -19,7 +19,7 @@ def run_limited_backtest():
     import pandas as pd
     
     # Read current symbols
-    stocks_file = "input/stocks_assets.csv"
+    stocks_file = "stocks/input/stocks_assets.csv"
     if os.path.exists(stocks_file):
         df = pd.read_csv(stocks_file)
         original_symbols = df.copy()

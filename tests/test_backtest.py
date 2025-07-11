@@ -20,7 +20,7 @@ from tabulate import tabulate
 def load_strategy():
     """Load the trading strategy."""
     sys.path.append('src/strategies')
-    from strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
+    from src.strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
     return VWAPSigma2Strategy()
 
 

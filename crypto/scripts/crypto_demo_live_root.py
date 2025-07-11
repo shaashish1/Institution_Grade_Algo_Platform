@@ -40,7 +40,7 @@ except ImportError:
 def load_crypto_assets():
     """Load crypto assets from CSV file with limit for demo stability."""
     # Use full asset file for production
-    assets_file = "input/crypto_assets.csv"
+    assets_file = "crypto/input/crypto_assets.csv"
     if not os.path.exists(assets_file):
         print(f"❌ Error: {assets_file} not found!")
         return []
@@ -60,7 +60,7 @@ def load_crypto_assets():
 def load_strategy():
     """Load the trading strategy."""
     sys.path.append('strategies')
-    from strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
+    from src.strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
     return VWAPSigma2Strategy()
 
 

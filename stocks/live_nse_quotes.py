@@ -36,7 +36,7 @@ def load_symbols_from_csv():
     """Load symbols from the stocks_assets.csv file if available."""
     try:
         import pandas as pd
-        csv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'input', 'stocks_assets.csv')
+        csv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'stocks', 'input', 'stocks_assets.csv')
         if os.path.exists(csv_path):
             df = pd.read_csv(csv_path)
             if 'symbol' in df.columns:

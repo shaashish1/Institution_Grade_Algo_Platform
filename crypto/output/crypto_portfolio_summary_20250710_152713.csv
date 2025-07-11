@@ -1,0 +1,2 @@
+analysis_timestamp,strategy_name,total_symbols,portfolio_return_pct,symbol_win_rate_pct,total_trades,initial_capital,position_size,interval,bars,exchange
+2025-07-10 15:27:13.667979,RSI_MACD_VWAP,37,-0.1995882637547628,37.83783783783784,433,100000,10000,1h,720,kraken

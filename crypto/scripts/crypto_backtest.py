@@ -304,7 +304,7 @@ class AdvancedPortfolioTracker:
 
 def load_crypto_assets():
     """Load crypto assets from CSV file."""
-    assets_file = "input/crypto_assets.csv"
+    assets_file = "crypto/input/crypto_assets.csv"
     if not os.path.exists(assets_file):
         print(f"❌ Error: {assets_file} not found!")
         return []
@@ -316,7 +316,7 @@ def load_crypto_assets():
 def load_strategy():
     """Load the trading strategy."""
     sys.path.append('src/strategies')
-    from strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
+    from src.strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
     return VWAPSigma2Strategy()
 
 
@@ -450,25 +450,25 @@ def run_crypto_backtest():
 
 def save_enhanced_results(results, analytics):
     """Save enhanced results to CSV files."""
-    os.makedirs("output", exist_ok=True)
+    os.makedirs("crypto/output", exist_ok=True)
     
     # Save individual trade results
     if results:
         df_results = pd.DataFrame(results)
-        results_file = "output/crypto_backtest_detailed.csv"
+        results_file = "crypto/output/crypto_backtest_detailed.csv"
         df_results.to_csv(results_file, index=False)
         print(f"💾 Detailed results saved to {results_file}")
     
     # Save portfolio analytics
     if analytics and 'trades_df' in analytics:
-        trades_file = "output/crypto_backtest_trades.csv"
+        trades_file = "crypto/output/crypto_backtest_trades.csv"
         analytics['trades_df'].to_csv(trades_file, index=False)
         print(f"💾 Trade history saved to {trades_file}")
     
     # Save summary analytics
     # Save comprehensive summary analytics
     if analytics:
-        summary_file = "output/crypto_backtest_summary.csv"
+        summary_file = "crypto/output/crypto_backtest_summary.csv"
         summary_data = {
             'Metric': [
                 'Start Date', 'End Date', 'Duration (Days)', 'Exposure Time (%)',

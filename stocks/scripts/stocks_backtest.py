@@ -15,7 +15,7 @@ import pytz
 import warnings
 warnings.filterwarnings('ignore')
 
-# Add parent directory to path
+# Add project path to sys.path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.data_acquisition import fetch_data
@@ -295,7 +295,7 @@ class AdvancedPortfolioTracker:
 
 def load_stock_assets():
     """Load stock assets from CSV file."""
-    assets_file = "input/stocks_assets.csv"
+    assets_file = "stocks/input/stocks_assets.csv"
     if not os.path.exists(assets_file):
         print(f"❌ Error: {assets_file} not found!")
         return []
@@ -307,7 +307,7 @@ def load_stock_assets():
 def load_strategy():
     """Load the trading strategy."""
     sys.path.append('src/strategies')
-    from strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
+    from src.strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
     return VWAPSigma2Strategy()
 
 
@@ -441,24 +441,24 @@ def run_stocks_backtest():
 
 def save_enhanced_results(results, analytics):
     """Save enhanced results to CSV files."""
-    os.makedirs("output", exist_ok=True)
+    os.makedirs("stocks/output", exist_ok=True)
     
     # Save individual trade results
     if results:
         df_results = pd.DataFrame(results)
-        results_file = "output/stocks_backtest_detailed.csv"
+        results_file = "stocks/output/stocks_backtest_detailed.csv"
         df_results.to_csv(results_file, index=False)
         print(f"💾 Detailed results saved to {results_file}")
     
     # Save portfolio analytics
     if analytics and 'trades_df' in analytics:
-        trades_file = "output/stocks_backtest_trades.csv"
+        trades_file = "stocks/output/stocks_backtest_trades.csv"
         analytics['trades_df'].to_csv(trades_file, index=False)
         print(f"💾 Trade history saved to {trades_file}")
     
     # Save comprehensive summary analytics
     if analytics:
-        summary_file = "output/stocks_backtest_summary.csv"
+        summary_file = "stocks/output/stocks_backtest_summary.csv"
         summary_data = {
             'Metric': [
                 'Start Date', 'End Date', 'Duration (Days)', 'Exposure Time (%)',
