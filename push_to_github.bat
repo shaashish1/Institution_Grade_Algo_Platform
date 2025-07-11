@@ -1,118 +1,175 @@
 @echo off
-REM GitHub Setup Helper Script for AlgoProject
-REM This script will help you push your AlgoProject to GitHub
+REM AlgoProject - Push to GitHub Script
+REM Complete migration package upload with specific Git path
 
 echo.
 echo ==================================================================================
-echo                    📤 AlgoProject - GitHub Push Setup
+echo         📤 AlgoProject - Pushing Complete Migration Package to GitHub
 echo ==================================================================================
 echo.
+echo This script will push ALL changes including:
+echo   • Updated setup scripts (setup.bat, setup_complete.bat)
+echo   • New migration workflows (MIGRATE_TO_PERSONAL_LAPTOP.bat)
+echo   • All launcher files (trading_launcher.py, crypto_launcher.py, stock_launcher.py)
+echo   • Complete documentation (migration guides)
+echo   • Updated requirements.txt (crypto + stocks)
+echo   • All batch launchers (start_*.bat)
+echo.
 
-REM Check if Git is installed
+REM Set Git path
+set "GIT_PATH=C:\Users\ASHISHAR\AppData\Local\Programs\Git\bin\git.exe"
+
 echo 🔍 Checking Git installation...
-git --version >nul 2>&1
+"%GIT_PATH%" --version
 if errorlevel 1 (
-    echo.
-    echo ❌ ERROR: Git is not installed
-    echo.
-    echo Please install Git first:
-    echo 1. Download from: https://git-scm.com/download/win
-    echo 2. Run the installer with default settings
-    echo 3. Restart this script after installation
-    echo.
+    echo ❌ ERROR: Git not found at specified path
+    echo Please check: %GIT_PATH%
     pause
     exit /b 1
 )
 
-echo ✅ Git is installed
-git --version
-
-REM Check if already a git repository
+echo ✅ Git is available
 echo.
-echo 🔍 Checking if this is already a Git repository...
-if exist ".git" (
-    echo ✅ Git repository already initialized
-) else (
-    echo 🔧 Initializing Git repository...
-    git init
-    if errorlevel 1 (
-        echo ❌ Failed to initialize Git repository
-        pause
-        exit /b 1
-    )
-    echo ✅ Git repository initialized
+
+echo 🔍 Checking Git status...
+"%GIT_PATH%" status
+
+echo.
+echo 📋 Files to be added/updated:
+echo ==========================================
+echo.
+echo 🔧 SETUP & MIGRATION SCRIPTS:
+echo   • setup.bat (updated for crypto + stocks)
+echo   • setup_complete.bat (comprehensive setup)
+echo   • MIGRATE_TO_PERSONAL_LAPTOP.bat (migration workflow)
+echo.
+echo 🚀 LAUNCHER FILES:
+echo   • trading_launcher.py (unified platform)
+echo   • crypto_launcher.py (crypto focused)
+echo   • stock_launcher.py (stocks focused)
+echo   • start_trading_platform.bat (quick start unified)
+echo   • start_crypto_trading.bat (quick start crypto)
+echo   • start_stock_trading.bat (quick start stocks)
+echo.
+echo 📚 DOCUMENTATION:
+echo   • PERSONAL_LAPTOP_MIGRATION.md (complete guide)
+echo   • PERSONAL_LAPTOP_READY.md (package summary)
+echo   • PERSONAL_LAPTOP_SETUP.md (setup instructions)
+echo   • Updated README.md
+echo.
+echo 📦 CONFIGURATION:
+echo   • requirements.txt (crypto + stocks dependencies)
+echo   • Updated crypto assets and configs
+echo.
+
+set /p proceed="Proceed with pushing to GitHub? (y/n): "
+if /i not "%proceed%"=="y" (
+    echo ❌ Push cancelled
+    exit /b 0
 )
 
-REM Check git configuration
 echo.
-echo 🔍 Checking Git configuration...
-git config --global user.name >nul 2>&1
+echo ==================================================================================
+echo                           📤 PUSHING TO GITHUB
+echo ==================================================================================
+echo.
+
+echo � Adding all new and modified files...
+"%GIT_PATH%" add .
+
+echo.
+echo 📝 Committing changes...
+"%GIT_PATH%" commit -m "Complete Personal Laptop Migration Package
+
+✨ MAJOR UPDATE: Full crypto + stock trading migration package
+
+🔧 NEW SETUP SCRIPTS:
+- setup_complete.bat: Comprehensive setup for both crypto + stocks  
+- MIGRATE_TO_PERSONAL_LAPTOP.bat: Complete migration workflow
+- Updated setup.bat: Enhanced for both platforms
+
+🚀 NEW LAUNCHERS:
+- trading_launcher.py: Unified platform (crypto + stocks)
+- crypto_launcher.py: Crypto-focused trading platform
+- stock_launcher.py: Stock-focused trading platform
+- start_trading_platform.bat: Quick start unified
+- start_crypto_trading.bat: Quick start crypto only
+- start_stock_trading.bat: Quick start stocks only
+
+📚 NEW DOCUMENTATION:
+- PERSONAL_LAPTOP_MIGRATION.md: Complete migration guide
+- PERSONAL_LAPTOP_READY.md: Migration package summary
+- PERSONAL_LAPTOP_SETUP.md: Setup instructions
+
+📦 ENHANCED DEPENDENCIES:
+- requirements.txt: Complete crypto + stock dependencies
+- Added Fyers API, TradingView, NSE data providers
+- Enhanced technical analysis libraries
+
+🎯 FEATURES:
+- 💰 Crypto: 100+ exchanges via CCXT
+- 📈 Stocks: Indian markets via Fyers API
+- 🔧 Automated setup with dependency management
+- 🚀 Multiple launch options for different use cases
+- 📊 Pre-configured assets (crypto pairs + stock symbols)
+- ⚙️ Configuration templates for both platforms
+- 🏠 Optimized for personal laptops (no restrictions)
+
+Ready for complete migration to personal laptop with both crypto and stock trading!"
+
 if errorlevel 1 (
-    echo.
-    echo ⚠️  Git user name not configured
-    echo Please configure Git first:
-    echo.
-    echo git config --global user.name "Your Name"
-    echo git config --global user.email "your.email@example.com"
-    echo.
-    echo Then run this script again.
-    pause
-    exit /b 1
-)
-
-echo ✅ Git is configured
-echo User: 
-git config --global user.name
-echo Email: 
-git config --global user.email
-
-REM Prompt for GitHub username
-echo.
-set /p GITHUB_USERNAME=Enter your GitHub username: 
-
-if "%GITHUB_USERNAME%"=="" (
-    echo ❌ GitHub username is required
+    echo ❌ Commit failed!
+    echo 💡 This might be because there are no new changes to commit
+    echo 🔍 Checking status again...
+    "%GIT_PATH%" status
     pause
     exit /b 1
 )
 
 echo.
-echo 🔧 Setting up repository for user: %GITHUB_USERNAME%
+echo 🚀 Pushing to GitHub...
+"%GIT_PATH%" push origin main
 
-REM Add all files
-echo.
-echo 📁 Adding all files to Git...
-git add .
 if errorlevel 1 (
-    echo ❌ Failed to add files
+    echo ❌ Push failed!
+    echo.
+    echo 🔧 Possible issues:
+    echo   • Network connection problems
+    echo   • Authentication required
+    echo   • Remote repository conflicts
+    echo.
+    echo 💡 Try running manually:
+    echo   git push origin main
+    echo.
     pause
     exit /b 1
 )
 
-echo ✅ Files added to Git staging
-
-REM Create commit
 echo.
-echo 📝 Creating initial commit...
-git commit -m "Initial commit: Complete AlgoProject Enterprise Trading Platform
-
-✅ Multi-asset trading (Stocks via Fyers, Crypto via CCXT)
-✅ Advanced backtesting and analytics
-✅ Real-time market data integration
-✅ Comprehensive strategy framework
-✅ Production-ready architecture
-✅ Complete documentation suite
-✅ Automated setup scripts
-✅ Startup-ready with business strategy
-
-Features:
-- Stock trading with Fyers API integration
-- Cryptocurrency trading with CCXT
-- Advanced technical analysis
-- Risk management and backtesting
-- Real-time data processing
-- Interactive launcher and tools
-- Cross-platform compatibility
+echo ==================================================================================
+echo                        🎉 SUCCESSFULLY PUSHED TO GITHUB!
+echo ==================================================================================
+echo.
+echo ✅ All files uploaded successfully!
+echo.
+echo 📦 Migration package now includes:
+echo   • Complete automated setup (crypto + stocks)
+echo   • Multiple launcher options
+echo   • Comprehensive documentation
+echo   • Ready-to-use configuration templates
+echo   • Full dependency management
+echo.
+echo 🏠 Your personal laptop migration package is ready!
+echo.
+echo 📋 Next steps:
+echo   1. Clone repository on personal laptop
+echo   2. Run MIGRATE_TO_PERSONAL_LAPTOP.bat
+echo   3. Configure API credentials
+echo   4. Start trading with start_trading_platform.bat
+echo.
+echo 🚀 GitHub repository updated with complete AlgoProject!
+echo.
+pause
 - Complete UI/UX specifications
 
 Documentation:

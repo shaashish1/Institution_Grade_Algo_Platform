@@ -1,51 +1,59 @@
-# AlgoProject - Advanced Trading Strategy Platform
+# AlgoProject - Advanced Crypto Trading Platform
 
-A comprehensive algorithmic trading platform supporting both crypto and stock markets with advanced backtesting, live trading, and portfolio management capabilities.
+A comprehensive algorithmic trading platform focused on cryptocurrency markets with advanced backtesting, live trading, and portfolio management capabilities.
 
 ================================================================================
-🚀 AlgoProject - Advanced Trading Strategy Platform
+🚀 AlgoProject - Crypto Trading Platform (Personal Laptop Edition)
 ================================================================================
-📊 Multi-Asset Trading: Crypto + Stocks
+� Crypto Trading: 100+ Exchanges via CCXT
 ⚡ Advanced Backtesting & Live Trading
 🔧 Strategy Development & Optimization
+🏠 Optimized for Personal Use (No Corporate Restrictions)
 ================================================================================
 
 📋 QUICK START:
 ==================================================
-• For crypto trading: python launcher.py --crypto
-• For stock trading:  python launcher.py --stocks
-• For setup help:     python launcher.py --setup
-• For all options:    python launcher.py --all
+• Setup everything:     setup.bat
+• Launch crypto platform: python crypto_launcher.py
+• Direct crypto trading: python crypto_main.py
+• Full documentation:   PERSONAL_LAPTOP_SETUP.md
 
-💡 TIP: Start with setup.bat if this is your first time!
+💡 TIP: Run setup.bat first for automated installation!
+
+� NOTE: Stocks/Fyers disabled due to corporate firewall restrictions.
+         Focus on crypto trading for unrestricted market access.
 
 ================================================================================
-📚 Documentation: docs/ | 🔧 Setup: setup.bat | 🎯 Happy Trading!
+📚 Documentation: docs/ | 🔧 Setup: setup.bat | 💰 Happy Crypto Trading!
 ================================================================================
 
-## Quick Start
+## 🏠 Personal Laptop Setup
 
-1. **Setup Environment**: Run `setup.bat` or follow the setup guide in `docs/SETUP_GUIDE.md`
-2. **Configure APIs**: Set up Fyers API for stocks and CCXT for crypto (see `docs/FYERS_SETUP.md`)
-3. **Run Backtests**: Use the enhanced backtest scripts in `crypto/scripts/` and `stocks/scripts/`
-4. **Live Trading**: Start with demo mode using the launcher script
+This version is optimized for personal laptops with no network restrictions:
 
-## 🚀 Launcher Script
+1. **Auto Setup**: Run `setup.bat` for complete automated installation
+2. **Crypto Focus**: All crypto exchanges accessible via CCXT
+3. **No Firewall Issues**: Bypass corporate network restrictions
+4. **Full Features**: Backtesting, live trading, technical analysis
 
-Use the new launcher script for easy access to all functionalities:
+## 🚀 Crypto Trading Features
 
+### Multi-Exchange Support
+- **Binance, Coinbase Pro, Kraken, Bitfinex, KuCoin**
+- **100+ exchanges** via CCXT library
+- **Real-time data** and order execution
+- **Paper trading** for risk-free testing
+
+### Advanced Tools
 ```bash
-# Show all available options
-python launcher.py --all
+# Launch crypto trading platform
+python crypto_launcher.py
 
-# Show crypto trading options
-python launcher.py --crypto
+# Direct crypto trading
+python crypto_main.py
 
-# Show stock trading options  
-python launcher.py --stocks
-
-# Show setup and configuration help
-python launcher.py --setup
+# Crypto backtesting
+python crypto_backtest.py
 ```
 
 ## Key Features
