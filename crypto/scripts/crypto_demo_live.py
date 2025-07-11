@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 """
-Crypto Live Demo - Forward Tesdef load_strategy():
-    """Load the trading strategy."""
-    sys.path.append('strategies')
-    from strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
-    return VWAPSigma2Strategy()Mode
+Crypto Live Demo - Forward Testing Mode
 Real-time crypto trading demo using live data but NO ACTUAL TRADES.
 Perfect for testing strategy performance before going live.
 """
