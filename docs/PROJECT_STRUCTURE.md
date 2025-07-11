@@ -13,7 +13,6 @@ AlgoProject/
 │   │   ├── crypto_assets_detailed.csv  # Detailed crypto asset information
 │   │   ├── crypto_assets_test.csv      # Test crypto assets for development
 │   │   ├── config_crypto.yaml          # Main crypto configuration
-│   │   ├── config_crypto.yaml          # Crypto-specific configurations
 │   │   └── config_test.yaml            # Test configuration
 │   ├── 📁 scripts/                     # Crypto-specific scripts
 │   │   ├── crypto_backtest.py          # Main crypto backtesting engine
@@ -26,6 +25,8 @@ AlgoProject/
 │   │   ├── backtest_results/           # Crypto backtest result files
 │   │   └── trade_logs/                 # Crypto trade execution logs
 │   ├── 📁 logs/                        # Crypto log files
+│   ├── 📁 tools/                       # Crypto-specific tools
+│   │   └── backtest_evaluator.py       # Advanced crypto backtest evaluator
 │   ├── crypto_symbol_manager.py        # Crypto symbol management
 │   └── list_crypto_assets.py           # Crypto asset listing utility
 │
@@ -48,26 +49,21 @@ AlgoProject/
 │   ├── fyers_data_provider.py          # Main Fyers data provider
 │   └── live_nse_quotes.py              # Live NSE quote fetcher
 │
-├── 📁 src/                             # Core source code modules
-│   ├── 📁 strategies/                  # 🎯 Trading strategies (shared)
-│   │   ├── VWAPSigma2Strategy.py       # VWAP-based sigma strategy
-│   │   ├── ml_ai_framework.py          # Machine learning framework
-│   │   ├── market_inefficiency_strategy.py # Market inefficiency strategy
-│   │   ├── advanced_strategy_hub.py    # Advanced strategy collection
-│   │   ├── bb_rsi_strategy.py          # Bollinger Bands + RSI strategy
-│   │   ├── enhanced_multi_factor.py    # Multi-factor enhanced strategy
-│   │   ├── institutional_flow_strategy.py # Institutional flow strategy
-│   │   ├── macd_only_strategy.py       # MACD-only strategy
-│   │   ├── optimized_crypto_v2.py      # Optimized crypto strategy v2
-│   │   ├── rsi_macd_vwap_strategy.py   # RSI+MACD+VWAP combination
-│   │   ├── sma_cross.py                # Simple moving average crossover
-│   │   ├── ultimate_profitable_strategy.py # Ultimate profitable strategy
-│   │   ├── FiftyTwoWeekLowStrategy.py  # 52-week low strategy
-│   │   └── README.md                   # Strategy documentation
-│   ├── data_acquisition.py             # Data fetching and management
-│   ├── technical_analysis.py           # Technical analysis indicators
-│   ├── scanner.py                      # Market scanning utilities
-│   └── backtest_evaluator.py           # Backtest evaluation engine
+├── 📁 strategies/                      # 🎯 Trading strategies (shared by crypto & stocks)
+│   ├── VWAPSigma2Strategy.py           # VWAP-based sigma strategy
+│   ├── ml_ai_framework.py              # Machine learning framework
+│   ├── market_inefficiency_strategy.py # Market inefficiency strategy
+│   ├── advanced_strategy_hub.py        # Advanced strategy collection
+│   ├── bb_rsi_strategy.py              # Bollinger Bands + RSI strategy
+│   ├── enhanced_multi_factor.py        # Multi-factor enhanced strategy
+│   ├── institutional_flow_strategy.py  # Institutional flow strategy
+│   ├── macd_only_strategy.py           # MACD-only strategy
+│   ├── optimized_crypto_v2.py          # Optimized crypto strategy v2
+│   ├── rsi_macd_vwap_strategy.py       # RSI+MACD+VWAP combination
+│   ├── sma_cross.py                    # Simple moving average crossover
+│   ├── ultimate_profitable_strategy.py # Ultimate profitable strategy
+│   ├── FiftyTwoWeekLowStrategy.py      # 52-week low strategy
+│   └── README.md                       # Strategy documentation
 │
 ├── 📁 tests/                           # Test files and utilities
 │   ├── test_main.py                    # Main test suite
@@ -76,16 +72,21 @@ AlgoProject/
 │   ├── quick_test.py                   # Quick functionality tests
 │   └── test_limited_backtest.py        # Limited backtest tests
 │
-├── 📁 tools/                           # Utility tools and launchers
+├── 📁 tools/                           # Utility tools and common modules
 │   ├── launcher.py                     # 🚀 Main project launcher
 │   ├── backtest_runner.py              # General backtest runner
 │   ├── realtime_trader.py              # Real-time trading utility
 │   └── verify_structure.py             # Project structure verifier
 │
-├── 📁 utils/                           # Utility modules
-│   ├── data_utils.py                   # Data processing utilities
-│   ├── logging_utils.py                # Logging configuration
-│   └── market_utils.py                 # Market-related utilities
+├── 📁 tools/                           # Utility tools and common modules
+│   ├── launcher.py                     # Main project launcher
+│   ├── realtime_trader.py              # Real-time trading utilities
+│   ├── backtest_runner.py              # Backtest execution runner
+│   ├── system_verification.py          # System health checker
+│   ├── data_acquisition.py             # Data fetching and management (common)
+│   ├── technical_analysis.py           # Technical analysis indicators (common)
+│   ├── scanner.py                      # Market scanning utilities (common)
+│   └── verify_structure.py             # Project structure validator
 │
 ├── 📁 docs/                            # 📚 Documentation
 │   ├── GETTING_STARTED.md              # Getting started guide
@@ -114,7 +115,7 @@ AlgoProject/
 **Purpose**: VWAP-based trading strategy using statistical deviations
 **Usage**: 
 ```python
-from src.strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
+from strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
 strategy = VWAPSigma2Strategy()
 signals = strategy.generate_signals(data)
 ```
@@ -124,7 +125,7 @@ signals = strategy.generate_signals(data)
 **Features**: Neural networks, feature engineering, model training
 **Usage**:
 ```python
-from src.strategies.ml_ai_framework import MLAITradingFramework
+from strategies.ml_ai_framework import MLAITradingFramework
 ml_strategy = MLAITradingFramework()
 ml_strategy.train_model(historical_data)
 ```

@@ -125,7 +125,7 @@ ta-lib>=0.4.0  # For enhanced technical analysis
 
 ### Basic Usage
 ```python
-from src.strategies.advanced_strategy_hub import AdvancedStrategyHub
+from strategies.advanced_strategy_hub import AdvancedStrategyHub
 
 # Initialize the hub
 hub = AdvancedStrategyHub()

@@ -6,7 +6,7 @@ Core scanning and signal detection functionality
 import pandas as pd
 import numpy as np
 from typing import Dict, List, Tuple, Optional
-from .technical_analysis import (
+from tools.technical_analysis import (
     calculate_rsi, calculate_macd, calculate_bollinger_bands,
     calculate_vwap, calculate_sma, calculate_ema, calculate_stochastic, calculate_atr
 )

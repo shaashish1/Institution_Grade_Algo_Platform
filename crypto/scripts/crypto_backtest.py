@@ -18,9 +18,9 @@ warnings.filterwarnings('ignore')
 # Add parent directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from src.data_acquisition import fetch_data
+from tools.data_acquisition import fetch_data
 from tabulate import tabulate
-from src.backtest_evaluator import BacktestEvaluator
+from crypto.tools.backtest_evaluator import BacktestEvaluator
 
 try:
     from colorama import Fore, Style, init
@@ -316,7 +316,7 @@ def load_crypto_assets():
 def load_strategy():
     """Load the trading strategy."""
     sys.path.append('src/strategies')
-    from src.strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
+    from strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
     return VWAPSigma2Strategy()
 
 

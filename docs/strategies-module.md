@@ -78,7 +78,7 @@ Value investing strategy targeting stocks near 52-week lows.
 
 ```python
 # Import strategy
-from src.strategies.sma_cross import SmaCross
+from strategies.sma_cross import SmaCross
 
 # Add to backtest
 cerebro.addstrategy(SmaCross)
@@ -91,7 +91,7 @@ cerebro.run()
 
 ```python
 # Import strategy
-from src.strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
+from strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
 
 # Apply to live data
 strategy = VWAPSigma2Strategy()
@@ -102,7 +102,7 @@ signal = strategy.generate_signal(current_data)
 
 ```python
 # Use in crypto_demo_live.py
-from src.strategies.sma_cross import SmaCross
+from strategies.sma_cross import SmaCross
 
 # Apply to crypto pairs
 for symbol in crypto_symbols:
@@ -113,7 +113,7 @@ for symbol in crypto_symbols:
 
 ```python
 # Use in stocks_demo_live.py
-from src.strategies.FiftyTwoWeekLowStrategy import FiftyTwoWeekLowStrategy
+from strategies.FiftyTwoWeekLowStrategy import FiftyTwoWeekLowStrategy
 
 # Apply to NSE stocks
 for symbol in nse_stocks:
@@ -226,7 +226,7 @@ Strategy performance varies by market conditions:
 
 ```python
 # Test individual strategy
-python -c "from src.strategies.sma_cross import SmaCross; print('Strategy loaded successfully')"
+python -c "from strategies.sma_cross import SmaCross; print('Strategy loaded successfully')"
 
 # Backtest validation
 python stocks/scripts/stocks_backtest.py
@@ -271,13 +271,13 @@ Advanced portfolio management:
 
 ```python
 # Portfolio optimization
-from src.strategies.portfolio_optimizer import PortfolioOptimizer
+from strategies.portfolio_optimizer import PortfolioOptimizer
 
 # Risk parity
-from src.strategies.risk_parity import RiskParityStrategy
+from strategies.risk_parity import RiskParityStrategy
 
 # Mean reversion
-from src.strategies.mean_reversion import MeanReversionStrategy
+from strategies.mean_reversion import MeanReversionStrategy
 ```
 
 ### **⚡ Real-time Adaptation**

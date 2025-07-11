@@ -13,14 +13,14 @@ import pytz
 # Add parent directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.data_acquisition import fetch_data
+from tools.data_acquisition import fetch_data
 from tabulate import tabulate
 
 
 def load_strategy():
     """Load the trading strategy."""
     sys.path.append('src/strategies')
-    from src.strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
+    from strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
     return VWAPSigma2Strategy()
 
 

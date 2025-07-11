@@ -12,7 +12,7 @@
 - ✅ Kept `src/strategies` as the single source of truth
 - ✅ All crypto and stocks modules use `src.strategies` imports
 
-**VERIFICATION**: All imports use `from src.strategies.XxxStrategy import XxxStrategy`
+**VERIFICATION**: All imports use `from strategies.XxxStrategy import XxxStrategy`
 
 ### 2. ✅ Access Token File Consolidation
 **PROBLEM**: `access_token.py` was in root, but needed in stocks module
@@ -64,7 +64,7 @@ AlgoProject/
 ### Strategies (NO CHANGE NEEDED)
 All scripts already correctly use:
 ```python
-from src.strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
+from strategies.VWAPSigma2Strategy import VWAPSigma2Strategy
 ```
 
 ### Access Token (UPDATED)

@@ -14,7 +14,7 @@ import pytz
 # Add parent directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.data_acquisition import fetch_data
+from tools.data_acquisition import fetch_data
 
 def quick_clean_test():
     """Test a few symbols to verify clean output."""

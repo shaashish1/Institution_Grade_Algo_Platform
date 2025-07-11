@@ -58,7 +58,7 @@ def test_core_modules():
     
     # Test data acquisition
     try:
-        from src.data_acquisition import fetch_data
+        from tools.data_acquisition import fetch_data
         print("  ✅ src.data_acquisition imported successfully")
         tests.append(("data_acquisition", True, None))
     except Exception as e:
@@ -67,7 +67,7 @@ def test_core_modules():
     
     # Test technical analysis
     try:
-        from src.technical_analysis import calculate_rsi, calculate_macd
+        from tools.technical_analysis import calculate_rsi, calculate_macd
         print("  ✅ src.technical_analysis imported successfully")
         tests.append(("technical_analysis", True, None))
     except Exception as e:
@@ -76,7 +76,7 @@ def test_core_modules():
     
     # Test scanner
     try:
-        from src.scanner import TechnicalScanner
+        from tools.scanner import TechnicalScanner
         print("  ✅ src.scanner imported successfully")
         tests.append(("scanner", True, None))
     except Exception as e:

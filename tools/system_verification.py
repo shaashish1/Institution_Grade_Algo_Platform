@@ -25,18 +25,19 @@ def test_imports():
     # Add project root to path
     project_root = Path(__file__).parent.parent
     sys.path.insert(0, str(project_root))
-    sys.path.insert(0, str(project_root / 'src'))
+    sys.path.insert(0, str(project_root / 'strategies'))
+    sys.path.insert(0, str(project_root / 'tools'))
     
     import_tests = [
         # Core strategies
-        ("src.strategies.VWAPSigma2Strategy", "VWAPSigma2Strategy"),
-        ("src.strategies.ml_ai_framework", "MLAITradingFramework"),
-        ("src.strategies.market_inefficiency_strategy", "MarketInefficiencyStrategy"),
+        ("strategies.VWAPSigma2Strategy", "VWAPSigma2Strategy"),
+        ("strategies.ml_ai_framework", "MLAITradingFramework"),
+        ("strategies.market_inefficiency_strategy", "MarketInefficiencyStrategy"),
         
         # Core modules
-        ("src.data_acquisition", "fetch_data"),
-        ("src.technical_analysis", None),
-        ("src.scanner", None),
+        ("tools.data_acquisition", "fetch_data"),
+        ("tools.technical_analysis", None),
+        ("tools.scanner", None),
         
         # Data providers
         ("stocks.fyers_data_provider", "FyersDataProvider"),
@@ -68,11 +69,12 @@ def test_file_structure():
     
     required_structure = {
         "📁 Folders": [
-            "src/strategies",
+            "strategies",
             "crypto/input", 
             "crypto/scripts",
             "crypto/output",
             "crypto/logs",
+            "crypto/tools",
             "stocks/input",
             "stocks/scripts", 
             "stocks/output",
@@ -83,8 +85,8 @@ def test_file_structure():
             "docs"
         ],
         "📄 Core Files": [
-            "src/strategies/VWAPSigma2Strategy.py",
-            "src/data_acquisition.py",
+            "strategies/VWAPSigma2Strategy.py",
+            "tools/data_acquisition.py",
             "crypto/input/crypto_assets.csv",
             "stocks/input/stocks_assets.csv",
             "stocks/fyers/access_token.py",
