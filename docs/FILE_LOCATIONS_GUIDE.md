@@ -5,11 +5,11 @@
 Based on your current AlgoProject setup, here's where all files are saved:
 
 ### 📊 **Trading Pair CSV Files**
-**Location:** `d:\AlgoProject\crypto\input\`
+**Location:** `d:\Institution_Grade_Algo_Platform\crypto\input\`
 
 When you run `--save-pairs`, CSV files are created here:
 ```
-d:\AlgoProject\crypto\input\
+d:\Institution_Grade_Algo_Platform\crypto\input\
 ├── delta_spot_usdt.csv         # Spot USDT pairs (BTC/USDT, ETH/USDT, etc.)
 ├── delta_spot_btc.csv          # Spot BTC pairs  
 ├── delta_spot_eth.csv          # Spot ETH pairs
@@ -23,11 +23,11 @@ d:\AlgoProject\crypto\input\
 ```
 
 ### 📈 **Backtest Results**
-**Location:** `d:\AlgoProject\crypto\output\`
+**Location:** `d:\Institution_Grade_Algo_Platform\crypto\output\`
 
 Backtest results are saved here with timestamps:
 ```
-d:\AlgoProject\crypto\output\
+d:\Institution_Grade_Algo_Platform\crypto\output\
 ├── multi_strategy_backtest_20250716_HHMMSS.csv   # Latest backtest results
 ├── multi_strategy_backtest_20250716_155409.csv   # Previous runs
 ├── multi_strategy_backtest_20250716_155922.csv
@@ -43,22 +43,22 @@ RSI_25_75,ETH/USDT,4h,8,8.75,1.65,62.5,1.28,5.20,68.5
 ```
 
 ### 📝 **Log Files**
-**Location:** `d:\AlgoProject\crypto\logs\`
+**Location:** `d:\Institution_Grade_Algo_Platform\crypto\logs\`
 
 System logs and debug information:
 ```
-d:\AlgoProject\crypto\logs\
+d:\Institution_Grade_Algo_Platform\crypto\logs\
 ├── delta_backtest_YYYYMMDD.log    # Daily backtest logs
 ├── data_acquisition.log           # Data fetching logs
 └── error_logs/                    # Error tracking
 ```
 
 ### 🔧 **Helper Scripts & Tests**
-**Location:** `d:\AlgoProject\helper_scripts\`
+**Location:** `d:\Institution_Grade_Algo_Platform\helper_scripts\`
 
 Test files and utilities:
 ```
-d:\AlgoProject\helper_scripts\
+d:\Institution_Grade_Algo_Platform\helper_scripts\
 ├── test_rate_limiting.py          # Rate limiting tests
 ├── test_ccxt_simple.py           # Basic CCXT tests
 ├── delta_pairs_fetcher.py        # Pair fetching utility
@@ -67,11 +67,11 @@ d:\AlgoProject\helper_scripts\
 ```
 
 ### 📚 **Documentation**
-**Location:** `d:\AlgoProject\docs\`
+**Location:** `d:\Institution_Grade_Algo_Platform\docs\`
 
 All guides and documentation:
 ```
-d:\AlgoProject\docs\
+d:\Institution_Grade_Algo_Platform\docs\
 ├── DELTA_EXCHANGE_PAIRS_GUIDE.md     # Pair management guide
 ├── RATE_LIMITING_IMPLEMENTATION.md   # Rate limiting details
 ├── CRYPTO_README.md                  # Crypto module documentation
@@ -84,13 +84,13 @@ d:\AlgoProject\docs\
 ```bash
 python crypto\scripts\delta_backtest_strategies.py --save-pairs
 ```
-**Files Created:** `d:\AlgoProject\crypto\input\delta_*.csv`
+**Files Created:** `d:\Institution_Grade_Algo_Platform\crypto\input\delta_*.csv`
 
 ### 2. **Run Backtests (Results to CSV)**
 ```bash
 python crypto\scripts\delta_backtest_strategies.py --symbols BTC/USDT ETH/USDT
 ```
-**Files Created:** `d:\AlgoProject\crypto\output\multi_strategy_backtest_*.csv`
+**Files Created:** `d:\Institution_Grade_Algo_Platform\crypto\output\multi_strategy_backtest_*.csv`
 
 ### 3. **Interactive Pair Selection**
 ```bash
@@ -102,20 +102,20 @@ python crypto\scripts\delta_backtest_strategies.py --interactive
 ```bash
 python crypto\scripts\delta_backtest_strategies.py --load-csv spot_usdt
 ```
-**Files Used:** `d:\AlgoProject\crypto\input\delta_spot_usdt.csv`
+**Files Used:** `d:\Institution_Grade_Algo_Platform\crypto\input\delta_spot_usdt.csv`
 
 ## 📊 **Current File Status Check**
 
 ### **Input Directory Status:**
 ```
-d:\AlgoProject\crypto\input\
+d:\Institution_Grade_Algo_Platform\crypto\input\
 ├── crypto_assets.csv (existing)
 └── [Delta CSV files will be created here]
 ```
 
 ### **Output Directory Status:**
 ```
-d:\AlgoProject\crypto\output\
+d:\Institution_Grade_Algo_Platform\crypto\output\
 ├── [Multiple existing backtest files]
 ├── multi_strategy_backtest_*.csv (your Delta results)
 └── backtest_results/ (subdirectory)
@@ -161,9 +161,9 @@ dir crypto\output\multi_strategy_*.csv
 
 ## 🎉 **Summary**
 
-- **Trading Pairs:** `d:\AlgoProject\crypto\input\delta_*.csv`
-- **Backtest Results:** `d:\AlgoProject\crypto\output\multi_strategy_backtest_*.csv`  
-- **Documentation:** `d:\AlgoProject\docs\*.md`
-- **Test Scripts:** `d:\AlgoProject\helper_scripts\*.py`
+- **Trading Pairs:** `d:\Institution_Grade_Algo_Platform\crypto\input\delta_*.csv`
+- **Backtest Results:** `d:\Institution_Grade_Algo_Platform\crypto\output\multi_strategy_backtest_*.csv`  
+- **Documentation:** `d:\Institution_Grade_Algo_Platform\docs\*.md`
+- **Test Scripts:** `d:\Institution_Grade_Algo_Platform\helper_scripts\*.py`
 
 All files are organized by function and include timestamps for easy tracking!

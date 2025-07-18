@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
 Delta Exchange Multi-Strategy Backtest System
-🎯 ALL STRATEGIES | ALL PAIRS | ALL TIMEFRAMES  
-📊 All 29 KPIs implemented
-🏆 Best trade ranking system
-🎯 Production ready backtesting
+[TARGET] ALL STRATEGIES | ALL PAIRS | ALL TIMEFRAMES  
+[CHART] All 29 KPIs implemented
+[TROPHY] Best trade ranking system
+[TARGET] Production ready backtesting
 """
 
 import os
@@ -26,19 +26,19 @@ try:
     import ccxt
     USE_REAL_DATA = True
     CCXT_AVAILABLE = True
-    print("✅ Crypto data acquisition module loaded - Real data mode enabled")
-    print("✅ CCXT library available for Delta Exchange integration")
+    print("[OK] Crypto data acquisition module loaded - Real data mode enabled")
+    print("[OK] CCXT library available for Delta Exchange integration")
 except ImportError as e:
     USE_REAL_DATA = False
     CCXT_AVAILABLE = False
-    print("⚠️  Crypto data acquisition not available - Using simulated data mode")
-    print(f"⚠️  CCXT import error: {e}")
+    print("[WARN] Crypto data acquisition not available - Using simulated data mode")
+    print(f"[WARN] CCXT import error: {e}")
 
-print("🎯 DELTA EXCHANGE MULTI-STRATEGY BACKTEST")
+print("[TARGET] DELTA EXCHANGE MULTI-STRATEGY BACKTEST")
 print("="*80)
-print("📊 All Strategies | All Pairs | All Timeframes")
-print("🏆 Best Trade Ranking System")
-print("📈 All 29 KPIs | Professional Analysis")
+print("[CHART] All Strategies | All Pairs | All Timeframes")
+print("[TROPHY] Best Trade Ranking System")
+print("[CHART-UP] All 29 KPIs | Professional Analysis")
 print("="*80)
 
 class ComprehensiveKPICalculator:
@@ -436,20 +436,20 @@ class DeltaExchangeAPI:
                 
                 self.initialized = True
                 
-                print(f"✅ Delta Exchange connected successfully with rate limiting!")
-                print(f"📊 Found {len(self.available_pairs)} total pairs")
-                print(f"💰 Found {len(usdt_pairs)} active USDT pairs")
+                print(f"[OK] Delta Exchange connected successfully with rate limiting!")
+                print(f"[CHART] Found {len(self.available_pairs)} total pairs")
+                print(f"[MONEY] Found {len(usdt_pairs)} active USDT pairs")
                 print(f"⏱️  Rate limit: {self.exchange.rateLimit}ms between requests")
                 
                 return usdt_pairs[:20]  # Return top 20 USDT pairs
                 
             else:
-                print("⚠️  CCXT not available - using fallback trading pairs")
+                print("[WARN]  CCXT not available - using fallback trading pairs")
                 return self._get_fallback_pairs()
                 
         except Exception as e:
-            print(f"❌ Failed to connect to Delta Exchange: {e}")
-            print("⚠️  Using fallback trading pairs")
+            print(f"[ERROR] Failed to connect to Delta Exchange: {e}")
+            print("[WARN]  Using fallback trading pairs")
             return self._get_fallback_pairs()
     
     def _get_fallback_pairs(self):
@@ -473,7 +473,7 @@ class DeltaExchangeAPI:
                 minutes_per_candle = timeframe_minutes.get(timeframe, 60)
                 limit = min(int(days * 1440 / minutes_per_candle), 1000)  # API limit
                 
-                print(f"📊 Fetching real {timeframe} data for {symbol} from Delta Exchange...")
+                print(f"[CHART] Fetching real {timeframe} data for {symbol} from Delta Exchange...")
                 
                 # Fetch OHLCV data with automatic rate limiting
                 ohlcv = self.exchange.fetch_ohlcv(symbol, timeframe, limit=limit)
@@ -497,7 +497,7 @@ class DeltaExchangeAPI:
                         'timeframe': timeframe
                     })
                 
-                print(f"✅ Fetched {len(data)} real candles for {symbol}")
+                print(f"[OK] Fetched {len(data)} real candles for {symbol}")
                 return data
                 
             else:
@@ -507,15 +507,15 @@ class DeltaExchangeAPI:
             # Enhanced error handling for rate limiting
             if 'ccxt' in str(type(e).__module__):
                 if 'RateLimitExceeded' in str(type(e).__name__):
-                    print(f"⚠️  Rate limit exceeded for {symbol}: {e}")
-                    print("🔄 Waiting before retry...")
+                    print(f"[WARN]  Rate limit exceeded for {symbol}: {e}")
+                    print("[REFRESH] Waiting before retry...")
                     time.sleep(2)  # Wait 2 seconds before returning None
                 elif 'NetworkError' in str(type(e).__name__):
-                    print(f"❌ Network error fetching {symbol}: {e}")
+                    print(f"[ERROR] Network error fetching {symbol}: {e}")
                 else:
-                    print(f"❌ CCXT error fetching {symbol}: {e}")
+                    print(f"[ERROR] CCXT error fetching {symbol}: {e}")
             else:
-                print(f"❌ Error fetching data for {symbol}: {e}")
+                print(f"[ERROR] Error fetching data for {symbol}: {e}")
             
             return None
     
@@ -538,7 +538,7 @@ class DeltaExchangeAPI:
                     }
             return None
         except Exception as e:
-            print(f"❌ Error getting symbol info for {symbol}: {e}")
+            print(f"[ERROR] Error getting symbol info for {symbol}: {e}")
             return None
 
 # Initialize Delta Exchange API
@@ -564,12 +564,12 @@ class DeltaDataProvider:
                 return real_data
         
         # Fallback to simulated data
-        print(f"📊 Using simulated data for {symbol} ({timeframe})")
+        print(f"[CHART] Using simulated data for {symbol} ({timeframe})")
         return self.generate_market_data(symbol, timeframe, days)
 
     def generate_market_data(self, symbol, timeframe='1h', days=14):
         """Generate realistic market data for backtesting."""
-        print(f"📊 Generating {timeframe} data for {symbol} ({days} days)...")
+        print(f"[CHART] Generating {timeframe} data for {symbol} ({days} days)...")
         
         base_price = self.base_prices.get(symbol, 1000)
         data = []
@@ -637,7 +637,7 @@ class DeltaDataProvider:
             data.append(candle)
             current_time += time_delta
         
-        print(f"✅ Generated {len(data)} {timeframe} candles for {symbol}")
+        print(f"[OK] Generated {len(data)} {timeframe} candles for {symbol}")
         return data
 
 class MultiStrategyBacktester:
@@ -659,10 +659,10 @@ class MultiStrategyBacktester:
         }
         
         # Initialize Delta Exchange and get real trading pairs
-        print("🔄 Initializing Delta Exchange connection...")
+        print("[REFRESH] Initializing Delta Exchange connection...")
         self.trading_pairs = delta_api.initialize()
         
-        print(f"📊 Available trading pairs:")
+        print(f"[CHART] Available trading pairs:")
         for i, pair in enumerate(self.trading_pairs[:10], 1):
             print(f"   {i:2d}. {pair}")
         if len(self.trading_pairs) > 10:
@@ -746,7 +746,7 @@ class MultiStrategyBacktester:
 
     def run_comprehensive_backtest(self, selected_symbols=None, selected_timeframes=None, selected_strategies=None):
         """Run backtest across all combinations."""
-        print("\n🚀 STARTING COMPREHENSIVE MULTI-STRATEGY BACKTEST")
+        print("\n[ROCKET] STARTING COMPREHENSIVE MULTI-STRATEGY BACKTEST")
         print("="*60)
         
         symbols = selected_symbols or self.trading_pairs
@@ -754,7 +754,7 @@ class MultiStrategyBacktester:
         strategies = selected_strategies or list(self.strategies.keys())
         
         total_combinations = len(symbols) * len(timeframes) * len(strategies)
-        print(f"📊 Testing {total_combinations} combinations:")
+        print(f"[CHART] Testing {total_combinations} combinations:")
         print(f"   • Symbols: {len(symbols)} ({', '.join(symbols[:5])}{'...' if len(symbols) > 5 else ''})")
         print(f"   • Timeframes: {len(timeframes)} ({', '.join(timeframes)})")
         print(f"   • Strategies: {len(strategies)} ({', '.join(strategies)})")
@@ -768,19 +768,19 @@ class MultiStrategyBacktester:
             for timeframe in timeframes:
                 for strategy_name in strategies:
                     current_combination += 1
-                    print(f"⚡ [{current_combination}/{total_combinations}] Testing {strategy_name} on {symbol} {timeframe}")
+                    print(f"[LIGHTNING] [{current_combination}/{total_combinations}] Testing {strategy_name} on {symbol} {timeframe}")
                     
                     strategy_func = self.strategies[strategy_name]
                     result = self.execute_strategy_backtest(strategy_name, strategy_func, symbol, timeframe)
                     
                     if result and result['trade_count'] > 0:
                         results.append(result)
-                        print(f"   ✅ {result['trade_count']} trades, {result['total_profit_pct']:.2f}% profit")
+                        print(f"   [OK] {result['trade_count']} trades, {result['total_profit_pct']:.2f}% profit")
                     else:
-                        print(f"   ❌ No valid trades generated")
+                        print(f"   [ERROR] No valid trades generated")
         
-        print(f"\n✅ Comprehensive backtest completed!")
-        print(f"📈 {len(results)} successful strategy combinations out of {total_combinations}")
+        print(f"\n[OK] Comprehensive backtest completed!")
+        print(f"[CHART-UP] {len(results)} successful strategy combinations out of {total_combinations}")
         
         return results
 
@@ -815,7 +815,7 @@ def calculate_composite_score(result):
 def display_best_trades_table(results, top_n=10):
     """Display best trades in tabular format."""
     if not results:
-        print("❌ No results to display")
+        print("[ERROR] No results to display")
         return
     
     # Calculate composite scores and sort
@@ -826,7 +826,7 @@ def display_best_trades_table(results, top_n=10):
     sorted_results = sorted(results, key=lambda x: x['composite_score'], reverse=True)
     top_results = sorted_results[:top_n]
     
-    print(f"\n🏆 TOP {top_n} BEST TRADING STRATEGIES")
+    print(f"\n[TROPHY] TOP {top_n} BEST TRADING STRATEGIES")
     print("="*120)
     
     # Table header
@@ -852,7 +852,7 @@ def display_best_trades_table(results, top_n=10):
     print("-" * 120)
     
     # Summary statistics
-    print(f"\n📊 SUMMARY STATISTICS")
+    print(f"\n[CHART] SUMMARY STATISTICS")
     print(f"Total strategies tested: {len(results)}")
     print(f"Average profit: {sum([r['total_profit_pct'] for r in results]) / len(results):.2f}%")
     print(f"Best single strategy: {top_results[0]['strategy']} on {top_results[0]['symbol']} {top_results[0]['timeframe']} ({top_results[0]['total_profit_pct']:.2f}%)")
@@ -895,11 +895,11 @@ def save_results_to_csv(results):
     with open(csv_file, 'w') as f:
         f.write('\n'.join(csv_lines))
     
-    print(f"\n💾 Results saved to: {csv_file}")
+    print(f"\n[SAVE] Results saved to: {csv_file}")
 
 def display_available_pairs():
     """Display available Delta Exchange trading pairs."""
-    print("🔄 Initializing Delta Exchange connection...")
+    print("[REFRESH] Initializing Delta Exchange connection...")
     
     # Initialize Delta API if not already done
     if not delta_api.initialized:
@@ -908,7 +908,7 @@ def display_available_pairs():
     if delta_api.initialized:
         pairs = delta_api.available_pairs
         
-        print(f"\n📊 DELTA EXCHANGE TRADING PAIRS")
+        print(f"\n[CHART] DELTA EXCHANGE TRADING PAIRS")
         print("="*50)
         
         # Group by quote currency and market type
@@ -929,21 +929,21 @@ def display_available_pairs():
             else:
                 spot_pairs.append(pair)
         
-        print(f"💰 SPOT USDT Pairs ({len(spot_pairs)}):")
+        print(f"[MONEY] SPOT USDT Pairs ({len(spot_pairs)}):")
         for i, pair in enumerate(spot_pairs[:20], 1):
             print(f"   {i:2d}. {pair}")
         if len(spot_pairs) > 20:
             print(f"   ... and {len(spot_pairs) - 20} more")
         
         if futures_pairs:
-            print(f"\n🔮 FUTURES USDT Pairs ({len(futures_pairs)}):")
+            print(f"\n[CRYSTAL] FUTURES USDT Pairs ({len(futures_pairs)}):")
             for i, pair in enumerate(futures_pairs[:10], 1):
                 print(f"   {i:2d}. {pair}")
             if len(futures_pairs) > 10:
                 print(f"   ... and {len(futures_pairs) - 10} more")
         
         if options_pairs:
-            print(f"\n⚡ OPTIONS Pairs ({len(options_pairs)}):")
+            print(f"\n[LIGHTNING] OPTIONS Pairs ({len(options_pairs)}):")
             for i, pair in enumerate(options_pairs[:10], 1):
                 print(f"   {i:2d}. {pair}")
             if len(options_pairs) > 10:
@@ -960,18 +960,18 @@ def display_available_pairs():
                 print(f"   {i:2d}. {pair}")
         
         print(f"\nTotal available pairs: {len(pairs)}")
-        print(f"🎯 To save pairs to CSV files, use: --save-pairs")
+        print(f"[TARGET] To save pairs to CSV files, use: --save-pairs")
         
     else:
-        print("❌ Delta Exchange not connected - cannot display pairs")
-        print("💡 Check CCXT installation: pip install ccxt")
-        print("💡 Verify internet connection")
+        print("[ERROR] Delta Exchange not connected - cannot display pairs")
+        print("[BULB] Check CCXT installation: pip install ccxt")
+        print("[BULB] Verify internet connection")
 
 def get_top_volume_pairs(limit=10):
     """Get top trading pairs by volume with rate limiting support."""
     try:
         if delta_api.initialized and delta_api.exchange:
-            print(f"📊 Fetching volume data for top {limit} pairs...")
+            print(f"[CHART] Fetching volume data for top {limit} pairs...")
             
             # Fetch tickers with automatic rate limiting
             tickers = delta_api.exchange.fetch_tickers()
@@ -996,30 +996,30 @@ def get_top_volume_pairs(limit=10):
         # Enhanced error handling for rate limiting
         if 'ccxt' in str(type(e).__module__):
             if 'RateLimitExceeded' in str(type(e).__name__):
-                print(f"⚠️  Rate limit exceeded while fetching volume data: {e}")
-                print("🔄 Using fallback pairs...")
+                print(f"[WARN]  Rate limit exceeded while fetching volume data: {e}")
+                print("[REFRESH] Using fallback pairs...")
             elif 'NetworkError' in str(type(e).__name__):
-                print(f"❌ Network error fetching volume data: {e}")
+                print(f"[ERROR] Network error fetching volume data: {e}")
             else:
-                print(f"❌ CCXT error: {e}")
+                print(f"[ERROR] CCXT error: {e}")
         else:
-            print(f"⚠️  Could not fetch volume data: {e}")
+            print(f"[WARN]  Could not fetch volume data: {e}")
         
-        print("🔄 Using fallback pairs instead...")
+        print("[REFRESH] Using fallback pairs instead...")
         return delta_api._get_fallback_pairs()[:limit]
     
     return delta_api._get_fallback_pairs()[:limit]
 
 def save_pairs_to_csv():
     """Save Delta Exchange pairs to organized CSV files."""
-    print("🔄 Initializing Delta Exchange connection for pair export...")
+    print("[REFRESH] Initializing Delta Exchange connection for pair export...")
     
     # Initialize Delta API if not already done
     if not delta_api.initialized:
         delta_api.initialize()
     
     if not delta_api.initialized:
-        print("❌ Cannot save pairs - Delta Exchange not connected")
+        print("[ERROR] Cannot save pairs - Delta Exchange not connected")
         return False
     
     # Ensure input directory exists
@@ -1027,7 +1027,7 @@ def save_pairs_to_csv():
     os.makedirs(input_dir, exist_ok=True)
     
     pairs = delta_api.available_pairs
-    print(f"📊 Processing {len(pairs)} total pairs...")
+    print(f"[CHART] Processing {len(pairs)} total pairs...")
     
     # Categorize pairs
     categories = {
@@ -1125,7 +1125,7 @@ def save_pairs_to_csv():
                 f.write('\n'.join(csv_content))
             
             saved_files.append((filename, len(pair_list)))
-            print(f"✅ Saved {len(pair_list)} {category.replace('_', ' ')} pairs to {filename}")
+            print(f"[OK] Saved {len(pair_list)} {category.replace('_', ' ')} pairs to {filename}")
     
     # Create a master summary file
     summary_file = os.path.join(input_dir, "delta_pairs_summary.csv")
@@ -1139,14 +1139,14 @@ def save_pairs_to_csv():
     with open(summary_file, 'w', encoding='utf-8') as f:
         f.write('\n'.join(summary_content))
     
-    print(f"\n💾 PAIR EXPORT SUMMARY:")
+    print(f"\n[SAVE] PAIR EXPORT SUMMARY:")
     print("="*50)
     for filename, count in saved_files:
-        print(f"📄 {filename:<25} - {count:>3} pairs")
+        print(f"[FILE] {filename:<25} - {count:>3} pairs")
     
-    print(f"\n📋 Summary file: delta_pairs_summary.csv")
-    print(f"📁 All files saved to: {input_dir}")
-    print(f"🎯 Total pairs exported: {sum([count for _, count in saved_files])}")
+    print(f"\n[CLIPBOARD] Summary file: delta_pairs_summary.csv")
+    print(f"[FOLDER] All files saved to: {input_dir}")
+    print(f"[TARGET] Total pairs exported: {sum([count for _, count in saved_files])}")
     
     return True
 
@@ -1157,8 +1157,8 @@ def load_pairs_from_csv(category='spot_usdt'):
     filepath = os.path.join(input_dir, filename)
     
     if not os.path.exists(filepath):
-        print(f"⚠️  File not found: {filename}")
-        print(f"💡 Run with --save-pairs to generate CSV files first")
+        print(f"[WARN]  File not found: {filename}")
+        print(f"[BULB] Run with --save-pairs to generate CSV files first")
         return []
     
     pairs = []
@@ -1170,16 +1170,16 @@ def load_pairs_from_csv(category='spot_usdt'):
                     pair = line.strip().split(',')[0]
                     pairs.append(pair)
         
-        print(f"✅ Loaded {len(pairs)} pairs from {filename}")
+        print(f"[OK] Loaded {len(pairs)} pairs from {filename}")
         return pairs
         
     except Exception as e:
-        print(f"❌ Error loading pairs from {filename}: {e}")
+        print(f"[ERROR] Error loading pairs from {filename}: {e}")
         return []
 
 def interactive_pair_selection():
     """Enhanced interactive user interface for selecting trading pairs and CSV files."""
-    print("\n🎯 DELTA EXCHANGE INTERACTIVE PAIR SELECTION")
+    print("\n[TARGET] DELTA EXCHANGE INTERACTIVE PAIR SELECTION")
     print("="*70)
     
     # Check for existing CSV files first
@@ -1190,12 +1190,12 @@ def interactive_pair_selection():
         csv_files = [f for f in os.listdir(input_dir) if f.startswith('delta_') and f.endswith('.csv')]
     
     while True:
-        print(f"\n📋 PAIR SELECTION OPTIONS:")
+        print(f"\n[CLIPBOARD] PAIR SELECTION OPTIONS:")
         print("="*50)
         
         # Show CSV file options if available
         if csv_files:
-            print(f"📄 LOAD FROM EXISTING CSV FILES:")
+            print(f"[FILE] LOAD FROM EXISTING CSV FILES:")
             for i, csv_file in enumerate(csv_files, 1):
                 # Extract category from filename
                 category = csv_file.replace('delta_', '').replace('.csv', '')
@@ -1206,31 +1206,31 @@ def interactive_pair_selection():
                 try:
                     with open(file_path, 'r') as f:
                         line_count = len(f.readlines()) - 1  # Subtract header
-                    print(f"   {i}. 📊 {category_display} ({line_count} pairs)")
+                    print(f"   {i}. [CHART] {category_display} ({line_count} pairs)")
                 except:
-                    print(f"   {i}. 📊 {category_display} ({csv_file})")
+                    print(f"   {i}. [CHART] {category_display} ({csv_file})")
             
-            print(f"\n🔄 LIVE DELTA EXCHANGE OPTIONS:")
+            print(f"\n[REFRESH] LIVE DELTA EXCHANGE OPTIONS:")
             live_start = len(csv_files) + 1
         else:
-            print(f"⚠️  No CSV files found in {input_dir}")
-            print(f"💡 Use option below to save pairs to CSV files first")
+            print(f"[WARN]  No CSV files found in {input_dir}")
+            print(f"[BULB] Use option below to save pairs to CSV files first")
             live_start = 1
         
-        print(f"   {live_start}. 💰 Fetch Live Spot USDT Pairs")
-        print(f"   {live_start + 1}. 🔮 Fetch Live Perpetual USDT Pairs") 
-        print(f"   {live_start + 2}. 📈 Fetch Live Futures Pairs")
-        print(f"   {live_start + 3}. ⚡ Fetch Live Options Pairs")
-        print(f"   {live_start + 4}. 💾 Save all pairs to CSV files")
-        print(f"   {live_start + 5}. 🔍 View all available pairs")
-        print(f"   {live_start + 6}. 🚀 Use top 10 volume pairs")
-        print(f"   0. ❌ Exit")
+        print(f"   {live_start}. [MONEY] Fetch Live Spot USDT Pairs")
+        print(f"   {live_start + 1}. [CRYSTAL] Fetch Live Perpetual USDT Pairs") 
+        print(f"   {live_start + 2}. [CHART-UP] Fetch Live Futures Pairs")
+        print(f"   {live_start + 3}. [LIGHTNING] Fetch Live Options Pairs")
+        print(f"   {live_start + 4}. [SAVE] Save all pairs to CSV files")
+        print(f"   {live_start + 5}. [SEARCH] View all available pairs")
+        print(f"   {live_start + 6}. [ROCKET] Use top 10 volume pairs")
+        print(f"   0. [ERROR] Exit")
         
         try:
-            choice = input(f"\n👆 Select option: ").strip()
+            choice = input(f"\n[POINT] Select option: ").strip()
             
             if choice == '0':
-                print("👋 Goodbye!")
+                print("[WAVE] Goodbye!")
                 return None
             
             choice_num = int(choice)
@@ -1240,17 +1240,17 @@ def interactive_pair_selection():
                 selected_csv = csv_files[choice_num - 1]
                 category = selected_csv.replace('delta_', '').replace('.csv', '')
                 
-                print(f"\n📄 Loading pairs from {selected_csv}...")
+                print(f"\n[FILE] Loading pairs from {selected_csv}...")
                 pairs = load_pairs_from_csv(category)
                 
                 if pairs:
-                    print(f"✅ Loaded {len(pairs)} pairs from {category.replace('_', ' ').title()}")
+                    print(f"[OK] Loaded {len(pairs)} pairs from {category.replace('_', ' ').title()}")
                     
                     # Show preview of pairs
                     if len(pairs) <= 10:
-                        print(f"📊 Pairs: {', '.join(pairs)}")
+                        print(f"[CHART] Pairs: {', '.join(pairs)}")
                     else:
-                        print(f"📊 First 10 pairs: {', '.join(pairs[:10])}")
+                        print(f"[CHART] First 10 pairs: {', '.join(pairs[:10])}")
                         print(f"   ... and {len(pairs) - 10} more pairs")
                     
                     # Ask user how many to use
@@ -1260,16 +1260,16 @@ def interactive_pair_selection():
                             limit = int(limit_input)
                             pairs = pairs[:limit]
                     except ValueError:
-                        print("⚠️  Invalid number, using all pairs")
+                        print("[WARN]  Invalid number, using all pairs")
                     
                     # Ask user confirmation
-                    confirm = input(f"\n✅ Use these {len(pairs)} pairs for backtesting? (y/n): ").strip().lower()
+                    confirm = input(f"\n[OK] Use these {len(pairs)} pairs for backtesting? (y/n): ").strip().lower()
                     if confirm in ['y', 'yes']:
                         return pairs
                     else:
                         continue
                 else:
-                    print(f"❌ Could not load pairs from {selected_csv}")
+                    print(f"[ERROR] Could not load pairs from {selected_csv}")
                     input("Press Enter to continue...")
                     continue
             
@@ -1287,7 +1287,7 @@ def interactive_pair_selection():
             elif live_choice == 5:  # Save to CSV
                 success = save_pairs_to_csv()
                 if success:
-                    print("✅ Pairs saved successfully! Refreshing CSV file list...")
+                    print("[OK] Pairs saved successfully! Refreshing CSV file list...")
                     # Refresh CSV file list
                     csv_files = [f for f in os.listdir(input_dir) if f.startswith('delta_') and f.endswith('.csv')]
                 input("Press Enter to continue...")
@@ -1299,32 +1299,32 @@ def interactive_pair_selection():
             elif live_choice == 7:  # Top volume pairs
                 return get_top_volume_pairs(10)
             else:
-                print(f"❌ Invalid option: {choice}")
+                print(f"[ERROR] Invalid option: {choice}")
                 input("Press Enter to try again...")
                 continue
                 
         except KeyboardInterrupt:
-            print("\n\n👋 Operation cancelled by user")
+            print("\n\n[WAVE] Operation cancelled by user")
             return None
         except ValueError:
-            print(f"❌ Please enter a valid number")
+            print(f"[ERROR] Please enter a valid number")
             input("Press Enter to try again...")
             continue
         except Exception as e:
-            print(f"❌ Error: {e}")
+            print(f"[ERROR] Error: {e}")
             input("Press Enter to try again...")
             continue
 
 def get_live_pairs_by_category(category):
     """Get live pairs from Delta Exchange by category."""
-    print(f"\n🔄 Fetching live {category.replace('_', ' ').title()} pairs from Delta Exchange...")
+    print(f"\n[REFRESH] Fetching live {category.replace('_', ' ').title()} pairs from Delta Exchange...")
     
     # Initialize Delta API if not already done
     if not delta_api.initialized:
         delta_api.initialize()
     
     if not delta_api.initialized:
-        print("❌ Cannot connect to Delta Exchange - using fallback pairs")
+        print("[ERROR] Cannot connect to Delta Exchange - using fallback pairs")
         return delta_api._get_fallback_pairs()[:10]
     
     try:
@@ -1342,13 +1342,13 @@ def get_live_pairs_by_category(category):
                 categorized_pairs.append(pair)
         
         if categorized_pairs:
-            print(f"✅ Found {len(categorized_pairs)} live {category.replace('_', ' ').title()} pairs")
+            print(f"[OK] Found {len(categorized_pairs)} live {category.replace('_', ' ').title()} pairs")
             
             # Show preview
             if len(categorized_pairs) <= 15:
-                print(f"📊 Pairs: {', '.join(categorized_pairs)}")
+                print(f"[CHART] Pairs: {', '.join(categorized_pairs)}")
             else:
-                print(f"📊 First 15 pairs: {', '.join(categorized_pairs[:15])}")
+                print(f"[CHART] First 15 pairs: {', '.join(categorized_pairs[:15])}")
                 print(f"   ... and {len(categorized_pairs) - 15} more pairs")
             
             # Ask how many to use
@@ -1360,14 +1360,14 @@ def get_live_pairs_by_category(category):
                 else:
                     return categorized_pairs
             except ValueError:
-                print("⚠️  Invalid number, using all pairs")
+                print("[WARN]  Invalid number, using all pairs")
                 return categorized_pairs
         else:
-            print(f"❌ No {category.replace('_', ' ').title()} pairs found")
+            print(f"[ERROR] No {category.replace('_', ' ').title()} pairs found")
             return delta_api._get_fallback_pairs()[:10]
             
     except Exception as e:
-        print(f"❌ Error fetching live pairs: {e}")
+        print(f"[ERROR] Error fetching live pairs: {e}")
         return delta_api._get_fallback_pairs()[:10]
 
 def main():
@@ -1397,36 +1397,36 @@ Examples:
     # Pair selection options
     pair_group = parser.add_argument_group('pair selection options')
     pair_group.add_argument('--interactive', action='store_true', 
-                           help='🎯 Interactive CSV file and pair selection interface (recommended)')
+                           help='[TARGET] Interactive CSV file and pair selection interface (recommended)')
     pair_group.add_argument('--load-csv', type=str, metavar='CATEGORY',
-                           help='📄 Load pairs from CSV file (spot_usdt, perpetual_usdt, futures_usdt, etc.)')
+                           help='[FILE] Load pairs from CSV file (spot_usdt, perpetual_usdt, futures_usdt, etc.)')
     pair_group.add_argument('--symbols', nargs='+', metavar='SYMBOL',
-                           help='💰 Specific trading symbols to test (e.g., BTC/USDT ETH/USDT)')
+                           help='[MONEY] Specific trading symbols to test (e.g., BTC/USDT ETH/USDT)')
     pair_group.add_argument('--top-volume', type=int, metavar='N',
                            help='🔥 Use top N pairs by trading volume')
     
     # Strategy and timeframe options
     strategy_group = parser.add_argument_group('strategy and timeframe options')
     strategy_group.add_argument('--strategies', nargs='+', metavar='STRATEGY',
-                               help='📈 Strategies to test (RSI_30_70, MACD_Standard, Bollinger_Bands)')
+                               help='[CHART-UP] Strategies to test (RSI_30_70, MACD_Standard, Bollinger_Bands)')
     strategy_group.add_argument('--timeframes', nargs='+', metavar='TF',
                                help='⏰ Timeframes to test (1h, 4h, 1d)')
     strategy_group.add_argument('--days', type=int, default=14, metavar='N',
-                               help='📅 Days of historical data to test (default: 14)')
+                               help='[CALENDAR] Days of historical data to test (default: 14)')
     
     # Output options
     output_group = parser.add_argument_group('output options')
     output_group.add_argument('--top', type=int, default=10, metavar='N',
-                             help='🏆 Number of top results to display (default: 10)')
+                             help='[TROPHY] Number of top results to display (default: 10)')
     
     # Delta Exchange management
     delta_group = parser.add_argument_group('Delta Exchange management')
     delta_group.add_argument('--save-pairs', action='store_true',
-                            help='💾 Fetch and save all pairs to organized CSV files')
+                            help='[SAVE] Fetch and save all pairs to organized CSV files')
     delta_group.add_argument('--list-pairs', action='store_true',
-                            help='🔍 List all available Delta Exchange pairs')
+                            help='[SEARCH] List all available Delta Exchange pairs')
     delta_group.add_argument('--real-data', action='store_true',
-                            help='🔄 Force attempt to use real Delta Exchange data')
+                            help='[REFRESH] Force attempt to use real Delta Exchange data')
     
     args = parser.parse_args()
     
@@ -1438,21 +1438,21 @@ Examples:
     if args.save_pairs:
         success = save_pairs_to_csv()
         if success:
-            print("\n🎯 Pairs saved successfully!")
-            print("💡 You can now use --load-csv <category> to load specific pair types")
-            print("💡 Or use --interactive for guided pair selection")
+            print("\n[TARGET] Pairs saved successfully!")
+            print("[BULB] You can now use --load-csv <category> to load specific pair types")
+            print("[BULB] Or use --interactive for guided pair selection")
         return
     
     if args.interactive:
-        print("🎯 Starting enhanced interactive pair selection...")
+        print("[TARGET] Starting enhanced interactive pair selection...")
         selected_pairs = interactive_pair_selection()
         
         if selected_pairs:
-            print(f"\n✅ Selected {len(selected_pairs)} pairs for backtesting")
-            print(f"📊 Pairs: {', '.join(selected_pairs[:5])}{'...' if len(selected_pairs) > 5 else ''}")
+            print(f"\n[OK] Selected {len(selected_pairs)} pairs for backtesting")
+            print(f"[CHART] Pairs: {', '.join(selected_pairs[:5])}{'...' if len(selected_pairs) > 5 else ''}")
             
             # Ask for additional backtest parameters
-            print(f"\n🎯 BACKTEST CONFIGURATION:")
+            print(f"\n[TARGET] BACKTEST CONFIGURATION:")
             
             # Timeframes
             if not args.timeframes:
@@ -1466,7 +1466,7 @@ Examples:
             # Strategies  
             if not args.strategies:
                 available_strategies = ['RSI_30_70', 'RSI_25_75', 'RSI_35_65', 'MACD_Standard', 'Bollinger_Bands']
-                print(f"📈 Available strategies: {', '.join(available_strategies)}")
+                print(f"[CHART-UP] Available strategies: {', '.join(available_strategies)}")
                 strat_input = input("Select strategies (comma-separated, Enter for 'RSI_30_70'): ").strip()
                 if strat_input:
                     args.strategies = [s.strip() for s in strat_input.split(',')]
@@ -1480,13 +1480,13 @@ Examples:
                     try:
                         args.days = int(days_input)
                     except ValueError:
-                        print("⚠️  Invalid number, using default 14 days")
+                        print("[WARN]  Invalid number, using default 14 days")
             
-            print(f"\n🚀 STARTING BACKTEST:")
-            print(f"   📊 Pairs: {len(selected_pairs)}")
+            print(f"\n[ROCKET] STARTING BACKTEST:")
+            print(f"   [CHART] Pairs: {len(selected_pairs)}")
             print(f"   ⏰ Timeframes: {', '.join(args.timeframes)}")
-            print(f"   📈 Strategies: {', '.join(args.strategies)}")
-            print(f"   📅 Days: {args.days}")
+            print(f"   [CHART-UP] Strategies: {', '.join(args.strategies)}")
+            print(f"   [CALENDAR] Days: {args.days}")
             
             # Initialize backtester with selected pairs
             backtester = MultiStrategyBacktester()
@@ -1502,9 +1502,9 @@ Examples:
                 display_best_trades_table(results, args.top)
                 save_results_to_csv(results)
             else:
-                print("❌ No results generated from backtest")
+                print("[ERROR] No results generated from backtest")
         else:
-            print("❌ No pairs selected - exiting")
+            print("[ERROR] No pairs selected - exiting")
         return
     
     # Initialize backtester for regular operations
@@ -1514,10 +1514,10 @@ Examples:
     symbols = args.symbols
     
     if args.load_csv:
-        print(f"📄 Loading pairs from CSV category: {args.load_csv}")
+        print(f"[FILE] Loading pairs from CSV category: {args.load_csv}")
         symbols = load_pairs_from_csv(args.load_csv)
         if not symbols:
-            print("⚠️  No pairs loaded from CSV - using default pairs")
+            print("[WARN]  No pairs loaded from CSV - using default pairs")
             symbols = backtester.trading_pairs[:10]
     elif args.top_volume:
         print(f"🔥 Using top {args.top_volume} pairs by volume...")
@@ -1526,7 +1526,7 @@ Examples:
         # Default to a good selection of major pairs
         symbols = backtester.trading_pairs[:10]
     
-    print(f"\n🎯 SELECTED TRADING PAIRS: {', '.join(symbols[:10])}")
+    print(f"\n[TARGET] SELECTED TRADING PAIRS: {', '.join(symbols[:10])}")
     if len(symbols) > 10:
         print(f"   ... and {len(symbols) - 10} more pairs")
     
@@ -1546,14 +1546,14 @@ Examples:
         
         # Display Delta Exchange connection status
         if USE_REAL_DATA and delta_api.initialized:
-            print(f"\n🔗 DELTA EXCHANGE CONNECTION: ✅ Active")
-            print(f"📊 Used real market data for backtesting")
+            print(f"\n🔗 DELTA EXCHANGE CONNECTION: [OK] Active")
+            print(f"[CHART] Used real market data for backtesting")
         else:
-            print(f"\n🔗 DELTA EXCHANGE CONNECTION: ❌ Using simulated data")
-            print(f"💡 Install CCXT and check connection for real data")
+            print(f"\n🔗 DELTA EXCHANGE CONNECTION: [ERROR] Using simulated data")
+            print(f"[BULB] Install CCXT and check connection for real data")
     else:
-        print("❌ No successful backtests to display")
-        print("\n💡 TROUBLESHOOTING TIPS:")
+        print("[ERROR] No successful backtests to display")
+        print("\n[BULB] TROUBLESHOOTING TIPS:")
         print("   • Try different timeframes (1h, 4h, 1d)")
         print("   • Use different symbols with --symbols BTC/USDT ETH/USDT")
         print("   • Check Delta Exchange connection with --list-pairs")
@@ -1561,7 +1561,7 @@ Examples:
         print("   • Use interactive mode with --interactive")
         print("   • Load specific pair types with --load-csv spot_usdt")
         print("   • Increase days with --days 30 for more data")
-        print("\n🔧 PAIR MANAGEMENT COMMANDS:")
+        print("\n[WRENCH] PAIR MANAGEMENT COMMANDS:")
         print("   • --list-pairs          : View all available pairs")
         print("   • --save-pairs          : Save pairs to organized CSV files")
         print("   • --interactive         : Interactive pair selection")
@@ -1573,14 +1573,14 @@ if __name__ == "__main__":
 
 def save_pairs_to_csv():
     """Save Delta Exchange pairs to organized CSV files."""
-    print("🔄 Initializing Delta Exchange connection for pair export...")
+    print("[REFRESH] Initializing Delta Exchange connection for pair export...")
     
     # Initialize Delta API if not already done
     if not delta_api.initialized:
         delta_api.initialize()
     
     if not delta_api.initialized:
-        print("❌ Cannot save pairs - Delta Exchange not connected")
+        print("[ERROR] Cannot save pairs - Delta Exchange not connected")
         return False
     
     # Ensure input directory exists
@@ -1588,7 +1588,7 @@ def save_pairs_to_csv():
     os.makedirs(input_dir, exist_ok=True)
     
     pairs = delta_api.available_pairs
-    print(f"📊 Processing {len(pairs)} total pairs...")
+    print(f"[CHART] Processing {len(pairs)} total pairs...")
     
     # Categorize pairs
     categories = {
@@ -1681,7 +1681,7 @@ def save_pairs_to_csv():
                 f.write('\n'.join(csv_content))
             
             saved_files.append((filename, len(pair_list)))
-            print(f"✅ Saved {len(pair_list)} {category.replace('_', ' ')} pairs to {filename}")
+            print(f"[OK] Saved {len(pair_list)} {category.replace('_', ' ')} pairs to {filename}")
     
     # Create a master summary file
     summary_file = os.path.join(input_dir, "delta_pairs_summary.csv")
@@ -1695,14 +1695,14 @@ def save_pairs_to_csv():
     with open(summary_file, 'w', encoding='utf-8') as f:
         f.write('\n'.join(summary_content))
     
-    print(f"\n💾 PAIR EXPORT SUMMARY:")
+    print(f"\n[SAVE] PAIR EXPORT SUMMARY:")
     print("="*50)
     for filename, count in saved_files:
-        print(f"📄 {filename:<25} - {count:>3} pairs")
+        print(f"[FILE] {filename:<25} - {count:>3} pairs")
     
-    print(f"\n📋 Summary file: delta_pairs_summary.csv")
-    print(f"📁 All files saved to: {input_dir}")
-    print(f"🎯 Total pairs exported: {sum([count for _, count in saved_files])}")
+    print(f"\n[CLIPBOARD] Summary file: delta_pairs_summary.csv")
+    print(f"[FOLDER] All files saved to: {input_dir}")
+    print(f"[TARGET] Total pairs exported: {sum([count for _, count in saved_files])}")
     
     return True
 
@@ -1713,8 +1713,8 @@ def load_pairs_from_csv(category='spot_usdt'):
     filepath = os.path.join(input_dir, filename)
     
     if not os.path.exists(filepath):
-        print(f"⚠️  File not found: {filename}")
-        print(f"💡 Run with --save-pairs to generate CSV files first")
+        print(f"[WARN]  File not found: {filename}")
+        print(f"[BULB] Run with --save-pairs to generate CSV files first")
         return []
     
     pairs = []
@@ -1726,207 +1726,9 @@ def load_pairs_from_csv(category='spot_usdt'):
                     pair = line.strip().split(',')[0]
                     pairs.append(pair)
         
-        print(f"✅ Loaded {len(pairs)} pairs from {filename}")
+        print(f"[OK] Loaded {len(pairs)} pairs from {filename}")
         return pairs
         
     except Exception as e:
-        print(f"❌ Error loading pairs from {filename}: {e}")
+        print(f"[ERROR] Error loading pairs from {filename}: {e}")
         return []
-
-def interactive_pair_selection():
-    """Enhanced interactive user interface for selecting trading pairs and CSV files."""
-    print("\n🎯 DELTA EXCHANGE INTERACTIVE PAIR SELECTION")
-    print("="*70)
-    
-    # Check for existing CSV files first
-    input_dir = os.path.join(os.path.dirname(__file__), '..', 'input')
-    csv_files = []
-    
-    if os.path.exists(input_dir):
-        csv_files = [f for f in os.listdir(input_dir) if f.startswith('delta_') and f.endswith('.csv')]
-    
-    while True:
-        print(f"\n� PAIR SELECTION OPTIONS:")
-        print("="*50)
-        
-        # Show CSV file options if available
-        if csv_files:
-            print(f"📄 LOAD FROM EXISTING CSV FILES:")
-            for i, csv_file in enumerate(csv_files, 1):
-                # Extract category from filename
-                category = csv_file.replace('delta_', '').replace('.csv', '')
-                category_display = category.replace('_', ' ').title()
-                
-                # Try to get file info
-                file_path = os.path.join(input_dir, csv_file)
-                try:
-                    with open(file_path, 'r') as f:
-                        line_count = len(f.readlines()) - 1  # Subtract header
-                    print(f"   {i}. 📊 {category_display} ({line_count} pairs)")
-                except:
-                    print(f"   {i}. 📊 {category_display} ({csv_file})")
-            
-            print(f"\n� LIVE DELTA EXCHANGE OPTIONS:")
-            live_start = len(csv_files) + 1
-        else:
-            print(f"⚠️  No CSV files found in {input_dir}")
-            print(f"💡 Use option below to save pairs to CSV files first")
-            live_start = 1
-        
-        print(f"   {live_start}. 💰 Fetch Live Spot USDT Pairs")
-        print(f"   {live_start + 1}. 🔮 Fetch Live Perpetual USDT Pairs") 
-        print(f"   {live_start + 2}. 📈 Fetch Live Futures Pairs")
-        print(f"   {live_start + 3}. ⚡ Fetch Live Options Pairs")
-        print(f"   {live_start + 4}. 💾 Save all pairs to CSV files")
-        print(f"   {live_start + 5}. 🔍 View all available pairs")
-        print(f"   {live_start + 6}. 🚀 Use top 10 volume pairs")
-        print(f"   0. ❌ Exit")
-        
-        try:
-            choice = input(f"\n👆 Select option: ").strip()
-            
-            if choice == '0':
-                print("👋 Goodbye!")
-                return None
-            
-            choice_num = int(choice)
-            
-            # Handle CSV file selection
-            if csv_files and 1 <= choice_num <= len(csv_files):
-                selected_csv = csv_files[choice_num - 1]
-                category = selected_csv.replace('delta_', '').replace('.csv', '')
-                
-                print(f"\n� Loading pairs from {selected_csv}...")
-                pairs = load_pairs_from_csv(category)
-                
-                if pairs:
-                    print(f"✅ Loaded {len(pairs)} pairs from {category.replace('_', ' ').title()}")
-                    
-                    # Show preview of pairs
-                    if len(pairs) <= 10:
-                        print(f"📊 Pairs: {', '.join(pairs)}")
-                    else:
-                        print(f"📊 First 10 pairs: {', '.join(pairs[:10])}")
-                        print(f"   ... and {len(pairs) - 10} more pairs")
-                    
-                    # Ask user how many to use
-                    try:
-                        limit_input = input(f"\n🎯 How many pairs to use? (1-{len(pairs)}, Enter for all): ").strip()
-                        if limit_input:
-                            limit = min(int(limit_input), len(pairs))
-                            pairs = pairs[:limit]
-                            print(f"✅ Selected first {limit} pairs")
-                    except ValueError:
-                        print("⚠️  Invalid number, using all pairs")
-                    
-                    # Ask user confirmation
-                    confirm = input(f"\n✅ Use these {len(pairs)} pairs for backtesting? (y/n): ").strip().lower()
-                    if confirm in ['y', 'yes']:
-                        return pairs
-                    else:
-                        continue
-                else:
-                    print(f"❌ Could not load pairs from {selected_csv}")
-                    input("Press Enter to continue...")
-                    continue
-            
-            # Handle live options (adjust for CSV files offset)
-            live_choice = choice_num - len(csv_files) if csv_files else choice_num
-            
-            if live_choice == 1:  # Live Spot USDT
-                return get_live_pairs_by_category('spot_usdt')
-            elif live_choice == 2:  # Live Perpetual USDT
-                return get_live_pairs_by_category('perpetual_usdt')
-            elif live_choice == 3:  # Live Futures
-                return get_live_pairs_by_category('futures_usdt')
-            elif live_choice == 4:  # Live Options
-                return get_live_pairs_by_category('options_calls')
-            elif live_choice == 5:  # Save to CSV
-                success = save_pairs_to_csv()
-                if success:
-                    print("✅ Pairs saved successfully! Refreshing CSV file list...")
-                    # Refresh CSV file list
-                    csv_files = [f for f in os.listdir(input_dir) if f.startswith('delta_') and f.endswith('.csv')]
-                input("Press Enter to continue...")
-                continue
-            elif live_choice == 6:  # View all pairs
-                display_available_pairs()
-                input("Press Enter to continue...")
-                continue
-            elif live_choice == 7:  # Top volume pairs
-                return get_top_volume_pairs(10)
-            else:
-                print(f"❌ Invalid option: {choice}")
-                input("Press Enter to try again...")
-                continue
-                
-        except KeyboardInterrupt:
-            print("\n\n👋 Operation cancelled by user")
-            return None
-        except ValueError:
-            print(f"❌ Please enter a valid number")
-            input("Press Enter to try again...")
-            continue
-        except Exception as e:
-            print(f"❌ Error: {e}")
-            input("Press Enter to try again...")
-            continue
-
-def get_live_pairs_by_category(category):
-    """Get live pairs from Delta Exchange by category."""
-    print(f"\n🔄 Fetching live {category.replace('_', ' ').title()} pairs from Delta Exchange...")
-    
-    # Initialize Delta API if not already done
-    if not delta_api.initialized:
-        delta_api.initialize()
-    
-    if not delta_api.initialized:
-        print("❌ Cannot connect to Delta Exchange - using fallback pairs")
-        return delta_api._get_fallback_pairs()[:10]
-    
-    try:
-        pairs = delta_api.available_pairs
-        categorized_pairs = []
-        
-        for pair in pairs:
-            if category == 'spot_usdt' and 'USDT' in pair and '-PERP' not in pair and '-FUT' not in pair:
-                categorized_pairs.append(pair)
-            elif category == 'perpetual_usdt' and ('PERP' in pair or 'SWAP' in pair) and 'USDT' in pair:
-                categorized_pairs.append(pair)
-            elif category == 'futures_usdt' and ('FUT' in pair or 'FUTURES' in pair) and 'USDT' in pair:
-                categorized_pairs.append(pair)
-            elif category == 'options_calls' and ('CALL' in pair or '-C-' in pair):
-                categorized_pairs.append(pair)
-        
-        if categorized_pairs:
-            print(f"✅ Found {len(categorized_pairs)} live {category.replace('_', ' ').title()} pairs")
-            
-            # Show preview
-            if len(categorized_pairs) <= 15:
-                print(f"📊 Pairs: {', '.join(categorized_pairs)}")
-            else:
-                print(f"📊 First 15 pairs: {', '.join(categorized_pairs[:15])}")
-                print(f"   ... and {len(categorized_pairs) - 15} more pairs")
-            
-            # Ask how many to use
-            try:
-                limit = input(f"\n🎯 How many pairs to use? (1-{len(categorized_pairs)}, default: 10): ").strip()
-                if limit:
-                    limit = min(int(limit), len(categorized_pairs))
-                else:
-                    limit = min(10, len(categorized_pairs))
-                
-                selected_pairs = categorized_pairs[:limit]
-                print(f"✅ Selected {len(selected_pairs)} pairs: {', '.join(selected_pairs)}")
-                return selected_pairs
-                
-            except ValueError:
-                print("⚠️  Invalid number, using default 10 pairs")
-                return categorized_pairs[:10]
-        else:
-            print(f"❌ No {category.replace('_', ' ').title()} pairs found")
-            return delta_api._get_fallback_pairs()[:10]
-            
-    except Exception as e:
-        print(f"❌ Error fetching live pairs: {e}")
-        return delta_api._get_fallback_pairs()[:10]

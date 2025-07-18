@@ -19,7 +19,7 @@ def test_file_locations():
     print("=" * 50)
     
     # Define base paths
-    base_path = r"d:\AlgoProject"
+    base_path = r"d:\Institution_Grade_Algo_Platform"
     input_path = os.path.join(base_path, "crypto", "input")
     output_path = os.path.join(base_path, "crypto", "output")
     

@@ -5,7 +5,7 @@
 ### ❌ → ✅ **crypto/logs/: Missing**
 **Solution**: Created missing directory
 ```bash
-# Created: D:\AlgoProject\crypto\logs\
+# Created: D:\Institution_Grade_Algo_Platform\crypto\logs\
 ```
 
 ### ❌ → ✅ **crypto_main.py: Missing**  
