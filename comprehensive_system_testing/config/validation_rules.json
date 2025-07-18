@@ -1,0 +1,49 @@
+{
+  "general_validation_rules": {
+    "python_syntax": {
+      "ast_parsing": true,
+      "indentation_check": true,
+      "quote_consistency": true,
+      "import_validation": true,
+      "bracket_matching": true
+    },
+    "import_testing": {
+      "isolated_testing": true,
+      "circular_dependency_check": true,
+      "relative_import_validation": true,
+      "stdlib_priority": true
+    },
+    "configuration_files": {
+      "yaml_validation": true,
+      "json_validation": true,
+      "csv_validation": true,
+      "schema_compliance": true
+    },
+    "dependency_management": {
+      "requirements_validation": true,
+      "version_compatibility": true,
+      "security_checks": false,
+      "license_compliance": false
+    }
+  },
+  "severity_mapping": {
+    "syntax_error": "CRITICAL",
+    "import_error": "HIGH",
+    "missing_dependency": "HIGH",
+    "config_error": "MEDIUM",
+    "style_issue": "LOW",
+    "performance_warning": "LOW"
+  },
+  "file_patterns": {
+    "python_files": ["*.py"],
+    "config_files": ["*.yaml", "*.yml", "*.json", "*.cfg", "*.ini"],
+    "data_files": ["*.csv", "*.tsv", "*.txt"],
+    "ignore_patterns": ["__pycache__", "*.pyc", ".git", "node_modules", "venv"]
+  },
+  "thresholds": {
+    "max_function_length": 100,
+    "max_file_size_kb": 1000,
+    "max_complexity": 10,
+    "min_test_coverage": 70
+  }
+}

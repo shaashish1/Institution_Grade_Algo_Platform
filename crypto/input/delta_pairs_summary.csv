@@ -1,0 +1,4 @@
+category,count,file_location
+spot_usdt,3,delta_spot_usdt.csv
+perpetual_usdt,2,delta_perpetual_usdt.csv
+total_active,5,multiple_files

@@ -25,6 +25,10 @@ import pandas as pd
 import glob
 import json
 from tabulate import tabulate
+import concurrent.futures
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import time
 
 # Add the project root to the Python path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
@@ -86,11 +90,13 @@ def get_available_timeframes():
 def run_single_backtest(symbols, strategy, interval, bars, capital, position, exchange, output_dir):
     """Run a single backtest for one strategy and timeframe"""
     
-    # Get the script path relative to current directory - use subprocess-safe version
-    # Use subprocess-safe version
-    script_path = "enhanced_crypto_backtest.py"
+    # Get the absolute path to enhanced_crypto_backtest.py
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(script_dir, "enhanced_crypto_backtest.py")
+    
     if not os.path.exists(script_path):
-        script_path = "enhanced_crypto_backtest.py"  # Fallback
+        print(f"❌ Script not found at: {script_path}")
+        return None
     
     # Build command - note: enhanced_crypto_backtest.py uses --strategy (singular)
     cmd = [
@@ -112,7 +118,7 @@ def run_single_backtest(symbols, strategy, interval, bars, capital, position, ex
     
     # Run the backtest
     try:
-        result = subprocess.run(cmd, capture_output=True, text=True, cwd=os.getcwd())
+        result = subprocess.run(cmd, capture_output=True, text=True, cwd=script_dir)
         
         if result.returncode != 0:
             print(f"❌ Command failed with return code {result.returncode}")
@@ -290,8 +296,24 @@ def generate_comparison_report(all_results, output_dir):
         print(f"🛡️ Most Conservative: {cons['Strategy']} ({cons['Timeframe']}) - {cons['Max Drawdown (%)']}% max drawdown")
     print("="*80)
 
-def run_comprehensive_backtest(symbols, strategies, timeframes, bars, capital, position, exchange, output_dir):
+def run_comprehensive_backtest(symbols, strategies, timeframes, bars, capital, position, exchange, output_dir, parallel=False, max_workers=4):
     """Run comprehensive backtest across all strategies and timeframes"""
+    
+    if parallel:
+        print(f"⚡ Using PARALLEL processing with {max_workers} workers")
+        return run_parallel_backtests(
+            symbols=symbols,
+            strategies=strategies, 
+            timeframes=timeframes,
+            bars=bars,
+            capital=capital,
+            position=position,
+            exchange=exchange,
+            output_dir=output_dir,
+            max_workers=max_workers
+        )
+    else:
+        print("🔄 Using SEQUENTIAL processing")
     
     all_results = []
     total_tests = len(strategies) * len(timeframes)
@@ -352,8 +374,9 @@ def run_comprehensive_backtest(symbols, strategies, timeframes, bars, capital, p
 def run_backtest(symbols, strategies, interval, bars, capital, position, exchange, output_dir):
     """Run a single backtest with specified parameters"""
     
-    # Get the script path relative to current directory
-    script_path = "enhanced_crypto_backtest.py"
+    # Get the absolute path to enhanced_crypto_backtest.py
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(script_dir, "enhanced_crypto_backtest.py")
     
     # Build command
     cmd = [
@@ -383,6 +406,259 @@ def run_backtest(symbols, strategies, interval, bars, capital, position, exchang
     except Exception as e:
         print(f"❌ Error running backtest: {e}")
         return False
+
+def generate_comprehensive_summary(output_dir, symbols, strategies, timeframes):
+    """Generate a comprehensive summary table showing best strategies for each asset and timeframe"""
+    
+    print("\n📊 GENERATING COMPREHENSIVE STRATEGY SUMMARY...")
+    print("=" * 80)
+    
+    summary_data = []
+    best_strategies = {}
+    
+    # Process each strategy-timeframe combination
+    for strategy in strategies:
+        strategy_name = strategy['name']
+        for timeframe in timeframes:
+            result_dir = Path(output_dir) / f"{strategy_name}_{timeframe}"
+            
+            # Look for backtest results
+            summary_files = list(result_dir.glob("*summary*.csv"))
+            if summary_files:
+                try:
+                    # Read the first summary file
+                    df = pd.read_csv(summary_files[0])
+                    
+                    # Extract key metrics (assuming standard columns)
+                    if len(df) > 0:
+                        row = df.iloc[0]  # First row should contain the summary
+                        
+                        # Extract metrics (adjust column names as needed)
+                        total_return = row.get('Total Return %', row.get('total_return_pct', 0))
+                        sharpe_ratio = row.get('Sharpe Ratio', row.get('sharpe_ratio', 0))
+                        max_drawdown = row.get('Max Drawdown %', row.get('max_drawdown_pct', 0))
+                        win_rate = row.get('Win Rate %', row.get('win_rate_pct', 0))
+                        
+                        # Create summary record
+                        summary_record = {
+                            'Strategy': strategy_name,
+                            'Timeframe': timeframe,
+                            'Symbol': 'BTC/USDT',  # Current test symbol
+                            'Total_Return_%': round(float(total_return), 2),
+                            'Sharpe_Ratio': round(float(sharpe_ratio), 3),
+                            'Max_Drawdown_%': round(float(max_drawdown), 2),
+                            'Win_Rate_%': round(float(win_rate), 2),
+                        }
+                        summary_data.append(summary_record)
+                        
+                        # Track best strategy for each timeframe
+                        key = f"BTC/USDT_{timeframe}"
+                        if key not in best_strategies or float(total_return) > best_strategies[key]['Total_Return_%']:
+                            best_strategies[key] = summary_record.copy()
+                            
+                except Exception as e:
+                    print(f"⚠️ Could not process {strategy_name}_{timeframe}: {e}")
+    
+    if not summary_data:
+        print("❌ No summary data found. Check individual result directories.")
+        return False
+    
+    # Create comprehensive summary DataFrame
+    summary_df = pd.DataFrame(summary_data)
+    
+    # Sort by Total Return descending
+    summary_df = summary_df.sort_values('Total_Return_%', ascending=False)
+    
+    # Save comprehensive summary
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    summary_file = Path(output_dir) / f"COMPREHENSIVE_STRATEGY_SUMMARY_{timestamp}.csv"
+    summary_df.to_csv(summary_file, index=False)
+    
+    # Create best strategies summary
+    best_df = pd.DataFrame(list(best_strategies.values()))
+    best_file = Path(output_dir) / f"BEST_STRATEGIES_PER_TIMEFRAME_{timestamp}.csv"
+    best_df.to_csv(best_file, index=False)
+    
+    # Display results
+    print("\n🏆 TOP 10 STRATEGY PERFORMANCES:")
+    print("=" * 80)
+    print(tabulate(summary_df.head(10), headers='keys', tablefmt='grid', floatfmt='.2f'))
+    
+    print(f"\n🎯 BEST STRATEGY FOR EACH TIMEFRAME:")
+    print("=" * 80)
+    print(tabulate(best_df.sort_values('Timeframe'), headers='keys', tablefmt='grid', floatfmt='.2f'))
+    
+    # Create markdown report
+    markdown_report = f"""# Comprehensive Strategy Analysis Report
+
+## Executive Summary
+**Date:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  
+**Symbol:** BTC/USDT  
+**Strategies Tested:** {len(strategies)}  
+**Timeframes Tested:** {len(timeframes)}  
+**Total Tests:** {len(summary_data)}  
+
+## 🏆 Top 10 Strategy Performances
+
+{summary_df.head(10).to_markdown(index=False, floatfmt='.2f')}
+
+## 🎯 Best Strategy Per Timeframe
+
+{best_df.sort_values('Timeframe').to_markdown(index=False, floatfmt='.2f')}
+
+## 📊 Complete Results
+
+{summary_df.to_markdown(index=False, floatfmt='.2f')}
+
+## Key Insights
+
+### Best Overall Strategy
+**{summary_df.iloc[0]['Strategy']}** on **{summary_df.iloc[0]['Timeframe']}** timeframe
+- Total Return: {summary_df.iloc[0]['Total_Return_%']:.2f}%
+- Sharpe Ratio: {summary_df.iloc[0]['Sharpe_Ratio']:.3f}
+- Win Rate: {summary_df.iloc[0]['Win_Rate_%']:.2f}%
+
+### Timeframe Analysis
+"""
+    
+    # Add timeframe analysis
+    for timeframe in sorted(timeframes):
+        tf_data = summary_df[summary_df['Timeframe'] == timeframe]
+        if len(tf_data) > 0:
+            best_strategy = tf_data.iloc[0]
+            markdown_report += f"""
+#### {timeframe} Timeframe
+- **Best Strategy:** {best_strategy['Strategy']}
+- **Return:** {best_strategy['Total_Return_%']:.2f}%
+- **Sharpe:** {best_strategy['Sharpe_Ratio']:.3f}
+"""
+
+    markdown_report += f"""
+
+## Files Generated
+- **Comprehensive Summary:** `{summary_file.name}`
+- **Best Per Timeframe:** `{best_file.name}`
+- **Individual Results:** Available in strategy-specific subdirectories
+
+---
+*Generated by AlgoProject Crypto Trading System*
+"""
+    
+    # Save markdown report
+    report_file = Path(output_dir) / f"STRATEGY_ANALYSIS_REPORT_{timestamp}.md"
+    with open(report_file, 'w') as f:
+        f.write(markdown_report)
+    
+    print(f"\n📁 SUMMARY FILES GENERATED:")
+    print(f"   • {summary_file}")
+    print(f"   • {best_file}")
+    print(f"   • {report_file}")
+    
+    return True
+
+def run_parallel_backtests(symbols, strategies, timeframes, bars, capital, position, exchange, output_dir, max_workers=4):
+    """Run backtests in parallel to reduce execution time"""
+    
+    print(f"\n🚀 PARALLEL PROCESSING MODE (Max Workers: {max_workers})")
+    print("=" * 80)
+    
+    # Create all test combinations
+    test_combinations = []
+    for strategy in strategies:
+        for timeframe in timeframes:
+            test_combinations.append({
+                'symbols': symbols,
+                'strategy': strategy,
+                'timeframe': timeframe,
+                'bars': bars,
+                'capital': capital,
+                'position': position,
+                'exchange': exchange,
+                'output_dir': output_dir
+            })
+    
+    total_tests = len(test_combinations)
+    completed_tests = 0
+    successful_tests = 0
+    results = []
+    
+    print(f"📊 Total tests to run in parallel: {total_tests}")
+    print(f"⚡ Using {max_workers} parallel workers")
+    print("=" * 80)
+    
+    start_time = time.time()
+    
+    # Run tests in parallel
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Submit all tasks
+        future_to_test = {
+            executor.submit(
+                run_single_backtest_wrapper,
+                test['symbols'],
+                test['strategy'],
+                test['timeframe'],
+                test['bars'],
+                test['capital'],
+                test['position'],
+                test['exchange'],
+                test['output_dir']
+            ): test for test in test_combinations
+        }
+        
+        # Process completed tasks
+        for future in as_completed(future_to_test):
+            test = future_to_test[future]
+            completed_tests += 1
+            
+            try:
+                result = future.result()
+                if result:
+                    successful_tests += 1
+                    results.append({
+                        'strategy': test['strategy']['name'],
+                        'timeframe': test['timeframe'],
+                        'status': 'success'
+                    })
+                else:
+                    results.append({
+                        'strategy': test['strategy']['name'],
+                        'timeframe': test['timeframe'],
+                        'status': 'failed'
+                    })
+                
+                # Progress update
+                progress = (completed_tests / total_tests) * 100
+                print(f"⏳ Progress: {completed_tests}/{total_tests} ({progress:.1f}%) - "
+                      f"Latest: {test['strategy']['name']} on {test['timeframe']}")
+                
+            except Exception as e:
+                print(f"❌ Error in {test['strategy']['name']} on {test['timeframe']}: {e}")
+                results.append({
+                    'strategy': test['strategy']['name'],
+                    'timeframe': test['timeframe'], 
+                    'status': 'error'
+                })
+    
+    end_time = time.time()
+    execution_time = end_time - start_time
+    
+    print("\n" + "=" * 80)
+    print(f"🏁 PARALLEL EXECUTION COMPLETED!")
+    print(f"⏱️  Total execution time: {execution_time:.1f} seconds")
+    print(f"✅ Successful tests: {successful_tests}/{total_tests}")
+    print(f"⚡ Average time per test: {execution_time/total_tests:.1f} seconds")
+    
+    return successful_tests > 0
+
+def run_single_backtest_wrapper(symbols, strategy, timeframe, bars, capital, position, exchange, output_dir):
+    """Wrapper for single backtest to work with parallel execution"""
+    try:
+        return run_single_backtest(symbols, strategy, timeframe, bars, capital, position, exchange, output_dir)
+    except Exception as e:
+        print(f"Error in wrapper for {strategy['name']} on {timeframe}: {e}")
+        return False
+
+# ...existing code...
 
 def main():
     parser = argparse.ArgumentParser(
@@ -444,10 +720,14 @@ Full test:  python batch_runner.py --auto
     parser.add_argument("--exchange", "-e", default="kraken",
                         choices=["binance", "kraken", "coinbase", "bitfinex"],
                         help="Exchange to use (default: kraken)")
-    parser.add_argument("--output", "-o", default="output",
-                        help="Output directory (default: output)")
+    parser.add_argument("--output", "-o", default="../output",
+                        help="Output directory (default: ../output)")
     parser.add_argument("--legacy", action="store_true",
                         help="Use legacy mode (single strategy, single timeframe)")
+    parser.add_argument("--parallel", action="store_true",
+                        help="Run backtests in parallel for faster execution")
+    parser.add_argument("--max-workers", type=int, default=4,
+                        help="Maximum number of parallel workers (default: 4)")
     parser.add_argument("--limit-symbols", type=int, 
                         help="Limit number of symbols for testing (useful for quick tests)")
     
@@ -506,7 +786,9 @@ Full test:  python batch_runner.py --auto
             capital=args.capital,
             position=args.position,
             exchange=args.exchange,
-            output_dir=str(batch_output_dir)
+            output_dir=str(batch_output_dir),
+            parallel=args.parallel,
+            max_workers=args.max_workers
         )
         
     elif args.legacy:
@@ -569,45 +851,19 @@ Full test:  python batch_runner.py --auto
     if success:
         print(f"\n✅ Analysis completed successfully!")
         print(f"📁 Results saved to: {batch_output_dir}")
+        
+        # Generate comprehensive summary tables
+        generate_comprehensive_summary(
+            output_dir=str(batch_output_dir),
+            symbols=symbols,
+            strategies=discovered_strategies,
+            timeframes=timeframes
+        )
+        
         print(f"📊 Check the comprehensive report for detailed insights!")
     else:
         print(f"\n❌ Analysis failed or no results generated!")
         sys.exit(1)
-
-def run_backtest(symbols, strategies, interval, bars, capital, position, exchange, output_dir):
-    """Run a single backtest with specified parameters (legacy mode)"""
-    
-    # Get the script path relative to current directory
-    script_path = "enhanced_crypto_backtest.py"
-    
-    # Build command
-    cmd = [
-        sys.executable, 
-        script_path,
-        "--symbols"] + symbols + [
-        "--compare",
-        "--interval", interval,
-        "--bars", str(bars),
-        "--capital", str(capital),
-        "--position", str(position),
-        "--exchange", exchange,
-        "--output", output_dir
-    ]
-    
-    if strategies:
-        # When strategies are specified, the script will use them in comparison mode
-        pass
-    
-    print(f"🚀 Running legacy backtest: {' '.join(cmd)}")
-    print("=" * 80)
-    
-    # Run the backtest
-    try:
-        result = subprocess.run(cmd, capture_output=False, text=True, cwd=os.getcwd())
-        return result.returncode == 0
-    except Exception as e:
-        print(f"❌ Error running backtest: {e}")
-        return False
 
 if __name__ == "__main__":
     main()

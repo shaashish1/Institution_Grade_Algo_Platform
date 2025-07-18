@@ -1,0 +1,3 @@
+symbol,base,quote,type,active
+BTC-PERP,BTC,USDT,perpetual,true
+ETH-PERP,ETH,USDT,perpetual,true

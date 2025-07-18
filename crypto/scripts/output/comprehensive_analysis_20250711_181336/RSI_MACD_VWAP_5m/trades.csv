@@ -1,3 +1,0 @@
-symbol,type,entry_price,exit_price,entry_time,exit_time,pnl_percent,strategy
-BNB/USDT,long,685.44,685.44,2025-07-11 08:25:00,2025-07-11 08:30:00,0.0,RSI_MACD_VWAP
-BNB/USDT,long,685.44,688.33,2025-07-11 08:35:00,2025-07-11 12:45:00,0.42162698412698213,RSI_MACD_VWAP

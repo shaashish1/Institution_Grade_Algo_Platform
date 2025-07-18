@@ -18,7 +18,7 @@ warnings.filterwarnings('ignore')
 # Add project path to sys.path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from tools.data_acquisition import fetch_data
+from stocks.data_acquisition import fetch_data
 from tabulate import tabulate
 
 

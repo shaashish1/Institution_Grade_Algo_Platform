@@ -1,0 +1,54 @@
+# Auto-fix patterns for common issues
+fix_patterns:
+  indentation:
+    - pattern: "mixed_tabs_spaces"
+      action: "convert_tabs_to_spaces"
+      spaces_per_tab: 4
+    - pattern: "inconsistent_indentation"
+      action: "standardize_indentation"
+      indent_size: 4
+
+  imports:
+    - pattern: "trailing_comma_import"
+      action: "remove_trailing_comma"
+    - pattern: "wildcard_import"
+      action: "warn_only"
+      message: "Consider explicit imports instead of wildcard"
+    - pattern: "unused_import"
+      action: "remove_import"
+      enabled: false
+
+  quotes:
+    - pattern: "mixed_quotes"
+      action: "standardize_to_double"
+      exceptions: ["docstrings", "nested_quotes"]
+    - pattern: "unnecessary_escaping"
+      action: "fix_escaping"
+
+  whitespace:
+    - pattern: "trailing_whitespace"
+      action: "remove_trailing"
+    - pattern: "multiple_blank_lines"
+      action: "limit_blank_lines"
+      max_consecutive: 2
+
+  configuration:
+    - pattern: "empty_yaml_values"
+      action: "remove_empty_keys"
+    - pattern: "json_formatting"
+      action: "reformat_json"
+      indent: 2
+    - pattern: "csv_inconsistent_columns"
+      action: "pad_columns"
+
+backup_settings:
+  create_backups: true
+  backup_directory: "comprehensive_system_testing/backups"
+  max_backup_age_days: 30
+  backup_naming: "{filename}.{timestamp}.backup"
+
+rollback_settings:
+  enable_rollback: true
+  auto_rollback_on_error: true
+  rollback_timeout_seconds: 300
+  keep_rollback_history: true

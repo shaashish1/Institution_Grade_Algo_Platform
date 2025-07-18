@@ -16,7 +16,7 @@ import pytz
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from tabulate import tabulate
-from tools.data_acquisition import fetch_data, get_live_quote, test_fyers_connection
+from stocks.data_acquisition import fetch_data, get_live_quote, test_fyers_connection
 
 
 def load_stock_assets():

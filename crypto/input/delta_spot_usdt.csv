@@ -1,0 +1,4 @@
+symbol,base,quote,type,active
+BTC/USDT,BTC,USDT,spot,true
+ETH/USDT,ETH,USDT,spot,true
+SOL/USDT,SOL,USDT,spot,true

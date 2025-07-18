@@ -1,0 +1,74 @@
+# AlgoProject Application Configuration
+# ====================================
+
+# Application Settings
+app:
+  name: "AlgoProject"
+  version: "2.0.0"
+  environment: "development"  # development, staging, production
+  debug: true
+  log_level: "INFO"
+
+# Database Configuration
+database:
+  type: "sqlite"  # sqlite, postgresql, mysql
+  host: "localhost"
+  port: 5432
+  name: "algoproject"
+  username: ""
+  password: ""
+  pool_size: 10
+  timeout: 30
+
+# Cache Configuration
+cache:
+  type: "memory"  # memory, redis
+  host: "localhost"
+  port: 6379
+  ttl: 3600  # seconds
+  max_size: 1000
+
+# Trading Configuration
+trading:
+  default_initial_capital: 100000.0
+  default_commission: 0.001
+  default_slippage: 0.0005
+  max_position_size: 0.1
+  daily_loss_limit: 0.05
+  emergency_stop_enabled: true
+
+# Risk Management
+risk:
+  max_drawdown_threshold: 0.10
+  position_size_threshold: 0.15
+  consecutive_loss_threshold: 5
+  var_confidence: 0.95
+
+# Performance Settings
+performance:
+  backtest_workers: 4
+  data_cache_size: 10000
+  chart_resolution: "1h"
+  report_formats: ["html", "csv", "json"]
+
+# Security Settings
+security:
+  encryption_enabled: true
+  api_key_rotation_days: 90
+  session_timeout: 3600
+  audit_logging: true
+
+# Monitoring
+monitoring:
+  enabled: true
+  kpi_update_interval: 60  # seconds
+  risk_check_interval: 30  # seconds
+  alert_retention_days: 30
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/algoproject.log"
+  max_size: "10MB"
+  backup_count: 5

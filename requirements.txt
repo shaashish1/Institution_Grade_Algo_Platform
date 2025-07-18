@@ -1,5 +1,5 @@
 # AlgoProject - Complete Trading Platform Requirements
-# Optimized for personal laptop setup with BOTH crypto AND stock trading
+# Fixed version - removes problematic dependencies
 
 # ========================================================================
 # CRYPTO TRADING LIBRARIES
@@ -8,13 +8,13 @@ ccxt>=4.0.0              # Cryptocurrency exchange library (100+ exchanges)
 websocket-client>=1.8.0  # WebSocket connections for live crypto data
 
 # ========================================================================  
-# STOCK TRADING LIBRARIES (Fyers API + NSE/BSE)
+# STOCK TRADING LIBRARIES (Alternative data sources)
 # ========================================================================
-fyers-apiv3>=3.0.0       # Fyers API for Indian stock market
-tvdatafeed>=1.4.0        # TradingView data feed for stocks
-nsepython>=2.10          # NSE data and utilities
-yfinance>=0.2.0          # Yahoo Finance data (backup)
-backtrader>=1.9.0        # Backtesting framework
+yfinance>=0.2.0          # Yahoo Finance data (works reliably)
+# fyers-apiv3>=3.0.0     # Disabled: Fyers API for Indian stock market
+# tvdatafeed>=1.4.0      # Disabled: Package not available
+# nsepython>=2.10        # Optional: NSE data and utilities
+# backtrader>=1.9.0      # Optional: Backtesting framework
 
 # ========================================================================
 # CORE DATA & ANALYSIS LIBRARIES  
@@ -45,9 +45,15 @@ rich>=13.0.0             # Rich text and beautiful formatting
 # ========================================================================
 # TECHNICAL ANALYSIS
 # ========================================================================
-ta>=0.10.0               # Technical Analysis library (pure Python)
-pandas-ta>=0.3.0         # Enhanced technical analysis
-# ta-lib>=0.4.0          # Optional: Advanced TA-Lib (C library)
+ta>=0.10.0               # Technical Analysis library (pure Python - WORKING)
+# pandas-ta>=0.3.0       # Optional: Enhanced technical analysis
+# ta-lib>=0.4.0          # Disabled: Requires Visual C++ Build Tools
+
+# ========================================================================
+# TESTING FRAMEWORK DEPENDENCIES
+# ========================================================================
+networkx>=2.8.0          # Graph analysis for dependency checking
+psutil>=5.9.0            # System and process utilities
 
 # ========================================================================
 # DEVELOPMENT & TESTING (Optional)
@@ -56,11 +62,9 @@ pandas-ta>=0.3.0         # Enhanced technical analysis
 # jupyter>=1.0.0         # Jupyter notebooks for analysis
 
 # ========================================================================
-# SPECIAL NOTES FOR PERSONAL LAPTOP SETUP:
+# NOTES:
 # ========================================================================
-# - All packages selected for compatibility with personal laptops
-# - No corporate firewall restrictions
-# - Includes both crypto AND stock trading capabilities
-# - Fyers API provides full NSE/BSE access
-# - TradingView integration for additional data sources
-# - Complete backtesting and live trading support
+# - Removed problematic dependencies (ta-lib, tvdatafeed, fyers-apiv3)
+# - Focus on crypto trading (fully functional)
+# - Alternative data sources for stocks (yfinance)
+# - All dependencies tested and working on Windows

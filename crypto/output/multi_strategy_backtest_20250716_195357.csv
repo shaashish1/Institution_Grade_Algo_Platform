@@ -1,0 +1,3 @@
+Strategy,Symbol,Timeframe,Trades,Total_Profit_Pct,Profit_Factor,Win_Rate_Pct,Sharpe_Ratio,Max_Drawdown_Pct,Composite_Score
+RSI_30_70,BTC/USDT,1h,3,2.59,3.50,66.7,0.32,0.15,42.2
+RSI_30_70,ETH/USDT,1h,2,1.24,1.56,50.0,0.09,0.00,18.9

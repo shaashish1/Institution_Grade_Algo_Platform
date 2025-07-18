@@ -1,0 +1,2 @@
+Strategy,Symbol,Timeframe,Trades,Total_Profit_Pct,Profit_Factor,Win_Rate_Pct,Sharpe_Ratio,Max_Drawdown_Pct,Composite_Score
+MACD_Standard,SOL/USDT,1h,3,5.26,3.11,33.3,0.52,0.13,37.4

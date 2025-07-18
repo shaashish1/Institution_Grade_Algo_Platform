@@ -1,0 +1,7 @@
+Strategy,Symbol,Timeframe,Trades,Total_Profit_Pct,Profit_Factor,Win_Rate_Pct,Sharpe_Ratio,Max_Drawdown_Pct,Composite_Score
+RSI_30_70,BTC/USDT,1h,4,-7.11,0.37,25.0,-0.43,1.16,7.0
+MACD_Standard,BTC/USDT,1h,4,6.83,3.17,50.0,0.57,0.42,41.9
+Bollinger_Bands,BTC/USDT,1h,3,-13.46,0.03,33.3,-0.67,0.88,8.2
+RSI_30_70,ETH/USDT,1h,3,-29.46,0.00,0.0,-3.53,2.75,1.5
+MACD_Standard,ETH/USDT,1h,6,-5.04,0.19,33.3,-1.21,0.91,9.7
+Bollinger_Bands,ETH/USDT,1h,4,-9.60,0.18,25.0,-0.63,1.28,7.0

@@ -35,7 +35,8 @@ def test_imports():
         ("strategies.market_inefficiency_strategy", "MarketInefficiencyStrategy"),
         
         # Core modules
-        ("tools.data_acquisition", "fetch_data"),
+        ("crypto.data_acquisition", "fetch_data"),
+        ("stocks.data_acquisition", "fetch_data"),
         ("tools.technical_analysis", None),
         ("tools.scanner", None),
         

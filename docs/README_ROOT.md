@@ -65,7 +65,7 @@ AlgoProject/
 #### **Windows Users**
 ```bash
 # 1. Download/clone the repository
-git clone https://github.com/yourusername/AlgoProject.git
+git clone https://github.com/shaashish1/AlgoProject.git
 cd AlgoProject
 
 # 2. Run automated setup
@@ -75,7 +75,7 @@ setup.bat
 #### **Linux/macOS Users**
 ```bash
 # 1. Download/clone the repository  
-git clone https://github.com/yourusername/AlgoProject.git
+git clone https://github.com/shaashish1/AlgoProject.git
 cd AlgoProject
 
 # 2. Run automated setup

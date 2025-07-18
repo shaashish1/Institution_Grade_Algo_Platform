@@ -1,30 +1,30 @@
 Metric,Value
-Start Date,2025-06-12
-End Date,2025-07-11
-Duration (Days),29
-Exposure Time (%),1017.82
-Equity Final ($),9170.12
-Equity Peak ($),10154.95
-Return (%),-8.3
-Buy & Hold Return (%),-0.85
-Return (Ann.) (%),-3.37
-Volatility (Ann.) (%),0.99
-CAGR (%),-66.42
-Sharpe Ratio,-3.431
-Sortino Ratio,-8.662
-Calmar Ratio,6.188
-Alpha (%),-2.51
+Start Date,2025-06-18
+End Date,2025-07-17
+Duration (Days),28
+Exposure Time (%),1067.26
+Equity Final ($),10155.99
+Equity Peak ($),10428.37
+Return (%),1.56
+Buy & Hold Return (%),17.84
+Return (Ann.) (%),0.69
+Volatility (Ann.) (%),1.03
+CAGR (%),22.37
+Sharpe Ratio,0.658
+Sortino Ratio,2.674
+Calmar Ratio,3.676
+Alpha (%),-17.14
 Beta,1.0
-Max. Drawdown (%),-10.73
-Avg. Drawdown (%),-4.1
-Max. Drawdown Duration,1
-Avg. Drawdown Duration,1.0
-# Trades,90
-Win Rate (%),33.33
-Best Trade (%),8.27
-Worst Trade (%),-14.53
-Avg. Trade (%),-0.92
-Max. Trade Duration,28.17
-Avg. Trade Duration,3.28
-Profit Factor,0.67
-Expectancy (%),-0.92
+Max. Drawdown (%),-6.09
+Avg. Drawdown (%),-2.22
+Max. Drawdown Duration,15
+Avg. Drawdown Duration,3.4
+# Trades,82
+Win Rate (%),35.37
+Best Trade (%),11.24
+Worst Trade (%),-7.69
+Avg. Trade (%),0.19
+Max. Trade Duration,28.83
+Avg. Trade Duration,3.64
+Profit Factor,1.08
+Expectancy (%),0.15

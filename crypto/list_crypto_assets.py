@@ -1,28 +1,31 @@
 #!/usr/bin/env python3
 """
 List available crypto assets from Kraken exchange
-Si        print(f"✅ Saved {len(usdt_pairs)} USDT pairs to {output_file}")
-        print(f"📋 Detailed info saved to {detailed_file}")
-        
-        # Show priority distribution
-        priority_stats = {
-            'Top Tier (80+)': len(df_detailed[df_detailed['priority'] >= 80]),
-            'Popular (50-79)': len(df_detailed[(df_detailed['priority'] >= 50) & (df_detailed['priority'] < 80)]),
-            'Standard (20-49)': len(df_detailed[(df_detailed['priority'] >= 20) & (df_detailed['priority'] < 50)]),
-            'Emerging (<20)': len(df_detailed[df_detailed['priority'] < 20])
-        }
-        
-        print(f"\n🏆 **PRIORITY DISTRIBUTION**")
-        for category, count in priority_stats.items():
-            if count > 0:
-                print(f"   {category}: {count} pairs")
-        
-        return usdt_pairsuick USDT pair listing and CSV generation
+Quick USDT pair listing and CSV generation
 """
-import ccxt
+
 import pandas as pd
 import os
 from tabulate import tabulate
+
+# Lazy import CCXT to avoid hanging on module load
+ccxt = None
+
+def _ensure_ccxt():
+    """Ensure CCXT is imported when needed"""
+    global ccxt
+    if ccxt is None:
+        try:
+            import ccxt as _ccxt
+            ccxt = _ccxt
+            print("✅ CCXT imported successfully")
+        except ImportError as e:
+            print(f"❌ Failed to import CCXT: {e}")
+            raise
+        except Exception as e:
+            print(f"❌ Error importing CCXT: {e}")
+            raise
+    return ccxt
 
 def get_symbol_priority(symbol):
     """Get priority score for a symbol based on popularity."""
@@ -48,90 +51,105 @@ def get_symbol_priority(symbol):
 def list_kraken_usdt_pairs():
     """List all USDT trading pairs available on Kraken."""
     try:
-        print("🔄 Fetching USDT pairs from Kraken...")
-        exchange = ccxt.kraken()
-        markets = exchange.load_markets()
+        ccxt_lib = _ensure_ccxt()
+        print("🔄 Connecting to Kraken...")
         
-        # Filter for USDT pairs only
-        usdt_pairs = [symbol for symbol in markets.keys() if '/USDT' in symbol]
+        # Initialize Kraken exchange
+        kraken = ccxt_lib.kraken()
+        
+        # Fetch all markets
+        markets = kraken.load_markets()
+        
+        # Filter for USDT pairs
+        usdt_pairs = []
+        for symbol, market in markets.items():
+            if symbol.endswith('/USDT'):
+                base = market['base']
+                quote = market['quote']
+                priority = get_symbol_priority(symbol)
+                
+                usdt_pairs.append({
+                    'symbol': symbol,
+                    'base': base,
+                    'quote': quote,
+                    'priority': priority,
+                    'active': market.get('active', True)
+                })
         
         # Sort by priority (highest first)
-        usdt_pairs_with_priority = [(symbol, get_symbol_priority(symbol)) for symbol in usdt_pairs]
-        usdt_pairs_with_priority.sort(key=lambda x: x[1], reverse=True)
-        usdt_pairs = [symbol for symbol, _ in usdt_pairs_with_priority]
+        usdt_pairs.sort(key=lambda x: x['priority'], reverse=True)
         
         print(f"✅ Found {len(usdt_pairs)} USDT pairs on Kraken")
-        
-        # Display top pairs
-        print(f"\n📊 **TOP USDT PAIRS BY PRIORITY**")
-        print("-" * 50)
-        
-        display_data = []
-        for i, (symbol, priority) in enumerate(usdt_pairs_with_priority[:20], 1):
-            base = symbol.split('/')[0]
-            display_data.append([i, symbol, base, priority])
-        
-        print(tabulate(display_data, headers=['#', 'Symbol', 'Base', 'Priority'], tablefmt='grid'))
-        
-        if len(usdt_pairs) > 20:
-            print(f"\n... and {len(usdt_pairs) - 20} more pairs")
-        
-        # Ensure input directory exists
-        os.makedirs("crypto/input", exist_ok=True)
-        
-        # Save simple format for backtest compatibility
-        df_simple = pd.DataFrame({'symbol': usdt_pairs})
-        output_file = 'crypto/input/crypto_assets.csv'
-        df_simple.to_csv(output_file, index=False)
-        
-        # Save detailed format for reference
-        df_detailed = pd.DataFrame([{
-            'symbol': symbol,
-            'base': symbol.split('/')[0],
-            'quote': 'USDT',
-            'exchange': 'kraken',
-            'priority': priority
-        } for symbol, priority in usdt_pairs_with_priority])
-        
-        detailed_file = 'crypto/input/crypto_assets_detailed.csv'
-        df_detailed.to_csv(detailed_file, index=False)
-        
-        print(f"\n✅ Saved {len(usdt_pairs)} USDT pairs to {output_file}")
-        print(f"📋 Detailed info saved to {detailed_file}")
-        
-        # Show priority distribution
-        priority_stats = {
-            'Top Tier (80+)': len(df_detailed[df_detailed['priority'] >= 80]),
-            'Popular (50-79)': len(df_detailed[(df_detailed['priority'] >= 50) & (df_detailed['priority'] < 80)]),
-            'Standard (20-49)': len(df_detailed[(df_detailed['priority'] >= 20) & (df_detailed['priority'] < 50)]),
-            'Emerging (<20)': len(df_detailed[df_detailed['priority'] < 20])
-        }
-        
-        print(f"\n🏆 **PRIORITY DISTRIBUTION**")
-        for category, count in priority_stats.items():
-            if count > 0:
-                print(f"   {category}: {count} pairs")
-        
         return usdt_pairs
         
     except Exception as e:
-        print(f"❌ Error fetching Kraken markets: {e}")
+        print(f"❌ Error fetching Kraken data: {e}")
         return []
 
-def main():
-    """Main function with enhanced output."""
-    print("🚀 Kraken USDT Pairs Listing")
-    print("=" * 40)
+def save_to_csv(pairs, output_dir='input'):
+    """Save pairs to CSV file."""
+    if not pairs:
+        print("❌ No pairs to save")
+        return None
     
+    # Create output directory if it doesn't exist
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Create DataFrame
+    df = pd.DataFrame(pairs)
+    
+    # Save main CSV
+    output_file = os.path.join(output_dir, 'kraken_usdt_pairs.csv')
+    df.to_csv(output_file, index=False)
+    
+    print(f"✅ Saved {len(pairs)} USDT pairs to {output_file}")
+    return output_file
+
+def display_pairs(pairs, limit=20):
+    """Display pairs in a formatted table."""
+    if not pairs:
+        print("❌ No pairs to display")
+        return
+    
+    # Prepare data for display
+    display_data = []
+    for i, pair in enumerate(pairs[:limit]):
+        display_data.append([
+            i+1,
+            pair['symbol'],
+            pair['base'],
+            pair['priority'],
+            '✅' if pair['active'] else '❌'
+        ])
+    
+    headers = ['#', 'Symbol', 'Base Currency', 'Priority', 'Active']
+    
+    print(f"\n📊 **TOP {len(display_data)} KRAKEN USDT PAIRS**")
+    print(tabulate(display_data, headers=headers, tablefmt='grid'))
+    
+    if len(pairs) > limit:
+        print(f"\n... and {len(pairs) - limit} more pairs")
+
+def main():
+    """Main function to run the crypto asset lister."""
+    print("🚀 **KRAKEN CRYPTO ASSET LISTER**")
+    print("=" * 50)
+    
+    # List USDT pairs
     pairs = list_kraken_usdt_pairs()
     
     if pairs:
-        print(f"\n🎉 **LISTING COMPLETE!**")
-        print(f"📁 Symbols saved to: crypto/input/crypto_assets.csv")
-        print(f"📊 Detailed info: crypto/input/crypto_assets_detailed.csv")
-        print(f"🚀 Ready to run: python scripts/crypto_backtest.py")
+        # Display top pairs
+        display_pairs(pairs, 20)
+        
+        # Save to CSV
+        save_to_csv(pairs)
+        
+        print(f"\n✅ **SUMMARY**")
+        print(f"   📈 Total USDT pairs found: {len(pairs)}")
+        print(f"   💾 CSV files saved to 'input/' directory")
     else:
-        print("\n❌ Failed to fetch symbols from Kraken")
+        print("❌ No pairs found")
 
 if __name__ == "__main__":
     main()

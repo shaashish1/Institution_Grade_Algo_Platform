@@ -1,0 +1,63 @@
+{
+  "timestamp": "20250716_134428",
+  "kpis": {
+    "start_date": "2025-07-16 13:42:20",
+    "end_date": "2025-07-16 13:43:33",
+    "duration_days": 0.0008518587384259259,
+    "exposure_time_pct": 100.0,
+    "equity_final": 101786.23138088876,
+    "equity_peak": 101786.23138088876,
+    "return_pct": 17.862313808887507,
+    "buy_hold_return_pct": 0.04106776180698152,
+    "return_ann_pct": 64230.95901538588,
+    "volatility_ann_pct": 18.505237452557694,
+    "cagr_pct": 64230.95901538588,
+    "sharpe_ratio": 3470.9610822371924,
+    "sortino_ratio": Infinity,
+    "calmar_ratio": 0,
+    "alpha_pct": 64230.917947624075,
+    "beta": 1.0,
+    "max_drawdown_pct": 0,
+    "avg_drawdown_pct": 0,
+    "max_drawdown_duration": 0.0003977644097222222,
+    "avg_drawdown_duration": 0.0003908432349537036,
+    "total_trades": 2,
+    "win_rate_pct": 100.0,
+    "best_trade_pct": 9.755445695019565,
+    "worst_trade_pct": 8.10686811386794,
+    "avg_trade_pct": 8.931156904443753,
+    "max_trade_duration": 0.0003977644097222222,
+    "avg_trade_duration": 0.0003908432349537036,
+    "profit_factor": Infinity,
+    "expectancy_pct": 8.931156904443753
+  },
+  "trades": [
+    {
+      "symbol": "SOL/USDT",
+      "entry_time": "2025-07-16 13:42:20.257263",
+      "exit_time": "2025-07-16 13:42:54.624108",
+      "entry_price": 20.643155191297662,
+      "exit_price": 22.656986985723318,
+      "quantity": 484.4220714968807,
+      "profit": 975.5445695019564,
+      "profit_pct": 9.755445695019565,
+      "duration": 0.57278075,
+      "entry_confidence": 26.47457398576419,
+      "exit_confidence": 7.3111554339199465
+    },
+    {
+      "symbol": "BTC/USDT",
+      "entry_time": "2025-07-16 13:43:00.686992",
+      "exit_time": "2025-07-16 13:43:33.857858",
+      "entry_price": 46234.6852345592,
+      "exit_price": 49982.870189386886,
+      "quantity": 0.21628783562097803,
+      "profit": 810.6868113867939,
+      "profit_pct": 8.10686811386794,
+      "duration": 0.5528477666666666,
+      "entry_confidence": 11.54819299958962,
+      "exit_confidence": 30.12515098782205
+    }
+  ],
+  "system": "Delta Exchange Demo"
+}

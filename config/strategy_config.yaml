@@ -1,0 +1,140 @@
+# Strategy Configuration
+# =====================
+
+# Default Strategy Parameters
+defaults:
+  initial_capital: 100000.0
+  commission: 0.001
+  slippage: 0.0005
+  position_size: 0.05
+  stop_loss_pct: 0.05
+  take_profit_pct: 0.10
+
+# Momentum Strategies
+momentum:
+  sma_crossover:
+    enabled: true
+    parameters:
+      fast_period: 10
+      slow_period: 20
+      risk_per_trade: 0.02
+      stop_loss_pct: 0.05
+      take_profit_pct: 0.10
+    symbols: ["BTCUSDT", "ETHUSDT"]
+    timeframe: "1h"
+    
+  rsi_momentum:
+    enabled: true
+    parameters:
+      rsi_period: 14
+      rsi_oversold: 30
+      rsi_overbought: 70
+      momentum_threshold: 0.02
+      position_size: 0.03
+    symbols: ["BTCUSDT", "ETHUSDT", "ADAUSDT"]
+    timeframe: "4h"
+
+# Mean Reversion Strategies
+mean_reversion:
+  rsi_strategy:
+    enabled: true
+    parameters:
+      period: 14
+      oversold: 30
+      overbought: 70
+      risk_per_trade: 0.015
+      stop_loss_pct: 0.03
+      take_profit_pct: 0.06
+    symbols: ["BTCUSDT", "ETHUSDT"]
+    timeframe: "1h"
+    
+  bollinger_bands:
+    enabled: false
+    parameters:
+      period: 20
+      std_dev: 2.0
+      position_size: 0.04
+      stop_loss_pct: 0.04
+    symbols: ["BTCUSDT"]
+    timeframe: "2h"
+
+# Advanced Strategies
+advanced:
+  multi_factor:
+    enabled: false
+    parameters:
+      factors: ["momentum", "mean_reversion", "volume"]
+      weights: [0.4, 0.3, 0.3]
+      rebalance_frequency: "daily"
+      position_size: 0.08
+    symbols: ["BTCUSDT", "ETHUSDT", "ADAUSDT", "DOTUSDT"]
+    timeframe: "1d"
+    
+  ml_strategy:
+    enabled: false
+    parameters:
+      model_type: "random_forest"
+      features: ["sma", "rsi", "macd", "volume"]
+      lookback_period: 50
+      retrain_frequency: "weekly"
+      position_size: 0.06
+    symbols: ["BTCUSDT", "ETHUSDT"]
+    timeframe: "4h"
+
+# Strategy Optimization
+optimization:
+  enabled: true
+  method: "grid_search"  # grid_search, random_search, bayesian
+  parameters:
+    max_iterations: 100
+    cv_folds: 5
+    scoring_metric: "sharpe_ratio"
+    
+  parameter_ranges:
+    sma_crossover:
+      fast_period: [5, 10, 15, 20]
+      slow_period: [20, 30, 40, 50]
+      position_size: [0.02, 0.03, 0.05, 0.08]
+      
+    rsi_strategy:
+      period: [10, 14, 18, 21]
+      oversold: [20, 25, 30, 35]
+      overbought: [65, 70, 75, 80]
+
+# Backtesting Configuration
+backtesting:
+  default_period: "30d"
+  default_timeframe: "1h"
+  parallel_workers: 4
+  cache_results: true
+  generate_reports: true
+  
+  performance_metrics:
+    - "total_return"
+    - "sharpe_ratio"
+    - "max_drawdown"
+    - "win_rate"
+    - "profit_factor"
+    - "calmar_ratio"
+    - "sortino_ratio"
+
+# Live Trading
+live_trading:
+  enabled: false
+  mode: "paper"  # paper, sandbox, live
+  auto_start: false
+  strategies:
+    - "sma_crossover"
+    - "rsi_strategy"
+  
+  risk_management:
+    max_daily_loss: 0.05
+    max_position_size: 0.10
+    emergency_stop: true
+    
+  monitoring:
+    kpi_update_frequency: "1m"
+    alert_thresholds:
+      drawdown: 0.08
+      consecutive_losses: 3
+      position_size: 0.12

@@ -1,0 +1,95 @@
+performance:
+  profit_factor:
+    excellent: 1.5
+    good: 1.2
+    acceptable: 1.0
+    poor: 0.8
+    
+  sharpe_ratio:
+    excellent: 1.5
+    good: 1.0
+    acceptable: 0.5
+    poor: 0.0
+    
+  max_drawdown:
+    acceptable: 0.1    # 10%
+    warning: 0.2       # 20%
+    critical: 0.3      # 30%
+    
+  win_rate:
+    excellent: 0.6     # 60%
+    good: 0.5          # 50%
+    acceptable: 0.4    # 40%
+    
+  sortino_ratio:
+    excellent: 1.5
+    good: 1.0
+    acceptable: 0.5
+
+risk:
+  max_position_size: 0.1        # 10% of portfolio
+  max_portfolio_risk: 0.02      # 2% portfolio risk per trade
+  stop_loss: 0.05               # 5% stop loss
+  take_profit: 0.10             # 10% take profit
+  max_correlation: 0.7          # Max correlation between positions
+  max_sector_exposure: 0.3      # 30% max exposure to single sector
+  
+  daily_loss_limit: 0.05        # 5% daily loss limit
+  monthly_loss_limit: 0.15      # 15% monthly loss limit
+  
+  leverage:
+    crypto: 1.0                 # No leverage for crypto
+    stocks: 1.0                 # No leverage for stocks
+    forex: 2.0                  # 2x leverage for forex
+
+alerts:
+  drawdown_warning: 0.1         # 10% drawdown warning
+  drawdown_critical: 0.2        # 20% drawdown critical
+  
+  profit_target: 0.2            # 20% profit target alert
+  loss_limit: 0.1               # 10% loss limit alert
+  
+  position_size_warning: 0.08   # 8% position size warning
+  correlation_warning: 0.6      # 60% correlation warning
+
+backtesting:
+  min_trades: 30                # Minimum trades for valid backtest
+  min_duration_days: 90         # Minimum backtest duration
+  
+  benchmark_symbols:
+    crypto: "BTCUSDT"
+    stocks: "NIFTY50"
+    
+  commission:
+    crypto: 0.001               # 0.1% commission
+    stocks: 0.0005              # 0.05% commission
+    
+  slippage:
+    crypto: 0.0005              # 0.05% slippage
+    stocks: 0.0002              # 0.02% slippage
+
+star_ratings:
+  five_star:
+    profit_factor: 1.5
+    sharpe_ratio: 1.5
+    max_drawdown: 0.1
+    
+  four_star:
+    profit_factor: 1.2
+    sharpe_ratio: 1.0
+    max_drawdown: 0.15
+    
+  three_star:
+    profit_factor: 1.0
+    sharpe_ratio: 0.5
+    max_drawdown: 0.2
+    
+  two_star:
+    profit_factor: 0.8
+    sharpe_ratio: 0.0
+    max_drawdown: 0.25
+    
+  one_star:
+    profit_factor: 0.5
+    sharpe_ratio: -0.5
+    max_drawdown: 0.3

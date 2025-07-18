@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 """
 Crypto Trading Platform Launcher
-===============================
+=====================    elif os.path.exists("main.py"):
+        print("🚀 Launching main.py with crypto mode...")
+        python_exec = get_python_executable()
+        os.system(f"{python_exec} main.py --crypto")
+    elif os.path.exists("tools/scanner.py"):
+        print("🚀 Launching scanner tool...")
+        python_exec = get_python_executable()
+        os.system(f"{python_exec} tools/scanner.py")====
 
 Focused launcher for crypto trading - optimized for personal laptops
 with no corporate firewall restrictions.
@@ -11,6 +18,13 @@ import os
 import sys
 import json
 from datetime import datetime
+
+def get_python_executable():
+    """Get the correct Python executable (virtual environment if available)"""
+    venv_python = os.path.join("venv", "Scripts", "python.exe")
+    if os.path.exists(venv_python):
+        return venv_python
+    return "python"
 
 def main():
     """Main crypto trading platform launcher"""
@@ -73,13 +87,15 @@ def run_crypto_scanner():
     
     if os.path.exists("crypto_main.py"):
         print("🚀 Launching crypto_main.py...")
-        os.system("python crypto_main.py")
+        python_exec = get_python_executable()
+        os.system(f"{python_exec} crypto_main.py")
     elif os.path.exists("main.py"):
         print("🚀 Launching main.py with crypto mode...")
         os.system("python main.py --crypto")
     elif os.path.exists("tools/scanner.py"):
         print("🚀 Launching scanner directly...")
-        os.system("python tools/scanner.py")
+        python_exec = get_python_executable()
+        os.system(f"{python_exec} tools/scanner.py")
     else:
         print("❌ Scanner not found. Please check your installation.")
 
@@ -90,10 +106,12 @@ def run_crypto_backtest():
     
     if os.path.exists("crypto_backtest.py"):
         print("🚀 Launching crypto_backtest.py...")
-        os.system("python crypto_backtest.py")
+        python_exec = get_python_executable()
+        os.system(f"{python_exec} crypto_backtest.py")
     elif os.path.exists("tools/backtest_runner.py"):
         print("🚀 Launching backtest runner...")
-        os.system("python tools/backtest_runner.py")
+        python_exec = get_python_executable()
+        os.system(f"{python_exec} tools/backtest_runner.py")
     else:
         print("❌ Backtest module not found. Please check your installation.")
 
@@ -107,10 +125,12 @@ def run_live_trading():
     if confirm in ['yes', 'y']:
         if os.path.exists("demo_live_trade.py"):
             print("🚀 Launching demo_live_trade.py...")
-            os.system("python demo_live_trade.py")
+            python_exec = get_python_executable()
+            os.system(f"{python_exec} demo_live_trade.py")
         elif os.path.exists("tools/realtime_trader.py"):
             print("🚀 Launching realtime trader...")
-            os.system("python tools/realtime_trader.py")
+            python_exec = get_python_executable()
+            os.system(f"{python_exec} tools/realtime_trader.py")
         else:
             print("❌ Live trading module not found. Please check your installation.")
     else:
@@ -123,7 +143,8 @@ def run_market_analysis():
     
     if os.path.exists("tools/technical_analysis.py"):
         print("🚀 Launching technical analysis...")
-        os.system("python tools/technical_analysis.py")
+        python_exec = get_python_executable()
+        os.system(f"{python_exec} tools/technical_analysis.py")
     else:
         print("❌ Technical analysis module not found. Please check your installation.")
 

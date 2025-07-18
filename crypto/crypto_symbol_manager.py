@@ -7,11 +7,29 @@ Fetch and manage crypto trading pairs from any CCXT exchange with user selection
 import os
 import sys
 import pandas as pd
-import ccxt
 from tabulate import tabulate
 
 # Add parent directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Lazy import CCXT to avoid hanging on module load
+ccxt = None
+
+def _ensure_ccxt():
+    """Ensure CCXT is imported when needed"""
+    global ccxt
+    if ccxt is None:
+        try:
+            import ccxt as _ccxt
+            ccxt = _ccxt
+            print("✅ CCXT imported successfully")
+        except ImportError as e:
+            print(f"❌ Failed to import CCXT: {e}")
+            raise
+        except Exception as e:
+            print(f"❌ Error importing CCXT: {e}")
+            raise
+    return ccxt
 
 
 def get_available_exchanges():
@@ -26,9 +44,11 @@ def get_available_exchanges():
     
     print("🔍 Checking available exchanges...")
     
+    ccxt_lib = _ensure_ccxt()
+    
     for exchange_id in popular_exchanges:
         try:
-            exchange_class = getattr(ccxt, exchange_id, None)
+            exchange_class = getattr(ccxt_lib, exchange_id, None)
             if exchange_class:
                 exchange = exchange_class()
                 exchanges.append({
@@ -49,7 +69,8 @@ def fetch_symbols_from_exchange(exchange_id, quote_currencies=None):
     
     try:
         # Initialize exchange
-        exchange_class = getattr(ccxt, exchange_id.lower())
+        ccxt_lib = _ensure_ccxt()
+        exchange_class = getattr(ccxt_lib, exchange_id.lower())
         exchange = exchange_class()
         
         print(f"🔄 Fetching symbols from {exchange.name}...")

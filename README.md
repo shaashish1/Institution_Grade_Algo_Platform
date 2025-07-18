@@ -2,21 +2,90 @@
 
 A comprehensive algorithmic trading platform focused on cryptocurrency markets with advanced backtesting, live trading, and portfolio management capabilities.
 
-=====================================
-🚀 AlgoProject - Crypto Trading Platform (Personal Laptop Edition)
-=====================================
-� Crypto Trading: 100+ Exchanges via CCXT
-⚡ Advanced Backtesting & Live Trading
-🔧 Strategy Development & Optimization
-🏠 Optimized for Personal Use (No Corporate Restrictions)
-=====================================
+## 🚀 Quick Start
 
-📋 QUICK START:
-=====================================
-• Setup everything:     setup.bat
-• Launch crypto platform: python crypto_launcher.py
-• Direct crypto trading: python crypto_main.py
-• Full documentation:   PERSONAL_LAPTOP_SETUP.md
+### First Time Setup:
+```powershell
+# 1. Run setup (installs all dependencies)
+.\setup.bat
+
+# 2. Launch unified platform (recommended)
+.\venv\Scripts\python.exe main.py
+```
+
+### Daily Usage - Choose Your Entry Point:
+
+#### 🎯 **main.py** - Unified Platform Launcher (Recommended)
+```powershell
+.\venv\Scripts\python.exe main.py
+```
+- **Best for**: Complete platform access (crypto + stocks)
+- **Features**: Project health checks, system management
+- **Users**: All users wanting full platform capabilities
+
+#### 🪙 **crypto_launcher.py** - Full Crypto Trading Platform
+```powershell
+.\venv\Scripts\python.exe crypto_launcher.py
+```
+- **Best for**: Active crypto traders
+- **Features**: 10 interactive menu options, all crypto operations
+- **Users**: Dedicated crypto trading with advanced tools
+
+#### ⚡ **crypto_main.py** - Quick Health Check & Diagnostics
+```powershell
+.\venv\Scripts\python.exe crypto_main.py
+```
+- **Best for**: Quick system validation and troubleshooting
+- **Features**: Fast startup, minimal dependencies, pure diagnostic
+- **Users**: Developers, debugging, status checks
+
+## 📋 Launcher Hierarchy & Dependencies
+
+```
+main.py (Unified Entry) 
+    ↓ [calls]
+crypto_launcher.py (Full Crypto Platform)
+    ↓ [option 10 launches]
+crypto_main.py (Health Check & Diagnostics)
+```
+
+### File Dependencies:
+- **All launchers**: Use built-in Python modules only (`os`, `sys`, `json`, `datetime`)
+- **No external packages**: Clean separation, fast startup
+- **Optimal structure**: Each serves distinct users without redundancy
+
+### When to Use Which:
+- **🎯 main.py**: Daily platform access, project management
+- **🪙 crypto_launcher.py**: Intensive crypto trading sessions  
+- **⚡ crypto_main.py**: Quick checks, troubleshooting
+
+## 📁 Project Structure
+
+### Essential Core Files (Root Directory):
+- ✅ `setup.bat` - Main setup script (run this first)
+- ✅ `main.py` - **Unified platform launcher** (primary entry point)
+- ✅ `crypto_launcher.py` - **Full crypto trading platform** (10 menu options)
+- ✅ `crypto_main.py` - **Quick health check & diagnostics** (troubleshooting)
+- ✅ `requirements.txt` - Python dependencies
+- ✅ `README.md` - Main project documentation
+- ✅ `LICENSE` - Project license
+- ✅ `.gitignore` - Git configuration
+
+### Launcher Usage Guide:
+1. **🎯 main.py** → Complete platform access, project management
+2. **🪙 crypto_launcher.py** → Advanced crypto trading with full menu system
+3. **⚡ crypto_main.py** → Fast diagnostics and system validation
+
+### Directories:
+- ✅ `crypto/` - Crypto trading modules and data
+- ✅ `stocks/` - Stock trading modules
+- ✅ `strategies/` - Trading strategies
+- ✅ `tools/` - Utility tools
+- ✅ `utils/` - Common utilities
+- ✅ `tests/` - Test files
+- ✅ `docs/` - All documentation (.md files)
+- ✅ `helper_scripts/` - Non-essential .bat files
+- ✅ `venv/` - Python virtual environment
 
 💡 TIP: Run setup.bat first for automated installation!
 
@@ -46,15 +115,51 @@ This version is optimized for personal laptops with no network restrictions:
 
 ### Advanced Tools
 ```bash
-# Launch crypto trading platform
-python crypto_launcher.py
+# 🎯 Unified Platform (Recommended Entry Point)
+.\venv\Scripts\python.exe main.py
 
-# Direct crypto trading
-python crypto_main.py
+# 🪙 Full Crypto Trading Platform (10 Menu Options)
+.\venv\Scripts\python.exe crypto_launcher.py
 
-# Crypto backtesting
-python crypto_backtest.py
+# ⚡ Quick Health Check & Diagnostics
+.\venv\Scripts\python.exe crypto_main.py
+
+# Direct Script Access (Advanced Users)
+.\venv\Scripts\python.exe crypto\scripts\enhanced_crypto_backtest.py
+.\venv\Scripts\python.exe crypto\scripts\crypto_live_scanner.py
 ```
+
+## 🎯 Launcher File Purposes
+
+### **main.py** - Unified Platform Entry Point
+- **Role**: Primary launcher for entire AlgoProject platform
+- **Dependencies**: Built-in Python modules only (`os`, `sys`, `json`, `datetime`)
+- **Features**: 
+  - Unified access to crypto and stock trading systems
+  - Project health checks and system information
+  - Virtual environment detection and validation
+  - Clean project management interface
+- **Best For**: Daily platform access, beginners, complete functionality
+
+### **crypto_launcher.py** - Advanced Crypto Trading Platform  
+- **Role**: Full-featured crypto trading interface with 10 interactive options
+- **Dependencies**: Built-in Python modules only
+- **Features**:
+  - Complete menu system for all crypto operations
+  - Live trading, backtesting, portfolio analysis
+  - Multi-exchange support (100+ via CCXT)
+  - Advanced scanning and signal generation
+- **Best For**: Active crypto traders, advanced features, intensive trading sessions
+
+### **crypto_main.py** - Lightweight Diagnostics Tool
+- **Role**: Quick health checker and troubleshooting utility  
+- **Dependencies**: Built-in Python modules only
+- **Features**:
+  - Fast system validation and status checks
+  - Virtual environment verification
+  - Minimal startup time, pure diagnostic utility
+  - Basic library import testing
+- **Best For**: Developers, troubleshooting, quick system verification
 
 ## Key Features
 
@@ -65,31 +170,46 @@ python crypto_backtest.py
 - **Risk Management**: Position sizing, stop-loss, and portfolio risk controls
 - **Organized Structure**: Clean separation between crypto and stock modules
 
-## Project Structure
+## 📁 Project Structure & Launcher Hierarchy
 
 ```
 AlgoProject/
-├── launcher.py           # 🚀 Main launcher script
-├── crypto/scripts/       # 🪙 Crypto trading scripts
-│   ├── enhanced_crypto_backtest.py
-│   ├── crypto_demo_live.py
-│   ├── crypto_live_scanner.py
-│   └── batch_runner.py
-├── stocks/scripts/       # 📈 Stock trading scripts
-│   ├── stocks_backtest.py
-│   ├── stocks_demo_live.py
-│   └── stocks_live_scanner.py
-├── src/                 # 🔧 Core modules
-│   ├── data_acquisition.py    # Unified data fetching
-│   ├── src/strategies/        # Trading strategies (all strategies)
-│   └── ...
-├── docs/                # 📚 Documentation
-├── input/               # 📊 Asset lists and configuration
-├── output/              # 📈 Backtest results and reports
-├── crypto/              # 🪙 Crypto-specific modules
-├── stocks/              # 📈 Stock-specific modules
-└── utils/               # 🛠️ Utility functions
+├── 🎯 main.py                    # PRIMARY: Unified platform launcher
+├── 🪙 crypto_launcher.py         # ADVANCED: Full crypto trading platform  
+├── ⚡ crypto_main.py             # DIAGNOSTIC: Quick health check utility
+├── setup.bat                     # Initial setup script
+├── requirements.txt              # Python dependencies
+├── README.md                     # This documentation
+├── LICENSE & .gitignore          # Project configuration
+├── 
+├── crypto/                       # 🪙 Crypto trading modules
+│   ├── data_acquisition.py       # CCXT only, no stock dependencies
+│   ├── scripts/                  # Advanced crypto trading scripts
+│   ├── output/                   # All trading results and reports
+│   ├── logs/                     # Centralized logging
+│   └── tools/                    # Crypto utilities
+├── stocks/                       # 📈 Stock trading modules
+│   ├── data_acquisition.py       # Fyers API + CCXT for mixed portfolios
+│   └── scripts/                  # Stock trading scripts  
+├── strategies/                   # 📊 Trading strategies
+├── utils/                        # 🛠️ Common utilities
+├── docs/                         # 📚 All documentation (.md files)
+├── helper_scripts/               # � Non-essential .bat files
+└── venv/                         # � Python virtual environment
 ```
+
+### 🎯 Launcher Execution Flow:
+```
+main.py (entry) → crypto_launcher.py (platform) → crypto_main.py (diagnostic)
+     ↓                    ↓                           ↓
+Unified Access      Interactive Menu              Health Check
+```
+
+### 🔧 Module Separation:
+- **Crypto Scripts**: Use `crypto/data_acquisition.py` (CCXT only, no Fyers dependency)
+- **Stock Scripts**: Use `stocks/data_acquisition.py` (includes Fyers API for NSE/BSE)
+- **Clean Dependencies**: Each module imports only what it needs
+- **No Shared Tools**: Removed `tools/data_acquisition.py` for better separation
 
 ## Core Modules
 
@@ -117,22 +237,34 @@ All documentation is available in the `/docs` directory:
 
 ## Getting Started
 
-```bash
-# Initial setup
-setup.bat
+### 🚀 Recommended Launch Sequence:
 
-# Use launcher for easy access
-python launcher.py --all
+```powershell
+# 1. First time setup (run once)
+.\setup.bat
 
-# Direct script execution examples:
-# Crypto backtest
-cd crypto/scripts && python enhanced_crypto_backtest.py --symbols BTC/USDT ETH/USDT --compare
+# 2. Daily usage - choose your entry point:
 
-# Stock backtest
-cd stocks/scripts && python stocks_backtest.py --symbols RELIANCE TCS --compare
+# 🎯 RECOMMENDED: Unified platform access
+.\venv\Scripts\python.exe main.py
+
+# 🪙 ADVANCED: Full crypto trading platform
+.\venv\Scripts\python.exe crypto_launcher.py  
+
+# ⚡ DIAGNOSTIC: Quick system health check
+.\venv\Scripts\python.exe crypto_main.py
+```
+
+### 🔧 Direct Script Execution (Advanced Users):
+```powershell
+# Crypto backtesting
+.\venv\Scripts\python.exe crypto\scripts\enhanced_crypto_backtest.py --symbols BTC/USDT ETH/USDT --compare
+
+# Live crypto scanning  
+.\venv\Scripts\python.exe crypto\scripts\crypto_live_scanner.py
 
 # Batch crypto testing
-cd crypto/scripts && python batch_runner.py --symbols BTC/USDT ETH/USDT --strategies BB_RSI,MACD_Only
+.\venv\Scripts\python.exe crypto\scripts\batch_runner.py --symbols BTC/USDT ETH/USDT --strategies BB_RSI,MACD_Only
 ```
 
 ## Recent Updates
@@ -149,6 +281,29 @@ cd crypto/scripts && python batch_runner.py --symbols BTC/USDT ETH/USDT --strate
 - **Unified Interface**: Handles both crypto (CCXT) and stock (Fyers API) data
 - **Auto-Detection**: Automatically detects data source based on symbol format
 - **Error Handling**: Robust error handling and timeout management
+
+## 🧹 Clean Project Organization
+
+This project has been organized with a minimal, clean root directory structure:
+
+### What's in Root Directory:
+- **Only essential files** needed to run the platform
+- **No clutter** - helper files moved to `helper_scripts/`
+- **Clear structure** - documentation moved to `docs/`
+- **Easy navigation** - everything has its place
+
+### File Organization:
+- 📁 **All .md files** → `docs/` (except main README.md)
+- 📁 **Helper .bat files** → `helper_scripts/`
+- 📁 **Utility scripts** → `docs/` or appropriate module directories
+- 📁 **Logs** → `crypto/logs/` (centralized logging)
+- 📁 **Outputs** → `crypto/output/` (all results in one place)
+
+### Benefits:
+- ✅ **Easy to find** what you need
+- ✅ **Professional structure** for development
+- ✅ **No confusion** about which files to use
+- ✅ **Clean Git commits** with organized changes
 
 ## Support
 
