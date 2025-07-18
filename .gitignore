@@ -1,5 +1,3 @@
-# AlgoProject .gitignore
-
 # Python
 __pycache__/
 *.py[cod]
@@ -18,45 +16,82 @@ parts/
 sdist/
 var/
 wheels/
-pip-wheel-metadata/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
 
-# Virtual Environment
+# Virtual environments
 venv/
+venv_fresh/
 env/
 ENV/
-.venv/
-algo_env/
 
-# IDE & Editors
-.vscode/settings.json
-.vscode/launch.json
+# IDE
+.vscode/
 .idea/
 *.swp
 *.swo
 *~
+
+# OS
 .DS_Store
 Thumbs.db
 
-# Logs & Data
+# Logs
 *.log
-log/
+logs/
+*.log.*
 
-# Trading Outputs (keep structure, ignore content)
-output/*.csv
-storage/
+# Cache
+.cache/
+.pytest_cache/
 
-# Sensitive Configuration (keep templates)
-config/*_local.yaml
-config/*_prod.yaml
-.env
-*.key
+# Output files
+output/
+*.csv
+*.png
+*.jpg
+*.pdf
+charts/
+reports/
 
-# Temporary Files
+# Backup files
+backup_*/
+*_backup_*/
+*.bak
+*.backup
+
+# Temporary files
 *.tmp
 *.temp
-.cache/
+temp/
+
+# API Keys and Secrets
+.env
+*.key
+api_keys.json
+credentials.json
+
+# Analysis reports
+*_analysis_*.json
+*_report_*.json
+file_analysis_report_*.json
+cleanup_report_*.json
+
+# Test outputs
+test_reports/
+test_results/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Configuration (if containing secrets)
+# config/secrets.yaml
+# config/api_keys.yaml
