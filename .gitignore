@@ -1,0 +1,97 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+venv_fresh/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Cache
+.cache/
+.pytest_cache/
+
+# Output files
+output/
+*.csv
+*.png
+*.jpg
+*.pdf
+charts/
+reports/
+
+# Backup files
+backup_*/
+*_backup_*/
+*.bak
+*.backup
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+
+# API Keys and Secrets
+.env
+*.key
+api_keys.json
+credentials.json
+
+# Analysis reports
+*_analysis_*.json
+*_report_*.json
+file_analysis_report_*.json
+cleanup_report_*.json
+
+# Test outputs
+test_reports/
+test_results/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Configuration (if containing secrets)
+# config/secrets.yaml
+# config/api_keys.yaml

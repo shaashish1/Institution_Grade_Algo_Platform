@@ -1,0 +1,74 @@
+# Exchange Configuration
+# =====================
+
+# Cryptocurrency Exchanges
+crypto:
+  binance:
+    enabled: true
+    sandbox: false
+    api_url: "https://api.binance.com"
+    websocket_url: "wss://stream.binance.com:9443/ws/"
+    rate_limit: 1200  # requests per minute
+    supported_timeframes: ["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "8h", "12h", "1d", "3d", "1w", "1M"]
+    
+  bybit:
+    enabled: false
+    sandbox: false
+    api_url: "https://api.bybit.com"
+    websocket_url: "wss://stream.bybit.com/v5/public/spot"
+    rate_limit: 600
+    supported_timeframes: ["1m", "3m", "5m", "15m", "30m", "1h", "2h", "4h", "6h", "12h", "1d", "1w", "1M"]
+    
+  coinbase:
+    enabled: false
+    sandbox: true
+    api_url: "https://api.exchange.coinbase.com"
+    websocket_url: "wss://ws-feed.exchange.coinbase.com"
+    rate_limit: 300
+    supported_timeframes: ["1m", "5m", "15m", "1h", "6h", "1d"]
+
+# Stock Exchanges
+stocks:
+  fyers:
+    enabled: false
+    sandbox: false
+    api_url: "https://api.fyers.in"
+    rate_limit: 100
+    supported_timeframes: ["1m", "2m", "3m", "5m", "10m", "15m", "30m", "1h", "2h", "4h", "1d", "1w", "1M"]
+    
+  alpaca:
+    enabled: false
+    sandbox: true
+    api_url: "https://paper-api.alpaca.markets"
+    websocket_url: "wss://stream.data.alpaca.markets/v2/iex"
+    rate_limit: 200
+    supported_timeframes: ["1m", "5m", "15m", "1h", "1d"]
+
+# Data Sources
+data_sources:
+  primary: "binance"
+  fallback: "bybit"
+  historical_limit: 1000
+  realtime_enabled: true
+  cache_enabled: true
+
+# Streaming Configuration
+streaming:
+  enabled: true
+  reconnect_attempts: 5
+  reconnect_delay: 5  # seconds
+  heartbeat_interval: 30  # seconds
+  buffer_size: 1000
+  
+  crypto:
+    binance:
+      enabled: true
+      symbols: ["BTCUSDT", "ETHUSDT", "ADAUSDT", "DOTUSDT", "LINKUSDT"]
+    bybit:
+      enabled: false
+      symbols: ["BTCUSDT", "ETHUSDT"]
+      
+  stocks:
+    fyers:
+      enabled: false
+      symbols: ["NSE:RELIANCE-EQ", "NSE:TCS-EQ"]
