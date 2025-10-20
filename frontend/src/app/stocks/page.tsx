@@ -81,6 +81,40 @@ export default function IndianStocksPage() {
           </Link>
 
           <Link 
+            href="/stocks/nse-trading"
+            className="group bg-slate-900 rounded-2xl p-6 border border-slate-800 hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <Target className="h-8 w-8 text-purple-400" />
+              <span className="text-xs text-slate-400 bg-purple-900/30 px-2 py-1 rounded">New</span>
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">NSE Trading Platform</h3>
+            <p className="text-slate-400 mb-4">
+              NIFTY 50 & 100 trading with AI recommendations and advanced backtesting
+            </p>
+            <div className="text-sm text-purple-400 font-medium group-hover:text-purple-300">
+              AI-powered • Multi-timeframe • Asset selection →
+            </div>
+          </Link>
+
+          <Link 
+            href="/stocks/nse-backtest"
+            className="group bg-slate-900 rounded-2xl p-6 border border-slate-800 hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <BarChart3 className="h-8 w-8 text-cyan-400" />
+              <span className="text-xs text-slate-400 bg-cyan-900/30 px-2 py-1 rounded">Advanced</span>
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">NSE Backtest Analysis</h3>
+            <p className="text-slate-400 mb-4">
+              Comprehensive backtest results with detailed performance analytics
+            </p>
+            <div className="text-sm text-cyan-400 font-medium group-hover:text-cyan-300">
+              Performance visualization • Trade analysis →
+            </div>
+          </Link>
+
+          <Link 
             href="/stocks/backtest"
             className="group bg-slate-900 rounded-2xl p-6 border border-slate-800 hover:border-green-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/10"
           >
