@@ -5,24 +5,50 @@ import Link from 'next/link';
 import { 
   TrendingUp, BarChart3, DollarSign, Activity, Target, 
   Clock, Play, Pause, RefreshCw, Bell, Settings, Eye,
-  ArrowUp, ArrowDown, Info
+  ArrowUp, ArrowDown, Info, AlertCircle
 } from 'lucide-react';
+import { useMarketData, useIndices, usePositions } from '../../hooks/useMarketData';
+import { formatIndianCurrency, formatIndianNumber, getChangeColor } from '../../services/fyersApi';
 
 export default function TradingPage() {
   const [isLive, setIsLive] = useState(false);
+  
+  // Use market data hooks
+  const { 
+    marketData, 
+    isLoading: marketLoading, 
+    error: marketError, 
+    lastUpdate,
+    refresh: refreshMarket,
+    isConnected
+  } = useMarketData({
+    autoRefresh: true,
+    refreshInterval: 5000
+  });
 
-  const marketData = [
-    { symbol: 'NIFTY 50', price: 21450.30, change: 156.80, changePercent: 0.74, volume: '45.2M' },
-    { symbol: 'BANK NIFTY', price: 45234.50, change: -123.40, changePercent: -0.27, volume: '32.8M' },
-    { symbol: 'SENSEX', price: 71289.50, change: 234.60, changePercent: 0.33, volume: '51.3M' },
-    { symbol: 'FINNIFTY', price: 19876.20, change: 89.30, changePercent: 0.45, volume: '28.1M' },
-  ];
+  const { 
+    indices,
+    marketStatus,
+    dataSource,
+    isLoading: indicesLoading,
+    error: indicesError
+  } = useIndices();
 
-  const activePositions = [
-    { symbol: 'RELIANCE', qty: 50, entry: 2450.00, current: 2478.50, pnl: 1425.00 },
-    { symbol: 'TCS', qty: 30, entry: 3650.00, current: 3625.00, pnl: -750.00 },
-    { symbol: 'INFY', qty: 100, entry: 1550.00, current: 1568.00, pnl: 1800.00 },
-  ];
+  const {
+    positions,
+    totalPnL,
+    profitablePositions,
+    losingPositions,
+    isLoading: positionsLoading,
+    error: positionsError,
+    refresh: refreshPositions
+  } = usePositions();
+
+  // Handle refresh
+  const handleRefresh = async () => {
+    await refreshMarket();
+    await refreshPositions();
+  };
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
@@ -70,19 +96,35 @@ export default function TradingPage() {
           {/* Status Bar */}
           <div className="flex items-center space-x-6 text-sm">
             <div className="flex items-center space-x-2">
-              <div className={`w-2 h-2 rounded-full ${isLive ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></div>
+              <div className={`w-2 h-2 rounded-full ${marketStatus?.is_open ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></div>
               <span className="text-slate-300">
-                {isLive ? 'Market Open' : 'Market Closed'}
+                {marketStatus?.is_open ? 'Market Open' : 'Market Closed'}
               </span>
             </div>
             <div className="flex items-center space-x-2 text-slate-400">
               <Clock className="h-4 w-4" />
-              <span>Last Update: {new Date().toLocaleTimeString()}</span>
+              <span>
+                Last Update: {lastUpdate ? lastUpdate.toLocaleTimeString() : 'N/A'}
+              </span>
             </div>
-            <button className="flex items-center space-x-2 text-blue-400 hover:text-blue-300">
-              <RefreshCw className="h-4 w-4" />
+            {dataSource && (
+              <span className="text-xs px-2 py-1 bg-slate-800 rounded text-slate-400">
+                {dataSource === 'live' ? '🔴 Live Data' : '📊 Cached Data'}
+              </span>
+            )}
+            <button 
+              onClick={handleRefresh}
+              disabled={marketLoading}
+              className="flex items-center space-x-2 text-blue-400 hover:text-blue-300 disabled:opacity-50"
+            >
+              <RefreshCw className={`h-4 w-4 ${marketLoading ? 'animate-spin' : ''}`} />
               <span>Refresh</span>
             </button>
+            {!isConnected && (
+              <span className="text-xs px-2 py-1 bg-red-500/10 text-red-400 rounded">
+                ⚠️ Disconnected
+              </span>
+            )}
           </div>
         </div>
 
@@ -91,10 +133,14 @@ export default function TradingPage() {
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-slate-400">Total P&L</span>
-              <DollarSign className="h-5 w-5 text-green-400" />
+              <DollarSign className={`h-5 w-5 ${totalPnL >= 0 ? 'text-green-400' : 'text-red-400'}`} />
             </div>
-            <div className="text-2xl font-bold text-green-400">₹24,750</div>
-            <div className="text-sm text-slate-400 mt-1">+5.2% today</div>
+            <div className={`text-2xl font-bold ${totalPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+              {formatIndianCurrency(totalPnL)}
+            </div>
+            <div className="text-sm text-slate-400 mt-1">
+              {positions.length > 0 ? `From ${positions.length} positions` : 'No active positions'}
+            </div>
           </div>
 
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
@@ -102,26 +148,36 @@ export default function TradingPage() {
               <span className="text-sm text-slate-400">Active Positions</span>
               <Activity className="h-5 w-5 text-blue-400" />
             </div>
-            <div className="text-2xl font-bold text-white">3</div>
-            <div className="text-sm text-slate-400 mt-1">2 profitable</div>
+            <div className="text-2xl font-bold text-white">{positions.length}</div>
+            <div className="text-sm text-slate-400 mt-1">
+              {profitablePositions} profitable, {losingPositions} losing
+            </div>
           </div>
 
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-slate-400">Orders Today</span>
+              <span className="text-sm text-slate-400">Market Status</span>
               <Target className="h-5 w-5 text-purple-400" />
             </div>
-            <div className="text-2xl font-bold text-white">12</div>
-            <div className="text-sm text-slate-400 mt-1">8 executed</div>
+            <div className="text-2xl font-bold text-white">
+              {marketStatus?.is_open ? 'OPEN' : 'CLOSED'}
+            </div>
+            <div className="text-sm text-slate-400 mt-1">
+              {marketStatus?.message || 'Checking...'}
+            </div>
           </div>
 
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-slate-400">Win Rate</span>
+              <span className="text-sm text-slate-400">NIFTY 50</span>
               <BarChart3 className="h-5 w-5 text-yellow-400" />
             </div>
-            <div className="text-2xl font-bold text-white">68%</div>
-            <div className="text-sm text-slate-400 mt-1">This week</div>
+            <div className="text-2xl font-bold text-white">
+              {indices[0] ? formatIndianNumber(indices[0].price) : 'Loading...'}
+            </div>
+            <div className={`text-sm mt-1 ${indices[0] ? getChangeColor(indices[0].change) : 'text-slate-400'}`}>
+              {indices[0] ? `${indices[0].change >= 0 ? '+' : ''}${indices[0].change.toFixed(2)} (${indices[0].change_percent.toFixed(2)}%)` : 'N/A'}
+            </div>
           </div>
         </div>
 
@@ -148,36 +204,70 @@ export default function TradingPage() {
                 </tr>
               </thead>
               <tbody>
-                {marketData.map((item, index) => (
-                  <tr key={index} className="border-b border-slate-800 hover:bg-slate-800/50 transition-colors">
-                    <td className="py-4 px-4">
-                      <div className="font-medium text-white">{item.symbol}</div>
-                    </td>
-                    <td className="py-4 px-4 text-right text-white font-mono">
-                      ₹{item.price.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
-                    </td>
-                    <td className={`py-4 px-4 text-right font-mono ${item.change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {item.change >= 0 ? '+' : ''}{item.change.toFixed(2)}
-                    </td>
-                    <td className="py-4 px-4 text-right">
-                      <div className={`flex items-center justify-end space-x-1 ${item.changePercent >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {item.changePercent >= 0 ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />}
-                        <span className="font-mono">{Math.abs(item.changePercent)}%</span>
+                {indicesLoading ? (
+                  <tr>
+                    <td colSpan={6} className="py-8 text-center text-slate-400">
+                      <div className="flex items-center justify-center space-x-2">
+                        <RefreshCw className="h-5 w-5 animate-spin" />
+                        <span>Loading market data...</span>
                       </div>
                     </td>
-                    <td className="py-4 px-4 text-right text-slate-300 font-mono">{item.volume}</td>
-                    <td className="py-4 px-4">
-                      <div className="flex items-center justify-center space-x-2">
-                        <button className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-sm rounded transition-colors">
-                          Buy
-                        </button>
-                        <button className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm rounded transition-colors">
-                          Sell
+                  </tr>
+                ) : indicesError ? (
+                  <tr>
+                    <td colSpan={6} className="py-8 text-center text-red-400">
+                      <div className="flex flex-col items-center space-y-2">
+                        <AlertCircle className="h-8 w-8" />
+                        <span>Failed to load market data</span>
+                        <button 
+                          onClick={handleRefresh}
+                          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors text-sm"
+                        >
+                          Retry
                         </button>
                       </div>
                     </td>
                   </tr>
-                ))}
+                ) : indices.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="py-8 text-center text-slate-400">
+                      No market data available
+                    </td>
+                  </tr>
+                ) : (
+                  indices.map((item, idx) => (
+                    <tr key={idx} className="border-b border-slate-800 hover:bg-slate-800/50 transition-colors">
+                      <td className="py-4 px-4">
+                        <div className="font-medium text-white">{item.symbol}</div>
+                      </td>
+                      <td className="py-4 px-4 text-right text-white font-mono">
+                        {formatIndianCurrency(item.price)}
+                      </td>
+                      <td className={`py-4 px-4 text-right font-mono ${getChangeColor(item.change)}`}>
+                        {item.change >= 0 ? '+' : ''}{formatIndianNumber(item.change)}
+                      </td>
+                      <td className="py-4 px-4 text-right">
+                        <div className={`flex items-center justify-end space-x-1 ${getChangeColor(item.change_percent)}`}>
+                          {item.change_percent >= 0 ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />}
+                          <span className="font-mono">{Math.abs(item.change_percent).toFixed(2)}%</span>
+                        </div>
+                      </td>
+                      <td className="py-4 px-4 text-right text-slate-300 font-mono">
+                        N/A
+                      </td>
+                      <td className="py-4 px-4">
+                        <div className="flex items-center justify-center space-x-2">
+                          <button className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-sm rounded transition-colors">
+                            Buy
+                          </button>
+                          <button className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm rounded transition-colors">
+                            Sell
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -196,7 +286,25 @@ export default function TradingPage() {
             </Link>
           </div>
 
-          {activePositions.length > 0 ? (
+          {positionsLoading ? (
+            <div className="text-center py-12">
+              <div className="flex items-center justify-center space-x-2 text-slate-400">
+                <RefreshCw className="h-6 w-6 animate-spin" />
+                <span>Loading positions...</span>
+              </div>
+            </div>
+          ) : positionsError ? (
+            <div className="text-center py-12">
+              <AlertCircle className="h-12 w-12 text-red-400 mx-auto mb-4" />
+              <p className="text-red-400 mb-4">Failed to load positions</p>
+              <button 
+                onClick={handleRefresh}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors text-sm"
+              >
+                Retry
+              </button>
+            </div>
+          ) : positions.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -210,30 +318,38 @@ export default function TradingPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {activePositions.map((position, index) => (
-                    <tr key={index} className="border-b border-slate-800 hover:bg-slate-800/50 transition-colors">
-                      <td className="py-4 px-4">
-                        <div className="font-medium text-white">{position.symbol}</div>
-                      </td>
-                      <td className="py-4 px-4 text-right text-slate-300 font-mono">{position.qty}</td>
-                      <td className="py-4 px-4 text-right text-slate-300 font-mono">
-                        ₹{position.entry.toFixed(2)}
-                      </td>
-                      <td className="py-4 px-4 text-right text-white font-mono">
-                        ₹{position.current.toFixed(2)}
-                      </td>
-                      <td className={`py-4 px-4 text-right font-mono font-bold ${position.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {position.pnl >= 0 ? '+' : ''}₹{position.pnl.toFixed(2)}
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="flex items-center justify-center space-x-2">
-                          <button className="px-3 py-1 bg-slate-700 hover:bg-slate-600 text-white text-sm rounded transition-colors">
-                            Exit
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                  {positions.map((position, index) => {
+                    const pnlPercent = ((position.current_price - position.buy_price) / position.buy_price) * 100;
+                    return (
+                      <tr key={index} className="border-b border-slate-800 hover:bg-slate-800/50 transition-colors">
+                        <td className="py-4 px-4">
+                          <div className="font-medium text-white">{position.symbol}</div>
+                        </td>
+                        <td className="py-4 px-4 text-right text-slate-300 font-mono">{position.quantity}</td>
+                        <td className="py-4 px-4 text-right text-slate-300 font-mono">
+                          {formatIndianCurrency(position.buy_price)}
+                        </td>
+                        <td className="py-4 px-4 text-right text-white font-mono">
+                          {formatIndianCurrency(position.current_price)}
+                        </td>
+                        <td className={`py-4 px-4 text-right font-mono font-bold ${getChangeColor(position.pnl)}`}>
+                          <div>
+                            {position.pnl >= 0 ? '+' : ''}{formatIndianCurrency(position.pnl)}
+                          </div>
+                          <div className="text-xs">
+                            ({pnlPercent >= 0 ? '+' : ''}{pnlPercent.toFixed(2)}%)
+                          </div>
+                        </td>
+                        <td className="py-4 px-4">
+                          <div className="flex items-center justify-center space-x-2">
+                            <button className="px-3 py-1 bg-slate-700 hover:bg-slate-600 text-white text-sm rounded transition-colors">
+                              Exit
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

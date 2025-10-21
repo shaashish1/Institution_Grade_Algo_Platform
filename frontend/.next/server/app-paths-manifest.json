@@ -1,3 +1,4 @@
 {
-  "/settings/page": "app/settings/page.js"
+  "/trading/page": "app/trading/page.js",
+  "/analysis/page": "app/analysis/page.js"
 }

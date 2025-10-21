@@ -25,6 +25,9 @@ from fyers_user_service import (
 # Import Settings API router
 from settings_api import router as settings_router
 
+# Import Market Data API router
+from market_data_api import router as market_data_router
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -47,6 +50,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(settings_router)
+app.include_router(market_data_router)
 
 # Data Models
 class BacktestRequest(BaseModel):

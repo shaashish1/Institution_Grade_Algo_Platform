@@ -88,6 +88,15 @@ def _fetch_fyers_data(symbol, exchange, interval, bars):
     This is the ONLY data source for Indian equity markets.
     """
     try:
+        from stocks.fyers_data_provider import FyersDataProvider
+        provider = FyersDataProvider()
+        data = provider.get_historical_data(symbol, exchange, interval, bars)
+        return data
+    except Exception as e:
+        logger.error(f"❌ Fyers API error for {symbol}: {e}")
+        return pd.DataFrame()
+
+
 def _fetch_ccxt(symbol, exchange, interval, bars, fetch_timeout):
     """Fetch crypto data using CCXT with timeout management."""
     try:
@@ -101,23 +110,6 @@ def _fetch_ccxt(symbol, exchange, interval, bars, fetch_timeout):
             exchange_obj = _ccxt.kraken()
         else:
             exchange_obj = getattr(_ccxt, exchange.lower())()
-        
-        exchange_obj.enableRateLimit = True
-    except Exception as e:
-        logger.error(f"❌ Fyers API error for {symbol}: {e}")
-        return pd.DataFrame()
-
-
-def _fetch_ccxt(symbol, exchange, interval, bars, fetch_timeout):
-    """Fetch crypto data using CCXT with timeout management."""
-    try:
-        logger.info(f"🔄 Fetching {symbol} from {exchange} via CCXT")
-        
-        # Initialize exchange
-        if exchange.upper() == "KRAKEN":
-            exchange_obj = ccxt.kraken()
-        else:
-            exchange_obj = getattr(ccxt, exchange.lower())()
         
         exchange_obj.enableRateLimit = True
         markets = exchange_obj.load_markets()
