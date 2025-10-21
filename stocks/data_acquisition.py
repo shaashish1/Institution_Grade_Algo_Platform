@@ -4,7 +4,9 @@ Stocks Data Acquisition Module for AlgoProject
 - Crypto Data: Uses CCXT for multiple exchanges (for mixed portfolios)
 """
 
-import ccxt
+# Lazy import CCXT to avoid blocking on module load
+ccxt = None
+
 import pandas as pd
 import threading
 import yaml
@@ -28,6 +30,23 @@ warnings.filterwarnings("ignore", category=UserWarning)
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+def _ensure_ccxt():
+    """Ensure CCXT is imported when needed (lazy loading)"""
+    global ccxt
+    if ccxt is None:
+        try:
+            import ccxt as _ccxt
+            ccxt = _ccxt
+            logger.info("✅ CCXT imported successfully")
+        except ImportError as e:
+            logger.error(f"❌ Failed to import CCXT: {e}")
+            raise
+        except Exception as e:
+            logger.error(f"❌ Error importing CCXT: {e}")
+            raise
+    return ccxt
 
 
 def fetch_data(symbol, exchange, interval, bars, data_source="auto", fetch_timeout=15):
@@ -69,18 +88,21 @@ def _fetch_fyers_data(symbol, exchange, interval, bars):
     This is the ONLY data source for Indian equity markets.
     """
     try:
-        logger.info(f"🔄 Fetching {symbol} from Fyers API (Exchange: {exchange})")
+def _fetch_ccxt(symbol, exchange, interval, bars, fetch_timeout):
+    """Fetch crypto data using CCXT with timeout management."""
+    try:
+        # Ensure CCXT is loaded (lazy loading)
+        _ccxt = _ensure_ccxt()
         
-        # Use Fyers data provider
-        data = fetch_nse_stock_data(symbol, bars=bars, interval=interval, exchange=exchange)
+        logger.info(f"🔄 Fetching {symbol} from {exchange} via CCXT")
         
-        if data is not None and not data.empty:
-            logger.info(f"✅ Successfully fetched {len(data)} bars for {symbol} from Fyers API")
-            return data
+        # Initialize exchange
+        if exchange.upper() == "KRAKEN":
+            exchange_obj = _ccxt.kraken()
         else:
-            logger.error(f"❌ No data returned for {symbol} from Fyers API")
-            return pd.DataFrame()
-    
+            exchange_obj = getattr(_ccxt, exchange.lower())()
+        
+        exchange_obj.enableRateLimit = True
     except Exception as e:
         logger.error(f"❌ Fyers API error for {symbol}: {e}")
         return pd.DataFrame()

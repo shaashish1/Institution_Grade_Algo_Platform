@@ -22,6 +22,9 @@ from fyers_user_service import (
     FyersConnectionStatus
 )
 
+# Import Settings API router
+from settings_api import router as settings_router
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -41,6 +44,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include routers
+app.include_router(settings_router)
 
 # Data Models
 class BacktestRequest(BaseModel):
