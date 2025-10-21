@@ -21,48 +21,55 @@ import {
   Wallet,
   Brain,
   Globe,
-  ArrowRight
+  ArrowRight,
+  Activity,
+  Coins,
+  LineChart
 } from 'lucide-react';
 
 const footerSections = [
   {
     title: 'Platform',
     links: [
+      { name: 'Dashboard', href: '/dashboard', icon: TrendingUp },
       { name: 'Live Trading', href: '/trading', icon: TrendingUp },
+      { name: 'Market Analysis', href: '/analysis', icon: BarChart3 },
+      { name: 'Order Management', href: '/orders', icon: Zap },
       { name: 'Portfolio', href: '/portfolio', icon: Wallet },
+      { name: 'Settings', href: '/settings', icon: Zap },
+    ]
+  },
+  {
+    title: 'Trading Tools',
+    links: [
+      { name: 'Option Chain', href: '/stocks/option-chain', icon: BarChart3 },
+      { name: 'Backtesting', href: '/stocks/backtest', icon: Activity },
       { name: 'Strategies', href: '/strategies', icon: Brain },
+      { name: 'Crypto Trading', href: '/crypto', icon: Coins },
+      { name: 'Charts & Analysis', href: '/charts', icon: LineChart },
+      { name: 'AI Tools', href: '/ai', icon: Brain },
+    ]
+  },
+  {
+    title: 'Markets',
+    links: [
+      { name: 'Stocks (NSE)', href: '/stocks', icon: TrendingUp },
+      { name: 'Cryptocurrency', href: '/crypto', icon: Coins },
+      { name: 'Exchanges', href: '/exchanges', icon: Globe },
       { name: 'Analytics', href: '/analytics', icon: BarChart3 },
-      { name: 'API Access', href: '/api', icon: Zap },
+      { name: 'Reports', href: '/reports', icon: FileText },
+      { name: 'About Us', href: '/about', icon: Users },
     ]
   },
   {
-    title: 'Resources',
-    links: [
-      { name: 'Documentation', href: '/docs', icon: BookOpen },
-      { name: 'Video Tutorials', href: '/tutorials', icon: Youtube },
-      { name: 'Community Forum', href: '/community', icon: Users },
-      { name: 'Blog', href: '/blog', icon: FileText },
-      { name: 'Market News', href: '/news', icon: Globe },
-    ]
-  },
-  {
-    title: 'Support',
-    links: [
-      { name: 'Help Center', href: '/help', icon: HelpCircle },
-      { name: 'Contact Us', href: '/contact', icon: Phone },
-      { name: 'Live Chat', href: '/chat', icon: Mail },
-      { name: 'System Status', href: '/status', icon: Shield },
-      { name: 'Report Issue', href: '/report', icon: FileText },
-    ]
-  },
-  {
-    title: 'Legal',
+    title: 'Support & Legal',
     links: [
       { name: 'Terms of Service', href: '/terms', icon: FileText },
       { name: 'Privacy Policy', href: '/privacy', icon: Shield },
-      { name: 'Risk Disclosure', href: '/risk', icon: Shield },
-      { name: 'SEBI Compliance', href: '/compliance', icon: Shield },
-      { name: 'Cookie Policy', href: '/cookies', icon: FileText },
+      { name: 'Risk Disclosure', href: '/risk-disclosure', icon: Shield },
+      { name: 'Sitemap', href: '/sitemap', icon: Globe },
+      { name: 'Help Center', href: '/help', icon: HelpCircle },
+      { name: 'API Health', href: '/api/health', icon: Activity },
     ]
   }
 ];
