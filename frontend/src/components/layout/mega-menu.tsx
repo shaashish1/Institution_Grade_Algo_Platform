@@ -61,6 +61,14 @@ const menuItems: MenuItem[] = [
         href: '/stocks/etf',
         icon: PieChart,
         description: 'Exchange-traded fund analysis'
+      },
+      {
+        label: 'Advanced Charts',
+        href: '/charts',
+        icon: LineChart,
+        description: 'Professional charting with indicators',
+        badge: 'Pro',
+        isNew: true
       }
     ]
   },
@@ -165,6 +173,13 @@ const menuItems: MenuItem[] = [
     icon: Settings,
     items: [
       {
+        label: 'Settings',
+        href: '/settings',
+        icon: Settings,
+        description: 'Application settings and preferences',
+        badge: 'New'
+      },
+      {
         label: 'Position Calculator',
         href: '/tools/calculator',
         icon: Calculator,
@@ -187,6 +202,69 @@ const menuItems: MenuItem[] = [
         href: '/tools/alerts',
         icon: Bell,
         description: 'Price and strategy alerts'
+      },
+      {
+        label: 'Enterprise Dashboard',
+        href: '/intranet/dashboard',
+        icon: Monitor,
+        description: 'Corporate intranet control center',
+        badge: 'New'
+      },
+      {
+        label: 'Intranet Control',
+        href: '/intranet',
+        icon: Globe,
+        description: 'Corporate network management',
+        badge: 'Admin'
+      },
+      {
+        label: 'Network Optimizer',
+        href: '/intranet/network',
+        icon: Monitor,
+        description: 'Local network performance optimization'
+      },
+      {
+        label: 'Corporate Auth',
+        href: '/intranet/auth',
+        icon: Shield,
+        description: 'Enterprise authentication system'
+      },
+      {
+        label: 'Security Audit',
+        href: '/intranet/security',
+        icon: Shield,
+        description: 'Security event monitoring'
+      }
+    ]
+  },
+  {
+    label: 'Exchanges',
+    icon: Globe,
+    items: [
+      {
+        label: 'All Exchanges',
+        href: '/exchanges',
+        icon: Building2,
+        description: 'Browse all supported exchanges',
+        badge: 'CCXT'
+      },
+      {
+        label: 'Exchange Settings',
+        href: '/settings/exchanges',
+        icon: Settings,
+        description: 'Configure API keys and settings'
+      },
+      {
+        label: 'Connection Status',
+        href: '/exchanges/status',
+        icon: Activity,
+        description: 'Monitor exchange connectivity'
+      },
+      {
+        label: 'Trading Fees',
+        href: '/exchanges/fees',
+        icon: DollarSign,
+        description: 'Compare trading fees across exchanges'
       }
     ]
   }

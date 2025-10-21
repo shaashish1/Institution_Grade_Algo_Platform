@@ -105,22 +105,50 @@ export default function ModernHomepage() {
           <div className="mb-8">
             <div className="inline-flex items-center px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400 text-sm font-medium mb-6">
               <Star className="h-4 w-4 mr-2" />
-              India's #1 Algorithmic Trading Platform
+              India's Most Advanced Algorithmic Trading Platform
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
               <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
-                Trade Smarter
+                Institutional-Grade
               </span>
               <br />
-              <span className="text-white">Not Harder</span>
+              <span className="text-white">Trading Platform</span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-              Advanced algorithmic trading for NSE options, equities, and cryptocurrencies. 
-              <span className="text-blue-400 font-semibold"> Professional-grade tools</span> for 
-              <span className="text-purple-400 font-semibold"> exceptional results</span>.
+            <p className="text-xl md:text-2xl text-slate-300 max-w-4xl mx-auto leading-relaxed mb-6">
+              Advanced cryptocurrency trading platform with comprehensive backtesting, 
+              <span className="text-blue-400 font-semibold"> multi-exchange support</span>, 
+              <span className="text-purple-400 font-semibold"> AI-powered analytics</span>, and 
+              <span className="text-green-400 font-semibold"> professional-grade tools</span> for algorithmic trading.
             </p>
+
+            {/* Value Propositions */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-8">
+              <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+                <div className="bg-blue-500/20 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <BarChart3 className="h-6 w-6 text-blue-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">Professional Analytics</h3>
+                <p className="text-slate-400 text-sm">Real-time option Greeks, volatility analysis, and institutional-grade risk metrics</p>
+              </div>
+              
+              <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+                <div className="bg-purple-500/20 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <Zap className="h-6 w-6 text-purple-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">Multi-Exchange Trading</h3>
+                <p className="text-slate-400 text-sm">Trade across top global exchanges including Binance, Coinbase, Kraken, and more with unified APIs</p>
+              </div>
+              
+              <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-6">
+                <div className="bg-green-500/20 w-12 h-12 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <Shield className="h-6 w-6 text-green-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">Enterprise Security</h3>
+                <p className="text-slate-400 text-sm">Bank-grade encryption, multi-factor authentication, and advanced risk controls</p>
+              </div>
+            </div>
           </div>
 
           {/* CTA Buttons */}
@@ -149,20 +177,20 @@ export default function ModernHomepage() {
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-blue-400 mb-2">₹50M+</div>
-              <div className="text-slate-400 text-sm">Assets Under Management</div>
+              <div className="text-3xl md:text-4xl font-bold text-blue-400 mb-2">200+</div>
+              <div className="text-slate-400 text-sm">Global Exchanges</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-purple-400 mb-2">15K+</div>
-              <div className="text-slate-400 text-sm">Active Traders</div>
+              <div className="text-3xl md:text-4xl font-bold text-purple-400 mb-2">50K+</div>
+              <div className="text-slate-400 text-sm">Trading Instruments</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-green-400 mb-2">87.3%</div>
-              <div className="text-slate-400 text-sm">Success Rate</div>
+              <div className="text-3xl md:text-4xl font-bold text-green-400 mb-2">99.9%</div>
+              <div className="text-slate-400 text-sm">Uptime Guarantee</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-orange-400 mb-2">24/7</div>
-              <div className="text-slate-400 text-sm">Market Monitoring</div>
+              <div className="text-3xl md:text-4xl font-bold text-orange-400 mb-2">&lt;10ms</div>
+              <div className="text-slate-400 text-sm">Order Latency</div>
             </div>
           </div>
         </div>
@@ -181,11 +209,12 @@ export default function ModernHomepage() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                Powerful Trading Platforms
+                Complete Trading Ecosystem
               </span>
             </h2>
-            <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-              Choose your market. Master your strategy. Maximize your returns.
+            <p className="text-xl text-slate-300 max-w-4xl mx-auto">
+              From NSE Options to Global Cryptocurrencies - One platform for all your algorithmic trading needs. 
+              Professional tools, institutional data, and enterprise-grade infrastructure.
             </p>
           </div>
 
@@ -200,7 +229,7 @@ export default function ModernHomepage() {
                     : 'text-slate-400 hover:text-white hover:bg-slate-800'
                 }`}
               >
-                NSE Stocks & Options
+                Indian Markets (NSE/BSE)
               </button>
               <button
                 onClick={() => setActiveTab('crypto')}
@@ -210,7 +239,7 @@ export default function ModernHomepage() {
                     : 'text-slate-400 hover:text-white hover:bg-slate-800'
                 }`}
               >
-                Cryptocurrency
+                Global Exchanges (200+)
               </button>
             </div>
           </div>
@@ -221,29 +250,34 @@ export default function ModernHomepage() {
               <div className="grid md:grid-cols-2 gap-12 items-center">
                 <div>
                   <h3 className="text-3xl font-bold mb-6 text-blue-400">
-                    NSE Trading & Option Chain Analysis
+                    Indian Stock Markets - NSE & BSE
                   </h3>
                   <p className="text-lg text-slate-300 mb-8 leading-relaxed">
-                    Advanced option chain analysis, real-time NSE data, and sophisticated 
-                    algorithmic strategies for Indian equity markets. Trade with institutional-grade tools.
+                    Complete ecosystem for Indian markets with real-time NSE/BSE data, advanced option chains, 
+                    AI-powered analytics, and institutional-grade backtesting. Fyers API integration ensures 
+                    accurate expiry calculations and seamless order execution.
                   </p>
                   
                   <div className="space-y-4 mb-8">
                     <div className="flex items-center text-slate-300">
                       <div className="w-2 h-2 bg-blue-400 rounded-full mr-4"></div>
-                      Real-time NSE option chain with Greeks analysis
+                      Real-time NSE/BSE option chains with accurate expiry dates
                     </div>
                     <div className="flex items-center text-slate-300">
                       <div className="w-2 h-2 bg-blue-400 rounded-full mr-4"></div>
-                      Advanced volatility and liquidity indicators
+                      Advanced Greeks, volatility & liquidity analysis
                     </div>
                     <div className="flex items-center text-slate-300">
                       <div className="w-2 h-2 bg-blue-400 rounded-full mr-4"></div>
-                      Automated options strategies (Straddles, Strangles, Iron Condor)
+                      AI-powered strategy recommendations & risk assessment
                     </div>
                     <div className="flex items-center text-slate-300">
                       <div className="w-2 h-2 bg-blue-400 rounded-full mr-4"></div>
-                      Risk management with position sizing
+                      Fyers API integration for seamless trading
+                    </div>
+                    <div className="flex items-center text-slate-300">
+                      <div className="w-2 h-2 bg-blue-400 rounded-full mr-4"></div>
+                      Professional charting with 100+ technical indicators
                     </div>
                   </div>
 
@@ -294,66 +328,67 @@ export default function ModernHomepage() {
               <div className="grid md:grid-cols-2 gap-12 items-center">
                 <div>
                   <h3 className="text-3xl font-bold mb-6 text-purple-400">
-                    Cryptocurrency Trading
+                    Global Multi-Exchange Trading
                   </h3>
                   <p className="text-lg text-slate-300 mb-8 leading-relaxed">
-                    Trade cryptocurrencies on Delta Exchange and Binance with advanced algorithms. 
-                    Access global crypto markets with institutional-grade execution.
+                    Trade across 200+ global exchanges including Binance, Coinbase, Kraken, and regional exchanges. 
+                    CCXT integration provides unified APIs, real-time data, and advanced order management 
+                    for cryptocurrencies, forex, and international equity markets.
                   </p>
                   
                   <div className="space-y-4 mb-8">
                     <div className="flex items-center text-slate-300">
                       <div className="w-2 h-2 bg-purple-400 rounded-full mr-4"></div>
-                      Delta Exchange (India) - INR trading pairs
+                      200+ exchanges via CCXT unified API integration
                     </div>
                     <div className="flex items-center text-slate-300">
                       <div className="w-2 h-2 bg-purple-400 rounded-full mr-4"></div>
-                      Binance integration - Global crypto access
+                      Real-time multi-exchange arbitrage opportunities
                     </div>
                     <div className="flex items-center text-slate-300">
                       <div className="w-2 h-2 bg-purple-400 rounded-full mr-4"></div>
-                      Automated arbitrage and grid trading
+                      Advanced portfolio rebalancing algorithms
                     </div>
                     <div className="flex items-center text-slate-300">
                       <div className="w-2 h-2 bg-purple-400 rounded-full mr-4"></div>
-                      DCA and momentum strategies
+                      Professional charting similar to TradingView
+                    </div>
+                    <div className="flex items-center text-slate-300">
+                      <div className="w-2 h-2 bg-purple-400 rounded-full mr-4"></div>
+                      Cross-exchange risk management & reporting
                     </div>
                   </div>
 
                   <Link
-                    href="/crypto"
+                    href="/exchanges"
                     className="inline-flex items-center px-6 py-3 bg-purple-600 hover:bg-purple-700 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105"
                   >
-                    Explore Crypto Trading
+                    Explore Global Exchanges
                     <ChevronRight className="h-5 w-5 ml-2" />
                   </Link>
                 </div>
 
                 <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-8 border border-slate-700">
                   <div className="mb-6">
-                    <h4 className="text-xl font-semibold text-purple-400 mb-4">Live Crypto Prices</h4>
-                    <div className="text-sm text-slate-400 mb-4">Delta Exchange & Binance</div>
+                    <h4 className="text-xl font-semibold text-purple-400 mb-4">Supported Exchanges</h4>
+                    <div className="text-sm text-slate-400 mb-4">CCXT Integration - 200+ Exchanges</div>
                   </div>
                   
                   <div className="space-y-4">
                     {[
-                      { symbol: 'BTC/USDT', price: '₹36,45,230', change: '+2.34%', exchange: 'Binance' },
-                      { symbol: 'ETH/USDT', price: '₹1,78,945', change: '-1.23%', exchange: 'Binance' },
-                      { symbol: 'BTC/INR', price: '₹36,42,100', change: '+1.89%', exchange: 'Delta' },
-                      { symbol: 'ETH/INR', price: '₹1,79,200', change: '-0.87%', exchange: 'Delta' }
-                    ].map((crypto, index) => (
+                      { name: 'Binance', type: 'Global Crypto', assets: '500+', status: 'Active' },
+                      { name: 'Coinbase Pro', type: 'US Crypto', assets: '200+', status: 'Active' },
+                      { name: 'Kraken', type: 'European Crypto', assets: '190+', status: 'Active' },
+                      { name: 'OKX', type: 'Global Crypto', assets: '400+', status: 'Active' }
+                    ].map((exchange, index) => (
                       <div key={index} className="flex items-center justify-between py-3 px-4 bg-slate-800/50 rounded-lg">
                         <div>
-                          <div className="font-semibold text-white">{crypto.symbol}</div>
-                          <div className="text-xs text-slate-400">{crypto.exchange}</div>
+                          <div className="font-semibold text-white">{exchange.name}</div>
+                          <div className="text-xs text-slate-400">{exchange.type}</div>
                         </div>
                         <div className="text-right">
-                          <div className="font-mono text-white">{crypto.price}</div>
-                          <div className={`text-sm font-medium ${
-                            crypto.change.startsWith('+') ? 'text-green-400' : 'text-red-400'
-                          }`}>
-                            {crypto.change}
-                          </div>
+                          <div className="font-mono text-purple-400">{exchange.assets}</div>
+                          <div className="text-xs text-green-400">{exchange.status}</div>
                         </div>
                       </div>
                     ))}

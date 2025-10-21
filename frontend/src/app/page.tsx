@@ -1,7 +1,7 @@
 'use client';
 
-import ModernHomepage from '@/components/modern-homepage'
+import { ThemeAwareLandingPage } from '@/components/theme-aware-landing'
 
 export default function Home() {
-  return <ModernHomepage />
+  return <ThemeAwareLandingPage />
 }

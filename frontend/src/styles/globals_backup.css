@@ -1,0 +1,331 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Enhanced Doodle Theme */
+@import './themes/doodle.css';
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 94.1%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .trading-card {
+    @apply bg-card border border-border rounded-lg p-6 shadow-sm;
+  }
+  
+  .price-positive {
+    @apply text-bullish;
+  }
+  
+  .price-negative {
+    @apply text-bearish;
+  }
+  
+  .trading-button-buy {
+    @apply bg-bullish hover:bg-bullish/90 text-white;
+  }
+  
+  .trading-button-sell {
+    @apply bg-bearish hover:bg-bearish/90 text-white;
+  }
+  
+  .chart-container {
+    @apply w-full h-96 bg-card border border-border rounded-lg p-4;
+  }
+}
+
+@layer utilities {
+  /* Custom animations for WOW effect */
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-float-delay {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: 2s;
+  }
+  
+  .animate-float-delay-2 {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: 4s;
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+}
+
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Doodle Theme Styles */
+.doodle {
+  --background: 254 251 244; /* cream/paper color */
+  --foreground: 59 130 246; /* blue ink */
+  --card: 255 255 255;
+  --card-foreground: 59 130 246;
+  --popover: 255 255 255;
+  --popover-foreground: 59 130 246;
+  --primary: 236 72 153; /* pink */
+  --primary-foreground: 255 255 255;
+  --secondary: 251 191 36; /* yellow */
+  --secondary-foreground: 59 130 246;
+  --muted: 254 240 138; /* light yellow */
+  --muted-foreground: 115 115 115;
+  --accent: 249 115 22; /* orange */
+  --accent-foreground: 255 255 255;
+  --destructive: 239 68 68; /* red */
+  --destructive-foreground: 255 255 255;
+  --border: 236 72 153; /* pink border */
+  --input: 255 255 255;
+  --ring: 236 72 153;
+}
+
+/* Doodle Animations */
+@keyframes doodle-bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  40% {
+    transform: translateY(-10px) rotate(5deg);
+  }
+  60% {
+    transform: translateY(-5px) rotate(-3deg);
+  }
+}
+
+@keyframes doodle-wiggle {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(3deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform: rotate(-3deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes doodle-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(2deg);
+  }
+}
+
+@keyframes doodle-float-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+@keyframes doodle-bounce-slow {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(180deg);
+  }
+}
+
+@keyframes doodle-twinkle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes doodle-draw {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+  100% {
+    stroke-dasharray: 100 0;
+  }
+}
+
+@keyframes doodle-draw-slow {
+  0% {
+    stroke-dasharray: 0 1000;
+  }
+  100% {
+    stroke-dasharray: 1000 0;
+  }
+}
+
+@keyframes doodle-float-0 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33% { transform: translateY(-10px) rotate(2deg); }
+  66% { transform: translateY(-5px) rotate(-1deg); }
+}
+
+@keyframes doodle-float-1 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(3deg); }
+}
+
+@keyframes doodle-float-2 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(-2deg); }
+  75% { transform: translateY(-12px) rotate(1deg); }
+}
+
+/* Apply animations */
+.animate-doodle-bounce { animation: doodle-bounce 2s infinite; }
+.animate-doodle-wiggle { animation: doodle-wiggle 3s infinite; }
+.animate-doodle-float { animation: doodle-float 4s infinite; }
+.animate-doodle-float-slow { animation: doodle-float-slow 6s infinite; }
+.animate-doodle-bounce-slow { animation: doodle-bounce-slow 4s infinite; }
+.animate-doodle-twinkle { animation: doodle-twinkle 2s infinite; }
+.animate-doodle-draw { animation: doodle-draw 2s ease-in-out; }
+.animate-doodle-draw-slow { animation: doodle-draw-slow 3s ease-in-out; }
+.animate-doodle-float-0 { animation: doodle-float-0 4s infinite; }
+.animate-doodle-float-1 { animation: doodle-float-1 5s infinite; }
+.animate-doodle-float-2 { animation: doodle-float-2 6s infinite; }
+
+/* Hand-drawn font simulation */
+.font-handwriting {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+/* Doodle theme background patterns */
+.doodle .bg-slate-950 {
+  background: linear-gradient(45deg, #fef3f4 0%, #fdf4f3 50%, #fef7f0 100%);
+}
+
+.doodle .bg-slate-900 {
+  background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%);
+  border: 2px solid #ec4899;
+  border-radius: 15px;
+}
+
+.doodle .text-white {
+  color: #1e40af;
+}
+
+.doodle .text-slate-400 {
+  color: #64748b;
+}
+
+/* Doodle style borders and shadows */
+.doodle .border {
+  border-style: dashed;
+  border-width: 2px;
+  border-color: #f59e0b;
+}
+
+.doodle .shadow-lg {
+  box-shadow: 4px 4px 0 #ec4899, 8px 8px 0 #f59e0b;
+}
+
+.doodle .rounded-lg,
+.doodle .rounded-xl,
+.doodle .rounded-2xl {
+  border-radius: 20px;
+  position: relative;
+}
+
+/* Paper texture effect */
+.doodle::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(251, 191, 36, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}

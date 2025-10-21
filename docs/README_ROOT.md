@@ -46,7 +46,18 @@ AlgoProject/
 ⚡ **Real-time Monitoring** - Live scanners and price alerts  
 🎨 **Professional Interface** - Enhanced visual displays with color coding  
 🔒 **Enterprise-Grade Safety** - Thread-safe operations and comprehensive logging  
-🛡️ **Production-Ready Output** - Beautiful tables, progress bars, IST timestamps  
+🛡️ **Production-Ready Output** - Beautiful tables, progress bars, IST timestamps
+
+### **🌟 Latest Features (October 2025)**
+
+🎨 **Multi-Theme UI System** - Dark, Light, Cosmic, and Doodle themes with animations  
+🔐 **Individual User Management** - Personal Fyers API credential management  
+🛡️ **Tiered Authentication** - Mode-based security (backtest/paper/live)  
+🤖 **AI Strategy Engine** - AI-powered strategy analysis and PineScript upload  
+📱 **Theme-Aware Components** - Responsive UI that adapts to selected theme  
+🔑 **Secure Credential Storage** - Encrypted individual API key management  
+⚡ **Real-time Status Tracking** - Connection and token validation  
+🚀 **Enhanced Settings Panel** - Comprehensive user configuration interface  
 
 ### **📊 Trading Strategies**
 

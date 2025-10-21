@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export type Theme = 'light' | 'dark' | 'cosmic';
+export type Theme = 'light' | 'dark' | 'cosmic' | 'doodle';
 
 interface ThemeContextType {
   theme: Theme;
@@ -17,19 +17,19 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme && ['light', 'dark', 'cosmic'].includes(savedTheme)) {
+    if (savedTheme && ['light', 'dark', 'cosmic', 'doodle'].includes(savedTheme)) {
       setTheme(savedTheme);
     }
   }, []);
 
   useEffect(() => {
     localStorage.setItem('theme', theme);
-    document.documentElement.classList.remove('light', 'dark', 'cosmic');
+    document.documentElement.classList.remove('light', 'dark', 'cosmic', 'doodle');
     document.documentElement.classList.add(theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    const themes: Theme[] = ['light', 'dark', 'cosmic'];
+    const themes: Theme[] = ['light', 'dark', 'cosmic', 'doodle'];
     const currentIndex = themes.indexOf(theme);
     const nextIndex = (currentIndex + 1) % themes.length;
     setTheme(themes[nextIndex]);

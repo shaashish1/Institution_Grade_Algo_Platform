@@ -11,6 +11,17 @@ from datetime import datetime, date
 import pandas as pd
 import numpy as np
 
+# Import CCXT service
+from ccxt_service import ccxt_service, TradingMode, ExchangeConfig, ExchangeCredentials
+
+# Import Fyers user service
+from fyers_user_service import (
+    fyers_user_service, 
+    FyersCredentials, 
+    FyersTokenRequest, 
+    FyersConnectionStatus
+)
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -87,6 +98,28 @@ class TradingStatus(BaseModel):
 class DeltaExchangeConfig(BaseModel):
     api_key: str
     secret_key: str
+
+class ExchangeConnectionRequest(BaseModel):
+    exchange_id: str = Field(..., description="Exchange identifier (e.g., 'binance', 'kraken')")
+    trading_mode: str = Field(..., description="Trading mode: 'backtest', 'paper', or 'live'")
+    api_key: Optional[str] = Field(None, description="API key (required for live trading)")
+    secret: Optional[str] = Field(None, description="API secret (required for live trading)")
+    passphrase: Optional[str] = Field(None, description="Passphrase (required for some exchanges)")
+    sandbox: bool = Field(True, description="Use sandbox/testnet")
+
+class MarketDataRequest(BaseModel):
+    exchange_id: str = Field(..., description="Exchange identifier")
+    symbol: str = Field(..., description="Trading pair (e.g., 'BTC/USDT')")
+    timeframe: str = Field("1h", description="Timeframe (e.g., '1m', '5m', '1h', '1d')")
+    limit: int = Field(100, description="Number of candles to fetch")
+
+class OrderRequest(BaseModel):
+    exchange_id: str = Field(..., description="Exchange identifier")
+    symbol: str = Field(..., description="Trading pair")
+    order_type: str = Field(..., description="Order type: 'market' or 'limit'")
+    side: str = Field(..., description="Order side: 'buy' or 'sell'")
+    amount: float = Field(..., description="Order amount")
+    price: Optional[float] = Field(None, description="Order price (for limit orders)")
 
 # WebSocket Connection Manager
 class ConnectionManager:
@@ -463,15 +496,220 @@ async def get_stats():
         logger.error(f"Failed to get stats: {e}")
         raise HTTPException(status_code=500, detail="Failed to retrieve stats")
 
+@app.get("/exchanges/supported")
+async def get_supported_exchanges():
+    """Get list of supported exchanges"""
+    try:
+        exchanges = ccxt_service.get_supported_exchanges()
+        return {
+            "supported_exchanges": exchanges,
+            "count": len(exchanges),
+            "trading_modes": ["backtest", "paper", "live"],
+            "credential_requirements": {
+                "backtest": "No credentials needed - public data only",
+                "paper": "No credentials needed - public data only", 
+                "live": "API credentials required for trading"
+            }
+        }
+    except Exception as e:
+        logger.error(f"Failed to get supported exchanges: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve supported exchanges")
+
+@app.post("/exchanges/connect")
+async def connect_exchange(request: ExchangeConnectionRequest):
+    """Connect to exchange with appropriate authentication based on trading mode"""
+    try:
+        # Validate trading mode
+        if request.trading_mode not in ["backtest", "paper", "live"]:
+            raise HTTPException(status_code=400, detail="Invalid trading mode. Must be 'backtest', 'paper', or 'live'")
+        
+        trading_mode = TradingMode(request.trading_mode)
+        
+        # Check credentials requirement
+        if ccxt_service.requires_credentials(trading_mode):
+            if not request.api_key or not request.secret:
+                raise HTTPException(
+                    status_code=400, 
+                    detail=f"API credentials required for {request.trading_mode} trading mode"
+                )
+            
+            credentials = ExchangeCredentials(
+                api_key=request.api_key,
+                secret=request.secret,
+                passphrase=request.passphrase,
+                sandbox=request.sandbox
+            )
+        else:
+            credentials = None
+            logger.info(f"🔓 Connecting to {request.exchange_id} in {request.trading_mode} mode (no credentials needed)")
+        
+        # Create exchange configuration
+        config = ExchangeConfig(
+            exchange_id=request.exchange_id,
+            trading_mode=trading_mode,
+            credentials=credentials
+        )
+        
+        # Initialize exchange
+        success = await ccxt_service.initialize_exchange(config)
+        
+        if success:
+            status = ccxt_service.get_exchange_status(request.exchange_id)
+            return {
+                "status": "success",
+                "message": f"{request.exchange_id} connected successfully in {request.trading_mode} mode",
+                "exchange_status": status
+            }
+        else:
+            raise HTTPException(status_code=500, detail=f"Failed to connect to {request.exchange_id}")
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to connect exchange: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to connect exchange: {str(e)}")
+
+@app.get("/exchanges/{exchange_id}/status")
+async def get_exchange_status(exchange_id: str):
+    """Get exchange connection status"""
+    try:
+        status = ccxt_service.get_exchange_status(exchange_id)
+        return {
+            "exchange_id": exchange_id,
+            **status
+        }
+    except Exception as e:
+        logger.error(f"Failed to get exchange status: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve exchange status")
+
+@app.get("/exchanges/active")
+async def get_active_exchanges():
+    """Get list of currently connected exchanges"""
+    try:
+        initialized_exchanges = ccxt_service.get_initialized_exchanges()
+        exchanges_info = []
+        
+        for exchange_id in initialized_exchanges:
+            status = ccxt_service.get_exchange_status(exchange_id)
+            exchanges_info.append({
+                "exchange_id": exchange_id,
+                **status
+            })
+        
+        return {
+            "active_exchanges": exchanges_info,
+            "count": len(exchanges_info)
+        }
+    except Exception as e:
+        logger.error(f"Failed to get active exchanges: {e}")
+        raise HTTPException(status_code=500, detail="Failed to retrieve active exchanges")
+
+@app.post("/market-data/fetch")
+async def fetch_market_data(request: MarketDataRequest):
+    """Fetch market data from exchange - works for all trading modes"""
+    try:
+        # Check if exchange is initialized
+        if request.exchange_id not in ccxt_service.get_initialized_exchanges():
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Exchange {request.exchange_id} not connected. Please connect first."
+            )
+        
+        # Fetch market data
+        ohlcv_data = await ccxt_service.get_market_data(
+            exchange_id=request.exchange_id,
+            symbol=request.symbol,
+            timeframe=request.timeframe,
+            limit=request.limit
+        )
+        
+        if ohlcv_data is None:
+            raise HTTPException(status_code=500, detail="Failed to fetch market data")
+        
+        # Convert to structured format
+        formatted_data = []
+        for candle in ohlcv_data:
+            formatted_data.append({
+                "timestamp": candle[0],
+                "datetime": datetime.fromtimestamp(candle[0] / 1000).isoformat(),
+                "open": candle[1],
+                "high": candle[2],
+                "low": candle[3],
+                "close": candle[4],
+                "volume": candle[5]
+            })
+        
+        return {
+            "exchange_id": request.exchange_id,
+            "symbol": request.symbol,
+            "timeframe": request.timeframe,
+            "data_count": len(formatted_data),
+            "data": formatted_data
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to fetch market data: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to fetch market data: {str(e)}")
+
+@app.post("/orders/place")
+async def place_order(request: OrderRequest):
+    """Place trading order - only works in LIVE mode"""
+    try:
+        # Check if exchange is initialized
+        if request.exchange_id not in ccxt_service.get_initialized_exchanges():
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Exchange {request.exchange_id} not connected. Please connect first."
+            )
+        
+        # Check if live trading is enabled
+        if not ccxt_service.is_live_trading_enabled(request.exchange_id):
+            exchange_info = ccxt_service.get_exchange_info(request.exchange_id)
+            current_mode = exchange_info['mode'].value if exchange_info else 'unknown'
+            raise HTTPException(
+                status_code=403, 
+                detail=f"Live trading not enabled for {request.exchange_id}. Current mode: {current_mode}. Order placement requires LIVE mode with API credentials."
+            )
+        
+        # Place order
+        order_result = await ccxt_service.place_order(
+            exchange_id=request.exchange_id,
+            symbol=request.symbol,
+            order_type=request.order_type,
+            side=request.side,
+            amount=request.amount,
+            price=request.price
+        )
+        
+        if order_result is None:
+            raise HTTPException(status_code=500, detail="Failed to place order")
+        
+        return {
+            "status": "success",
+            "message": "Order placed successfully",
+            "order": order_result
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to place order: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to place order: {str(e)}")
+
 @app.get("/delta-exchange/status")
 async def get_delta_exchange_status():
-    """Get Delta Exchange connection status"""
+    """Get Delta Exchange connection status (legacy endpoint)"""
     try:
+        status = ccxt_service.get_exchange_status("delta")
         return {
-            "connected": False,
-            "api_key_configured": False,
+            "connected": status["initialized"],
+            "api_key_configured": status["live_trading_enabled"],
             "last_sync": None,
-            "account_info": None
+            "account_info": None,
+            "trading_mode": status["trading_mode"],
+            "markets_count": status["markets_count"]
         }
     except Exception as e:
         logger.error(f"Failed to get Delta Exchange status: {e}")
@@ -479,18 +717,172 @@ async def get_delta_exchange_status():
 
 @app.post("/delta-exchange/configure")
 async def configure_delta_exchange(config: DeltaExchangeConfig):
-    """Configure Delta Exchange API credentials"""
+    """Configure Delta Exchange API credentials (legacy endpoint)"""
     try:
-        # In production, securely store credentials
-        logger.info("🔗 Configuring Delta Exchange connection")
+        # Use new CCXT service for Delta Exchange
+        request = ExchangeConnectionRequest(
+            exchange_id="delta",
+            trading_mode="live",
+            api_key=config.api_key,
+            secret=config.secret_key,
+            sandbox=True
+        )
         
-        # Simulate connection test
-        await asyncio.sleep(1)
-        
+        result = await connect_exchange(request)
         return {"status": "success", "message": "Delta Exchange configured successfully"}
+        
     except Exception as e:
         logger.error(f"Failed to configure Delta Exchange: {e}")
         raise HTTPException(status_code=500, detail="Failed to configure Delta Exchange")
+
+# =============================================================================
+# FYERS USER CREDENTIALS MANAGEMENT
+# =============================================================================
+
+@app.post("/fyers/credentials")
+async def add_fyers_credentials(credentials: FyersCredentials):
+    """Add or update Fyers credentials for a user"""
+    try:
+        # Validate credentials format
+        validation = fyers_user_service.validate_credentials(credentials)
+        if not validation["valid"]:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Invalid credentials: {', '.join(validation['errors'])}"
+            )
+        
+        success = fyers_user_service.add_user_credentials(credentials)
+        if success:
+            return {
+                "status": "success",
+                "message": f"Fyers credentials added/updated for user: {credentials.user_id}",
+                "user_id": credentials.user_id
+            }
+        else:
+            raise HTTPException(status_code=500, detail="Failed to save credentials")
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to add Fyers credentials: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+@app.get("/fyers/credentials/{user_id}")
+async def get_fyers_credentials(user_id: str):
+    """Get Fyers credentials for a user (excluding sensitive data)"""
+    try:
+        credentials = fyers_user_service.get_user_credentials(user_id)
+        if not credentials:
+            raise HTTPException(status_code=404, detail="User credentials not found")
+        
+        # Return safe version without sensitive data
+        return {
+            "user_id": credentials.user_id,
+            "client_id": credentials.client_id,
+            "user_name": credentials.user_name,
+            "redirect_uri": credentials.redirect_uri,
+            "has_totp_key": bool(credentials.totp_key),
+            "has_access_token": bool(credentials.access_token),
+            "token_expires": credentials.token_expires,
+            "is_active": credentials.is_active,
+            "created_at": credentials.created_at,
+            "updated_at": credentials.updated_at
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to get Fyers credentials: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+@app.delete("/fyers/credentials/{user_id}")  
+async def remove_fyers_credentials(user_id: str):
+    """Remove Fyers credentials for a user"""
+    try:
+        success = fyers_user_service.remove_user_credentials(user_id)
+        if success:
+            return {
+                "status": "success",
+                "message": f"Fyers credentials removed for user: {user_id}",
+                "user_id": user_id
+            }
+        else:
+            raise HTTPException(status_code=404, detail="User credentials not found")
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to remove Fyers credentials: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+@app.get("/fyers/status/{user_id}")
+async def get_fyers_status(user_id: str):
+    """Get Fyers connection status for a user"""
+    try:
+        status = fyers_user_service.get_connection_status(user_id)
+        return status.dict()
+        
+    except Exception as e:
+        logger.error(f"Failed to get Fyers status: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+@app.post("/fyers/test-connection/{user_id}")
+async def test_fyers_connection(user_id: str):
+    """Test Fyers connection for a user"""
+    try:
+        result = fyers_user_service.test_connection(user_id)
+        return result
+        
+    except Exception as e:
+        logger.error(f"Failed to test Fyers connection: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+@app.get("/fyers/users")
+async def list_fyers_users():
+    """List all users with Fyers credentials"""
+    try:
+        users = fyers_user_service.list_users()
+        return {
+            "users": users,
+            "count": len(users)
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to list Fyers users: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+@app.post("/fyers/token/{user_id}")
+async def update_fyers_token(user_id: str, token_data: dict):
+    """Update access token for a user"""
+    try:
+        access_token = token_data.get("access_token")
+        expires_in_hours = token_data.get("expires_in_hours", 24)
+        
+        if not access_token:
+            raise HTTPException(status_code=400, detail="Access token required")
+        
+        success = fyers_user_service.update_access_token(
+            user_id, access_token, expires_in_hours
+        )
+        
+        if success:
+            return {
+                "status": "success",
+                "message": f"Access token updated for user: {user_id}",
+                "user_id": user_id
+            }
+        else:
+            raise HTTPException(status_code=404, detail="User not found")
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to update Fyers token: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+# =============================================================================
+# WEBSOCKET ENDPOINT  
+# =============================================================================
 
 # WebSocket Endpoint
 @app.websocket("/ws")

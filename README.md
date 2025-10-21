@@ -1,6 +1,32 @@
-# AlgoProject - Advanced Crypto Trading Platform
+# 🚀 AlgoProject - Institution Grade Trading Platform
 
-A comprehensive algorithmic trading platform focused on cryptocurrency markets with advanced backtesting, live trading, and portfolio management capabilities.
+A comprehensive algorithmic trading platform supporting both **cryptocurrency** and **stock markets** with advanced AI strategies, multi-theme UI, individual user credential management, and enterprise-grade authentication systems.
+
+## 🌟 **Latest Features (October 2025)**
+
+### ✅ **Multi-Theme UI System**
+- **Dark Theme**: Professional dark interface
+- **Light Theme**: Clean light interface  
+- **Cosmic Theme**: Space-inspired purple gradients
+- **Doodle Theme**: Hand-drawn paper aesthetic with animations
+
+### ✅ **Individual User Credential Management**
+- **Fyers API**: Personal credential management for each user
+- **Secure Storage**: Encrypted individual API key storage
+- **Status Tracking**: Real-time connection and token validation
+- **User Interface**: Integrated settings panel for credential management
+
+### ✅ **Tiered Authentication System**
+- **Backtest/Paper Trading**: No credentials required (public data)
+- **Live Trading**: Credentials required and validated
+- **CCXT Integration**: Support for 9+ major exchanges
+- **Security**: Proper separation of trading modes
+
+### ✅ **AI-Powered Strategy Engine**
+- **Strategy Analysis**: AI recommendations and market insights
+- **PineScript Upload**: Upload and analyze custom strategies
+- **Real-time Signals**: AI-generated buy/sell signals
+- **Performance Analytics**: Advanced strategy performance metrics
 
 ## 🚀 Quick Start
 
@@ -87,10 +113,9 @@ crypto_main.py (Health Check & Diagnostics)
 - ✅ `helper_scripts/` - Non-essential .bat files
 - ✅ `venv/` - Python virtual environment
 
-💡 TIP: Run setup.bat first for automated installation!
+💡 **NEW:** Modern web interface available! Run backend + frontend for full experience.
 
-� NOTE: Stocks/Fyers disabled due to corporate firewall restrictions.
-         Focus on crypto trading for unrestricted market access.
+⚠️ **Legacy Note**: Original setup.bat provides CLI interface. New web platform recommended for best experience.
 
 =====================================
 📚 Documentation: docs/ | 🔧 Setup: setup.bat | 💰 Happy Crypto Trading!
@@ -304,6 +329,25 @@ This project has been organized with a minimal, clean root directory structure:
 - ✅ **Professional structure** for development
 - ✅ **No confusion** about which files to use
 - ✅ **Clean Git commits** with organized changes
+
+## 📚 Documentation
+
+### **October 2025 Updates**
+- 📖 **[Feature Update Guide](docs/OCTOBER_2025_FEATURE_UPDATE.md)** - Complete overview of new features
+- 🚀 **[Deployment Guide](docs/DEPLOYMENT_GUIDE_2025.md)** - Production deployment instructions
+- 👤 **[User Guide](docs/USER_GUIDE_2025.md)** - How to use new features and interface
+
+### **Core Documentation**
+- 🛠️ **[Installation Guide](docs/INSTALLATION.md)** - Complete setup instructions
+- 🚀 **[Getting Started](docs/GETTING_STARTED.md)** - Quick start guide
+- 📊 **[API Documentation](docs/)** - Backend API reference
+- 🎨 **[Frontend Architecture](docs/FRONTEND_ARCHITECTURE.md)** - React component structure
+
+### **Feature-Specific Guides**
+- 🎨 **Theme System**: Multi-theme UI with dark, light, cosmic, and doodle themes
+- 👤 **User Credentials**: Individual Fyers account management with secure storage
+- 🔐 **CCXT Authentication**: Tiered authentication for 9 exchanges
+- 🤖 **AI Strategy Engine**: PineScript analysis and recommendations
 
 ## Support
 

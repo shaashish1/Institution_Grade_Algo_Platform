@@ -1,12 +1,15 @@
 'use client';
 
 import React from 'react';
+import { ThemeProvider } from './theme/theme-provider';
 
-// Simple providers setup without external dependencies for now
+// Providers setup with ThemeProvider
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-slate-900 text-white">
-      {children}
-    </div>
+    <ThemeProvider>
+      <div className="min-h-screen bg-slate-900 text-white">
+        {children}
+      </div>
+    </ThemeProvider>
   );
 }

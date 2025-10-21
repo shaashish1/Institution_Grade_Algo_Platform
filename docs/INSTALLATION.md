@@ -1,25 +1,36 @@
 # 🚀 Installation & Setup Documentation
 
 > **Complete installation guide for AlgoProject Enterprise Trading Platform**  
+> **Updated October 2025** - Includes Multi-Theme UI, User Credentials, AI Strategies
 > Part of the [AlgoProject Documentation](README.md)
 
 ## 🎯 **Quick Installation**
 
-### **Automated Setup (Recommended)**
+### **Full Stack Setup (Recommended)**
 
-#### **Windows**
-```bash
+#### **Frontend + Backend (Windows)**
+```powershell
+# Clone repository
 git clone https://github.com/yourusername/AlgoProject.git
 cd AlgoProject
-setup.bat
+
+# Backend setup
+cd api
+pip install fastapi uvicorn ccxt fyers-apiv3 pandas pydantic
+python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+# New terminal - Frontend setup
+cd ../frontend
+npm install
+npm run dev
 ```
 
-#### **Linux/macOS**
+#### **Legacy Python-Only Setup**
 ```bash
 git clone https://github.com/yourusername/AlgoProject.git
 cd AlgoProject
-chmod +x setup.sh
-./setup.sh
+setup.bat       # Windows
+./setup.sh      # Linux/macOS
 ```
 
 ## 🔧 **What the Setup Scripts Do**
@@ -39,51 +50,64 @@ chmod +x setup.sh
 - **Utilities**: `requests`, `pyyaml`, `colorama`
 - **Development**: `pytest`, `jupyter`
 
-## 📋 **Manual Installation**
+## 📋 **Manual Installation - Full Stack**
 
 ### **Prerequisites**
-- Python 3.8 or higher
-- Git (for cloning repository)
-- Internet connection (for package installation)
+- **Node.js 18+** (for frontend) - [Download](https://nodejs.org/)
+- **Python 3.8+** (for backend/legacy) - [Download](https://python.org/)
+- **Git** (for repository management)
+- **Modern browser** (Chrome, Firefox, Safari, Edge)
 
-### **Step-by-Step Guide**
+### **Full Stack Setup Guide**
 
-#### **1. Install Python**
-- **Windows**: Download from [python.org](https://www.python.org/downloads/)
-- **Linux**: `sudo apt install python3 python3-pip python3-venv`
-- **macOS**: `brew install python3`
-
-#### **2. Clone Repository**
-```bash
+#### **1. Repository Setup**
+```powershell
 git clone https://github.com/yourusername/AlgoProject.git
 cd AlgoProject
 ```
 
-#### **3. Create Virtual Environment**
-```bash
-# Windows
-python -m venv venv
-venv\Scripts\activate
+#### **2. Backend API Setup**
+```powershell
+# Navigate to API directory
+cd api
 
-# Linux/macOS
-python3 -m venv venv
-source venv/bin/activate
+# Install Python dependencies
+pip install fastapi uvicorn ccxt fyers-apiv3 pandas pydantic python-multipart
+
+# Create data directory for user credentials
+mkdir data
+
+# Start backend server (development)
+python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-#### **4. Install Dependencies**
-```bash
-pip install --upgrade pip
+#### **3. Frontend Setup**
+```powershell
+# Open new terminal, navigate to frontend
+cd frontend
+
+# Install Node.js dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+#### **4. Legacy Python Setup (Optional)**
+```powershell
+# For original Python-only features
+python -m venv venv
+venv\Scripts\activate          # Windows
+# source venv/bin/activate     # Linux/macOS
+
 pip install -r requirements.txt
 ```
 
-#### **5. Create Project Structure**
-```bash
-# Windows
-mkdir logs output
-mkdir output\backtest_results output\live_trades output\scan_results
-
-# Linux/macOS
-mkdir -p logs output/backtest_results output/live_trades output/scan_results
+#### **5. Project Structure Creation**
+```powershell
+# Create necessary directories
+mkdir logs, output, data
+mkdir output\backtest_results, output\live_trades, output\scan_results
 ```
 
 #### **6. Launch Application**

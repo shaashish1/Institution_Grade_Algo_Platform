@@ -8,6 +8,7 @@ import {
   Eye, EyeOff, Smartphone, Mail, Lock, Users
 } from 'lucide-react';
 import Link from 'next/link';
+import { FyersCredentialsManager } from './fyers-credentials';
 
 interface SettingsSection {
   id: string;
@@ -78,6 +79,7 @@ export function UserSettings() {
     { id: 'profile', name: 'Profile', icon: User, description: 'Personal information and preferences' },
     { id: 'notifications', name: 'Notifications', icon: Bell, description: 'Alert preferences and delivery methods' },
     { id: 'security', name: 'Security', icon: Shield, description: 'Password, 2FA, and access control' },
+    { id: 'fyers', name: 'Fyers API', icon: Key, description: 'Fyers stock trading API credentials' },
     { id: 'trading', name: 'Trading', icon: Settings, description: 'Default trading settings and risk controls' },
     { id: 'appearance', name: 'Appearance', icon: Palette, description: 'Theme and display preferences' },
     { id: 'data', name: 'Data & Privacy', icon: Database, description: 'Data export and privacy settings' }
@@ -387,6 +389,11 @@ export function UserSettings() {
                   </div>
                 </div>
               </div>
+            )}
+
+            {/* Fyers API Credentials */}
+            {activeSection === 'fyers' && (
+              <FyersCredentialsManager userId={profileData.email} />
             )}
 
             {/* Trading Settings */}

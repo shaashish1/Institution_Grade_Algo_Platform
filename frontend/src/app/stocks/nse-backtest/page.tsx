@@ -591,7 +591,7 @@ export default function NSEBacktestPage() {
                         <h4 className="font-semibold text-green-400 mb-2">Strengths</h4>
                         <ul className="text-sm text-slate-300 space-y-1">
                           <li>• Consistent positive monthly returns</li>
-                          <li>• Strong risk-adjusted returns (Sharpe > 2.0)</li>
+                          <li>• Strong risk-adjusted returns (Sharpe &gt; 2.0)</li>
                           <li>• Controlled maximum drawdown (&lt; 10%)</li>
                           <li>• Good profit factor (2.14)</li>
                         </ul>

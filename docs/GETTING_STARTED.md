@@ -2,51 +2,62 @@
 
 Welcome to AlgoProject! This comprehensive guide will help you set up and start using the advanced trading strategy platform.
 
+**🎉 October 2025 Update**: Now featuring Multi-Theme UI, Individual User Credentials, AI Strategy Engine, and Modern Web Interface!
+
 ## 📋 Prerequisites
 
 ### System Requirements
-- **Python**: 3.8 or higher
+- **Node.js**: 18+ (for web interface)
+- **Python**: 3.8+ (for API backend)
 - **Operating System**: Windows 10/11, macOS, or Linux
 - **Memory**: 4GB RAM minimum (8GB recommended)
-- **Storage**: 2GB free space
+- **Storage**: 3GB free space
+- **Browser**: Modern web browser (Chrome, Firefox, Safari, Edge)
 
-### Required Accounts
-- **Fyers Account**: For Indian stock trading (NSE/BSE)
-- **Cryptocurrency Exchange**: Binance/Kraken account for crypto trading
+### Trading Accounts (Optional)
+- **Fyers Account**: For Indian stock trading (NSE/BSE) - Individual user credentials supported
+- **Cryptocurrency Exchange**: Binance/Kraken/KuCoin etc. - 9 exchanges supported with tiered authentication
 
 ## 🛠️ Installation & Setup
 
-### Step 1: Clone the Repository
-```bash
+### Quick Start (Recommended)
+
+#### Option 1: Full Stack Web Platform
+```powershell
+# 1. Clone repository
 git clone <repository-url>
 cd AlgoProject
+
+# 2. Start backend API (Terminal 1)
+cd api
+pip install fastapi uvicorn ccxt fyers-apiv3 pandas pydantic
+python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+# 3. Start frontend (Terminal 2)
+cd frontend
+npm install
+npm run dev
+
+# 4. Open browser: http://localhost:3000
 ```
 
-### Step 2: Create Virtual Environment
+#### Option 2: Legacy Python Interface
 ```bash
+# Traditional setup for CLI-based usage
+git clone <repository-url>
+cd AlgoProject
+
 # Create virtual environment
 python -m venv venv
+venv\Scripts\activate    # Windows
+# source venv/bin/activate  # Linux/Mac
 
-# Activate virtual environment
-# Windows:
-venv\Scripts\activate
-# Linux/Mac:
-source venv/bin/activate
-```
-
-### Step 3: Install Dependencies
-```bash
+# Install dependencies
 pip install -r requirements.txt
-```
 
-### Step 4: Run Setup Script
-```bash
-# Windows
-setup.bat
-
-# Linux/Mac
-chmod +x setup.sh
-./setup.sh
+# Run setup
+setup.bat    # Windows
+./setup.sh   # Linux/Mac
 ```
 
 ## 🔑 API Configuration

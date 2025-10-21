@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear Browser Cache</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧹 Cache & Cookie Cleaner</h1>
+        <p>Clear all cached data to see your latest changes</p>
+        
+        <button onclick="clearAllCache()">Clear All Cache & Cookies</button>
+        <button onclick="clearLocalStorage()">Clear Local Storage</button>
+        <button onclick="hardReload()">Hard Reload Page</button>
+        
+        <div id="status"></div>
+        
+        <h3>Manual Steps:</h3>
+        <ol style="text-align: left;">
+            <li><strong>Chrome/Edge:</strong> Press Ctrl+Shift+Delete, select "All time", check all boxes, click Clear</li>
+            <li><strong>Or:</strong> Press F12 → Network tab → Disable cache checkbox</li>
+            <li><strong>Or:</strong> Right-click refresh button → "Empty Cache and Hard Reload"</li>
+            <li><strong>Or:</strong> Press Ctrl+F5 for hard refresh</li>
+        </ol>
+        
+        <a href="http://localhost:3006" style="color: #4fc3f7; text-decoration: none; font-weight: bold;">
+            → Go to Main Site (localhost:3006)
+        </a>
+    </div>
+
+    <script>
+        function showStatus(message, isSuccess = true) {
+            const status = document.getElementById('status');
+            status.innerHTML = `<div class="status" style="background: rgba(${isSuccess ? '76, 175, 80' : '244, 67, 54'}, 0.2); border-color: ${isSuccess ? '#4caf50' : '#f44336'}">
+                ${isSuccess ? '✅' : '❌'} ${message}
+            </div>`;
+        }
+
+        function clearAllCache() {
+            try {
+                // Clear localStorage
+                localStorage.clear();
+                // Clear sessionStorage  
+                sessionStorage.clear();
+                // Clear cookies (limited by same-origin policy)
+                document.cookie.split(";").forEach(function(c) { 
+                    document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+                });
+                
+                showStatus('Cache and cookies cleared! Please perform a hard reload (Ctrl+F5)');
+                
+                // Auto reload after 2 seconds
+                setTimeout(() => {
+                    window.location.reload(true);
+                }, 2000);
+                
+            } catch (error) {
+                showStatus('Partial clear completed. Use browser tools for complete clearing.', false);
+            }
+        }
+
+        function clearLocalStorage() {
+            try {
+                localStorage.clear();
+                sessionStorage.clear();
+                showStatus('Local storage cleared successfully!');
+            } catch (error) {
+                showStatus('Error clearing local storage', false);
+            }
+        }
+
+        function hardReload() {
+            // Force reload without cache
+            window.location.reload(true);
+        }
+
+        // Auto-clear on page load
+        window.onload = function() {
+            // Clear SEBI warning acceptance to see modal again
+            localStorage.removeItem('sebi-warning-accepted');
+            showStatus('Page loaded. Ready to clear cache and cookies.');
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,407 @@
+/* Enhanced Doodle Theme - Fantastic Creative Design */
+/* Inspired by modern creative platforms and artistic interfaces */
+
+:root.doodle {
+  /* Creative Color Palette */
+  --doodle-primary: #ff6b6b;
+  --doodle-secondary: #4ecdc4;
+  --doodle-accent: #ffd93d;
+  --doodle-purple: #9b59b6;
+  --doodle-orange: #ff8c42;
+  --doodle-pink: #ff4757;
+  --doodle-blue: #3742fa;
+  --doodle-green: #2ed573;
+  
+  /* Background Gradients */
+  --doodle-bg-main: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --doodle-bg-card: linear-gradient(145deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  --doodle-bg-glass: rgba(255, 255, 255, 0.08);
+  --doodle-bg-hover: rgba(255, 255, 255, 0.12);
+  
+  /* Text Colors */
+  --doodle-text-primary: #ffffff;
+  --doodle-text-secondary: rgba(255, 255, 255, 0.8);
+  --doodle-text-muted: rgba(255, 255, 255, 0.6);
+  
+  /* Border and Shadow */
+  --doodle-border: rgba(255, 255, 255, 0.15);
+  --doodle-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+  --doodle-shadow-hover: 0 15px 45px rgba(31, 38, 135, 0.5);
+  
+  /* Animation Values */
+  --doodle-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --doodle-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Main Background with Animated Pattern */
+html.doodle body {
+  background: var(--doodle-bg-main);
+  background-attachment: fixed;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Animated Background Pattern */
+html.doodle body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.03;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(255, 107, 107, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(78, 205, 196, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(255, 217, 61, 0.3) 0%, transparent 50%);
+  animation: doodleFloat 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Floating Animation */
+@keyframes doodleFloat {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(30px, -30px) rotate(1deg); }
+  66% { transform: translate(-20px, 20px) rotate(-1deg); }
+}
+
+/* Glass Morphism Effect for Cards */
+html.doodle .bg-slate-800,
+html.doodle .bg-slate-900,
+html.doodle .bg-slate-700 {
+  background: var(--doodle-bg-glass) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--doodle-border);
+  box-shadow: var(--doodle-shadow);
+  transition: var(--doodle-transition);
+}
+
+html.doodle .bg-slate-800:hover,
+html.doodle .bg-slate-900:hover,
+html.doodle .bg-slate-700:hover {
+  background: var(--doodle-bg-hover) !important;
+  box-shadow: var(--doodle-shadow-hover);
+  transform: translateY(-2px);
+}
+
+/* Creative Button Styles */
+html.doodle .bg-blue-500,
+html.doodle .bg-blue-600 {
+  background: linear-gradient(135deg, var(--doodle-primary), var(--doodle-secondary)) !important;
+  border: none;
+  position: relative;
+  overflow: hidden;
+  transition: var(--doodle-transition);
+}
+
+html.doodle .bg-blue-500::before,
+html.doodle .bg-blue-600::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.6s;
+}
+
+html.doodle .bg-blue-500:hover::before,
+html.doodle .bg-blue-600:hover::before {
+  left: 100%;
+}
+
+html.doodle .bg-blue-500:hover,
+html.doodle .bg-blue-600:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+}
+
+/* Gradient Text Effects */
+html.doodle h1,
+html.doodle h2,
+html.doodle h3 {
+  background: linear-gradient(135deg, var(--doodle-primary), var(--doodle-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: doodleGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes doodleGlow {
+  from { filter: hue-rotate(0deg) brightness(1); }
+  to { filter: hue-rotate(10deg) brightness(1.1); }
+}
+
+/* Creative Navigation Elements */
+html.doodle nav a,
+html.doodle .mega-menu a {
+  position: relative;
+  transition: var(--doodle-transition);
+}
+
+html.doodle nav a::after,
+html.doodle .mega-menu a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--doodle-primary), var(--doodle-secondary));
+  transition: width 0.3s var(--doodle-bounce);
+}
+
+html.doodle nav a:hover::after,
+html.doodle .mega-menu a:hover::after {
+  width: 100%;
+}
+
+/* Floating Action Elements */
+html.doodle .floating-element {
+  animation: doodleBounce 2s ease-in-out infinite;
+}
+
+@keyframes doodleBounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+/* Creative Icons */
+html.doodle .icon-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+html.doodle .icon-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--doodle-primary), var(--doodle-secondary), var(--doodle-accent));
+  border-radius: 50%;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+html.doodle .icon-wrapper:hover::before {
+  opacity: 0.3;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Creative Form Elements */
+html.doodle input,
+html.doodle select,
+html.doodle textarea {
+  background: var(--doodle-bg-glass) !important;
+  border: 1px solid var(--doodle-border) !important;
+  color: var(--doodle-text-primary) !important;
+  backdrop-filter: blur(10px);
+  transition: var(--doodle-transition);
+}
+
+html.doodle input:focus,
+html.doodle select:focus,
+html.doodle textarea:focus {
+  border-color: var(--doodle-primary) !important;
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1) !important;
+  transform: scale(1.02);
+}
+
+/* Creative Scrollbar */
+html.doodle ::-webkit-scrollbar {
+  width: 8px;
+}
+
+html.doodle ::-webkit-scrollbar-track {
+  background: var(--doodle-bg-glass);
+  border-radius: 10px;
+}
+
+html.doodle ::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--doodle-primary), var(--doodle-secondary));
+  border-radius: 10px;
+  transition: var(--doodle-transition);
+}
+
+html.doodle ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--doodle-secondary), var(--doodle-accent));
+}
+
+/* Creative Loading Animations */
+html.doodle .loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid transparent;
+  border-top: 3px solid var(--doodle-primary);
+  border-right: 3px solid var(--doodle-secondary);
+  border-radius: 50%;
+  animation: doodleSpin 1s linear infinite;
+}
+
+@keyframes doodleSpin {
+  0% { 
+    transform: rotate(0deg);
+    border-top-color: var(--doodle-primary);
+    border-right-color: var(--doodle-secondary);
+  }
+  50% { 
+    border-top-color: var(--doodle-secondary);
+    border-right-color: var(--doodle-accent);
+  }
+  100% { 
+    transform: rotate(360deg);
+    border-top-color: var(--doodle-accent);
+    border-right-color: var(--doodle-primary);
+  }
+}
+
+/* Creative Badge Styles */
+html.doodle .badge,
+html.doodle .px-2.py-1 {
+  background: linear-gradient(135deg, var(--doodle-primary), var(--doodle-secondary)) !important;
+  color: white !important;
+  position: relative;
+  overflow: hidden;
+}
+
+html.doodle .badge::before,
+html.doodle .px-2.py-1::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+html.doodle .badge:hover::before,
+html.doodle .px-2.py-1:hover::before {
+  transform: translateX(100%);
+}
+
+/* Creative Chart/Graph Enhancements */
+html.doodle .chart-container {
+  position: relative;
+  background: var(--doodle-bg-glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--doodle-border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+html.doodle .chart-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255,107,107,0.05), rgba(78,205,196,0.05));
+  pointer-events: none;
+}
+
+/* Creative Table Styles */
+html.doodle table {
+  background: var(--doodle-bg-glass) !important;
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--doodle-border);
+}
+
+html.doodle thead {
+  background: linear-gradient(135deg, rgba(255,107,107,0.1), rgba(78,205,196,0.1)) !important;
+}
+
+html.doodle tbody tr:hover {
+  background: rgba(255,107,107,0.1) !important;
+  transform: scale(1.01);
+  transition: var(--doodle-transition);
+}
+
+/* Creative Mobile Optimizations */
+@media (max-width: 768px) {
+  html.doodle .mobile-enhanced {
+    backdrop-filter: blur(5px);
+    border-radius: 20px;
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+}
+
+/* Creative Particle Effect */
+html.doodle .particle-bg::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, var(--doodle-primary), transparent),
+    radial-gradient(2px 2px at 40px 70px, var(--doodle-secondary), transparent),
+    radial-gradient(1px 1px at 90px 40px, var(--doodle-accent), transparent);
+  background-repeat: repeat;
+  background-size: 100px 100px;
+  animation: doodleParticles 10s linear infinite;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+@keyframes doodleParticles {
+  from { transform: translate(0, 0); }
+  to { transform: translate(-100px, -100px); }
+}
+
+/* Theme Transition Effects */
+html.doodle * {
+  transition: 
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease !important;
+}
+
+/* Creative Focus States */
+html.doodle *:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.3) !important;
+}
+
+/* Creative Selection */
+html.doodle ::selection {
+  background: linear-gradient(135deg, var(--doodle-primary), var(--doodle-secondary));
+  color: white;
+}
+
+/* Creative Tooltip Enhancement */
+html.doodle [title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--doodle-primary), var(--doodle-secondary));
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  z-index: 1000;
+  box-shadow: var(--doodle-shadow);
+}
