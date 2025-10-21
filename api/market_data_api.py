@@ -1,6 +1,12 @@
 """
 Market Data API Router
 Handles real-time market data, quotes, and trading information
+
+DATA ARCHITECTURE:
+- PRIMARY: NSE Free Provider (no credentials needed) - for market quotes and indices
+- SECONDARY: FYERS Provider (credentials required) - ONLY for actual trading operations
+
+This allows development and testing without FYERS API subscription.
 """
 
 from fastapi import APIRouter, HTTPException
@@ -13,20 +19,49 @@ import os
 # Add parent directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Import FYERS data service
-from fyers_data_service import fyers_data_service, get_market_data, get_nifty_option_chain
+logger = logging.getLogger(__name__)
 
-# Import stocks data acquisition for live quotes
+# ===== FREE NSE DATA PROVIDER (PRIMARY - NO CREDENTIALS NEEDED) =====
+# This provides real-time NSE market data without any configuration
 try:
-    from stocks.data_acquisition import get_live_quote
+    from stocks.nse_free_data_provider import NSEFreeDataProvider
+    nse_provider = NSEFreeDataProvider()
+    logger.info("✅ NSE Free Data Provider loaded successfully (NO CONFIG NEEDED)")
+except Exception as e:
+    logger.error(f"❌ Failed to load NSE Free Provider: {e}")
+    nse_provider = None
+
+# ===== FYERS PROVIDER (SECONDARY - ONLY FOR TRADING) =====
+# This is OPTIONAL and only needed for actual order execution
+# Market data will work fine without FYERS credentials
+try:
     from stocks.fyers_data_provider import FyersDataProvider
     fyers_provider = FyersDataProvider()
+    logger.info("✅ FYERS Provider loaded (for trading operations)")
 except ImportError as e:
-    logging.warning(f"Fyers provider not available: {e}")
+    logger.warning(f"FYERS provider not installed: {e}")
     fyers_provider = None
+except ValueError as e:
+    logger.warning(f"FYERS credentials not configured: {e}")
+    logger.info("ℹ️  Market data will use FREE NSE provider. FYERS only needed for trading.")
+    fyers_provider = None
+except Exception as e:
+    logger.warning(f"Could not initialize FYERS provider: {e}")
     fyers_provider = None
 
-logger = logging.getLogger(__name__)
+# Import FYERS data service (for trading operations)
+try:
+    from api.fyers_data_service import fyers_data_service, get_market_data, get_nifty_option_chain
+except ImportError:
+    try:
+        from fyers_data_service import fyers_data_service, get_market_data, get_nifty_option_chain
+    except ImportError:
+        logger.warning("FYERS data service not available - trading features disabled")
+        # Create dummy functions
+        def get_market_data():
+            return {"indices": {}, "market_status": {"is_open": False}}
+        def get_nifty_option_chain(expiry="current"):
+            return {"data": []}
 
 router = APIRouter(prefix="/api/market", tags=["Market Data"])
 
@@ -76,7 +111,8 @@ async def get_comprehensive_market_data():
 @router.post("/quotes")
 async def get_quotes(request: QuoteRequest):
     """
-    Get real-time quotes for multiple symbols
+    Get real-time quotes for multiple symbols from FREE NSE data source
+    NO CREDENTIALS NEEDED!
     
     Example request:
     ```json
@@ -85,36 +121,34 @@ async def get_quotes(request: QuoteRequest):
         "exchange": "NSE"
     }
     ```
+    
+    Data Source Priority:
+    1. NSE Free Provider (real-time NSE data - NO CONFIG)
+    2. FYERS Provider (if configured - for trading)
     """
     try:
-        if not fyers_provider:
-            # Return mock data if provider not available
-            mock_quotes = {}
+        # PRIMARY: Use FREE NSE provider (no credentials needed)
+        if nse_provider:
+            quotes = nse_provider.get_quote(request.symbols, request.exchange)
+            logger.info(f"✅ Fetched quotes for {len(quotes)} symbols from FREE NSE provider")
+            return quotes
+        
+        # SECONDARY: Use FYERS if NSE provider fails (requires credentials)
+        elif fyers_provider:
+            quotes = {}
             for symbol in request.symbols:
-                mock_quotes[symbol] = {
-                    "symbol": symbol,
-                    "ltp": 1000.0 + (hash(symbol) % 1000),
-                    "open": 995.0,
-                    "high": 1025.0,
-                    "low": 985.0,
-                    "close": 998.0,
-                    "volume": 1000000,
-                    "change": 5.0,
-                    "change_percent": 0.5
-                }
-            return mock_quotes
+                quote = fyers_provider.get_quote(symbol, request.exchange)
+                if quote:
+                    quotes[symbol] = quote
+            logger.info(f"Fetched quotes using FYERS provider")
+            return quotes
         
-        # Check if FYERS provider is available
-        if fyers_provider is None:
-            raise HTTPException(status_code=503, detail="FYERS provider not available. Please check configuration.")
-        
-        # Use FYERS provider for real quotes
-        quotes = fyers_provider.get_quote(request.symbols, request.exchange)
-        
-        if quotes is None:
-            raise HTTPException(status_code=500, detail="Failed to fetch quotes from FYERS API")
-        
-        return quotes
+        # FALLBACK: Return error if both providers unavailable
+        else:
+            raise HTTPException(
+                status_code=503, 
+                detail="No data provider available. Please check NSE provider initialization."
+            )
     
     except Exception as e:
         logger.error(f"Error fetching quotes: {e}")
@@ -164,32 +198,64 @@ async def get_historical(request: HistoricalDataRequest):
 @router.get("/indices")
 async def get_indices():
     """
-    Get current values of major indices (NIFTY, Bank NIFTY, etc.)
+    Get current values of major indices (NIFTY 50, BANK NIFTY, etc.)
+    Uses FREE NSE data - NO CREDENTIALS NEEDED!
     """
     try:
-        data = get_market_data()
-        
-        indices = []
-        
-        # Extract index data
-        if "indices" in data:
-            for key, value in data["indices"].items():
+        # PRIMARY: Use FREE NSE provider
+        if nse_provider:
+            indices_data = nse_provider.get_nifty_indices()
+            
+            # Convert to frontend format
+            indices = []
+            for symbol, data in indices_data.items():
                 indices.append({
-                    "symbol": value.get("symbol", key),
-                    "price": value.get("price", 0),
-                    "change": value.get("change", 0),
-                    "change_percent": value.get("change_percent", 0),
-                    "high": value.get("high", 0),
-                    "low": value.get("low", 0),
-                    "open": value.get("open", 0),
-                    "previous_close": value.get("previous_close", 0)
+                    "symbol": data.get("symbol", symbol),
+                    "price": data.get("ltp", 0),
+                    "change": data.get("change", 0),
+                    "change_percent": data.get("change_percent", 0),
+                    "high": data.get("high", 0),
+                    "low": data.get("low", 0),
+                    "open": data.get("open", 0),
+                    "previous_close": data.get("close", 0),
+                    "data_source": data.get("data_source", "NSE_FREE")
                 })
+            
+            # Get market status
+            market_status = nse_provider.get_market_status()
+            
+            logger.info(f"✅ Fetched {len(indices)} indices from FREE NSE provider")
+            
+            return {
+                "indices": indices,
+                "market_status": market_status,
+                "data_source": "NSE_FREE"
+            }
         
-        return {
-            "indices": indices,
-            "market_status": data.get("market_status", {}),
-            "data_source": data.get("data_source", "unknown")
-        }
+        # FALLBACK: Try to use legacy method if NSE provider unavailable
+        else:
+            logger.warning("NSE provider not available, using fallback")
+            data = get_market_data()
+            
+            indices = []
+            if "indices" in data:
+                for key, value in data["indices"].items():
+                    indices.append({
+                        "symbol": value.get("symbol", key),
+                        "price": value.get("price", 0),
+                        "change": value.get("change", 0),
+                        "change_percent": value.get("change_percent", 0),
+                        "high": value.get("high", 0),
+                        "low": value.get("low", 0),
+                        "open": value.get("open", 0),
+                        "previous_close": value.get("previous_close", 0)
+                    })
+            
+            return {
+                "indices": indices,
+                "market_status": data.get("market_status", {}),
+                "data_source": "FALLBACK"
+            }
     
     except Exception as e:
         logger.error(f"Error fetching indices: {e}")
@@ -197,17 +263,44 @@ async def get_indices():
 
 @router.get("/status")
 async def get_market_status():
-    """Get current market status (open/closed)"""
+    """Get current market status (open/closed) - FREE NSE data"""
     try:
-        data = get_market_data()
-        return data.get("market_status", {
-            "is_open": False,
-            "status": "unknown",
-            "message": "Unable to determine market status"
-        })
+        if nse_provider:
+            return nse_provider.get_market_status()
+        else:
+            data = get_market_data()
+            return data.get("market_status", {
+                "is_open": False,
+                "status": "unknown",
+                "message": "Unable to determine market status"
+            })
     except Exception as e:
         logger.error(f"Error fetching market status: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/provider-status")
+async def get_provider_status():
+    """
+    Check which data providers are available
+    Helps users understand configuration status
+    """
+    return {
+        "nse_free_provider": {
+            "available": nse_provider is not None,
+            "status": "active" if nse_provider else "unavailable",
+            "requires_config": False,
+            "description": "Free NSE data for market quotes and indices",
+            "use_case": "Market data, quotes, indices (NO credentials needed)"
+        },
+        "fyers_provider": {
+            "available": fyers_provider is not None,
+            "status": "active" if fyers_provider else "not_configured",
+            "requires_config": True,
+            "description": "FYERS API for trading operations",
+            "use_case": "Order execution, positions, historical data (credentials required)"
+        },
+        "recommendation": "Market data works without FYERS. Configure FYERS only when ready to trade."
+    }
 
 @router.get("/option-chain")
 async def get_option_chain(expiry: str = "current"):
