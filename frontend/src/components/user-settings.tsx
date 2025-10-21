@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Settings, User, Bell, Shield, Globe, Monitor, Palette, 
   Database, Key, CreditCard, FileText, HelpCircle, 
@@ -9,6 +9,16 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { FyersCredentialsManager } from './fyers-credentials';
+import {
+  getAllSettings,
+  updateAllSettings,
+  updateProfile,
+  convertProfileToAPI,
+  convertProfileFromAPI,
+  convertTradingToAPI,
+  convertTradingFromAPI,
+  type UserSettings as APIUserSettings,
+} from '../services/settingsApi';
 
 interface SettingsSection {
   id: string;
@@ -35,6 +45,9 @@ export function UserSettings() {
   const [activeSection, setActiveSection] = useState<string>('profile');
   const [showPassword, setShowPassword] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const [profileData, setProfileData] = useState({
     firstName: 'John',
@@ -85,11 +98,69 @@ export function UserSettings() {
     { id: 'data', name: 'Data & Privacy', icon: Database, description: 'Data export and privacy settings' }
   ];
 
+  // Load settings from backend on component mount
+  useEffect(() => {
+    async function loadSettings() {
+      try {
+        setIsLoading(true);
+        const settings = await getAllSettings();
+        
+        // Update profile data
+        if (settings.profile) {
+          setProfileData(convertProfileFromAPI(settings.profile));
+        }
+        
+        // Update notification settings
+        if (settings.notifications) {
+          setNotificationSettings(settings.notifications);
+        }
+        
+        // Update trading preferences
+        if (settings.trading) {
+          setTradingPreferences(convertTradingFromAPI(settings.trading));
+        }
+        
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Failed to load settings:', error);
+        setErrorMessage('Failed to load settings from server. Using default values.');
+        setIsLoading(false);
+      }
+    }
+    
+    loadSettings();
+  }, []);
+
   const handleSave = async () => {
-    setIsSaving(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsSaving(false);
+    try {
+      setIsSaving(true);
+      setSaveStatus('idle');
+      setErrorMessage('');
+      
+      // Prepare settings for API
+      const settingsToSave: APIUserSettings = {
+        profile: convertProfileToAPI(profileData),
+        notifications: notificationSettings,
+        trading: convertTradingToAPI(tradingPreferences),
+        appearance: {
+          theme: 'dark',
+          chart_positive_color: '#10B981',
+          chart_negative_color: '#EF4444',
+        },
+      };
+      
+      // Save to backend
+      await updateAllSettings(settingsToSave);
+      
+      setSaveStatus('success');
+      setTimeout(() => setSaveStatus('idle'), 3000);
+    } catch (error) {
+      console.error('Failed to save settings:', error);
+      setErrorMessage('Failed to save settings. Please try again.');
+      setSaveStatus('error');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const toggleNotification = (id: string) => {
@@ -132,6 +203,21 @@ export function UserSettings() {
           </nav>
         </div>
 
+        {/* Status Messages */}
+        {errorMessage && (
+          <div className="mb-4 p-4 bg-red-500/10 border border-red-500 rounded-lg flex items-center">
+            <AlertCircle className="h-5 w-5 text-red-400 mr-2" />
+            <span className="text-red-400">{errorMessage}</span>
+          </div>
+        )}
+        
+        {saveStatus === 'success' && (
+          <div className="mb-4 p-4 bg-green-500/10 border border-green-500 rounded-lg flex items-center">
+            <CheckCircle className="h-5 w-5 text-green-400 mr-2" />
+            <span className="text-green-400">Settings saved successfully!</span>
+          </div>
+        )}
+
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -145,7 +231,7 @@ export function UserSettings() {
           
           <button
             onClick={handleSave}
-            disabled={isSaving}
+            disabled={isSaving || isLoading}
             className="flex items-center px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-600 disabled:cursor-not-allowed rounded-lg transition-colors"
           >
             {isSaving ? (
@@ -162,7 +248,13 @@ export function UserSettings() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        {isLoading ? (
+          <div className="flex items-center justify-center py-20">
+            <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full" />
+            <span className="ml-3 text-slate-400">Loading settings...</span>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Settings Navigation */}
           <div className="bg-slate-900 rounded-2xl p-6 border border-slate-800 h-fit">
             <h2 className="text-lg font-bold text-white mb-4">Settings</h2>
@@ -591,6 +683,7 @@ export function UserSettings() {
             )}
           </div>
         </div>
+        )}
       </div>
     </div>
   );
