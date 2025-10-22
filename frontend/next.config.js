@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  outputFileTracingRoot: __dirname,
   images: {
     domains: ['localhost', '127.0.0.1', 'api.coingecko.com'],
   },
