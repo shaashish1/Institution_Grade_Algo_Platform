@@ -1,0 +1,187 @@
+{
+  "last_update": "2025-10-22T12:24:36.781071",
+  "market_data": {
+    "market_status": {
+      "current_time": "2025-10-22T12:24:36.780792+05:30",
+      "is_trading_day": true,
+      "is_market_open": true,
+      "is_pre_market": false,
+      "is_after_market": false,
+      "session": "REGULAR"
+    },
+    "data_source": "live",
+    "message": "Live market data",
+    "indices": {
+      "NIFTY50": {
+        "symbol": "NIFTY50",
+        "price": 25843.15,
+        "change": 133.3,
+        "change_percent": 0.52,
+        "high": 25895.5,
+        "low": 25720.8,
+        "open": 25735.2,
+        "previous_close": 25709.85,
+        "last_updated": "2025-10-20T15:30:00+05:30"
+      },
+      "BANKNIFTY": {
+        "symbol": "BANKNIFTY",
+        "price": 58033.2,
+        "change": 319.85,
+        "change_percent": 0.55,
+        "high": 58125.4,
+        "low": 57890.3,
+        "open": 57950.15,
+        "previous_close": 57713.35,
+        "last_updated": "2025-10-20T15:30:00+05:30"
+      },
+      "MIDCPNIFTY": {
+        "symbol": "MIDCPNIFTY",
+        "price": 13232.9,
+        "change": 72.1,
+        "change_percent": 0.55,
+        "high": 13285.5,
+        "low": 13180.25,
+        "open": 13195.4,
+        "previous_close": 13160.8,
+        "last_updated": "2025-10-20T15:30:00+05:30"
+      },
+      "NIFTYNXT50": {
+        "symbol": "NIFTYNXT50",
+        "price": 69450.35,
+        "change": 94.3,
+        "change_percent": 0.14,
+        "high": 69520.8,
+        "low": 69380.15,
+        "open": 69405.25,
+        "previous_close": 69356.05,
+        "last_updated": "2025-10-20T15:30:00+05:30"
+      }
+    },
+    "nifty_futures": {
+      "current_month": {
+        "symbol": "NIFTY_FUT",
+        "price": 25930.2,
+        "change": 172.4,
+        "change_percent": 0.67,
+        "high": 25975.8,
+        "low": 25835.5,
+        "open": 25850.3,
+        "previous_close": 25757.8,
+        "last_updated": "2025-10-20T15:30:00+05:30"
+      }
+    },
+    "option_chain": [
+      {
+        "strike": 25600,
+        "call_price": 283.74,
+        "call_iv": 0.16,
+        "call_oi": 49059,
+        "call_volume": 2452,
+        "put_price": 81.18,
+        "put_iv": 0.17,
+        "put_oi": 44153,
+        "put_volume": 1766
+      },
+      {
+        "strike": 25650,
+        "call_price": 235.68,
+        "call_iv": 0.16,
+        "call_oi": 49252,
+        "call_volume": 2462,
+        "put_price": 85.05,
+        "put_iv": 0.17,
+        "put_oi": 44327,
+        "put_volume": 1773
+      },
+      {
+        "strike": 25700,
+        "call_price": 187.61,
+        "call_iv": 0.16,
+        "call_oi": 49446,
+        "call_volume": 2472,
+        "put_price": 88.92,
+        "put_iv": 0.17,
+        "put_oi": 44501,
+        "put_volume": 1780
+      },
+      {
+        "strike": 25750,
+        "call_price": 139.55,
+        "call_iv": 0.15,
+        "call_oi": 49639,
+        "call_volume": 2481,
+        "put_price": 92.79,
+        "put_iv": 0.16,
+        "put_oi": 44675,
+        "put_volume": 1787
+      },
+      {
+        "strike": 25800,
+        "call_price": 91.48,
+        "call_iv": 0.15,
+        "call_oi": 49833,
+        "call_volume": 2491,
+        "put_price": 96.66,
+        "put_iv": 0.16,
+        "put_oi": 44849,
+        "put_volume": 1793
+      },
+      {
+        "strike": 25850,
+        "call_price": 99.47,
+        "call_iv": 0.15,
+        "call_oi": 49973,
+        "call_volume": 2498,
+        "put_price": 56.58,
+        "put_iv": 0.16,
+        "put_oi": 44976,
+        "put_volume": 1799
+      },
+      {
+        "strike": 25900,
+        "call_price": 95.6,
+        "call_iv": 0.15,
+        "call_oi": 49780,
+        "call_volume": 2489,
+        "put_price": 104.65,
+        "put_iv": 0.16,
+        "put_oi": 44802,
+        "put_volume": 1792
+      },
+      {
+        "strike": 25950,
+        "call_price": 91.73,
+        "call_iv": 0.15,
+        "call_oi": 49586,
+        "call_volume": 2479,
+        "put_price": 152.72,
+        "put_iv": 0.16,
+        "put_oi": 44627,
+        "put_volume": 1785
+      },
+      {
+        "strike": 26000,
+        "call_price": 87.86,
+        "call_iv": 0.16,
+        "call_oi": 49393,
+        "call_volume": 2469,
+        "put_price": 200.78,
+        "put_iv": 0.17,
+        "put_oi": 44453,
+        "put_volume": 1778
+      },
+      {
+        "strike": 26050,
+        "call_price": 83.99,
+        "call_iv": 0.16,
+        "call_oi": 49199,
+        "call_volume": 2459,
+        "put_price": 248.85,
+        "put_iv": 0.17,
+        "put_oi": 44279,
+        "put_volume": 1771
+      }
+    ],
+    "timestamp": "2025-10-22T12:24:36.781057"
+  }
+}

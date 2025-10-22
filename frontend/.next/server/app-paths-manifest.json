@@ -1,4 +1,5 @@
 {
-  "/trading/page": "app/trading/page.js",
-  "/analysis/page": "app/analysis/page.js"
+  "/crypto/backtest/page": "app/crypto/backtest/page.js",
+  "/page": "app/page.js",
+  "/docs/backend-scripts/page": "app/docs/backend-scripts/page.js"
 }
