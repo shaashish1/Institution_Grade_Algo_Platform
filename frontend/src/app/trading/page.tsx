@@ -9,9 +9,13 @@ import {
 } from 'lucide-react';
 import { useMarketData, useIndices, usePositions } from '../../hooks/useMarketData';
 import { formatIndianCurrency, formatIndianNumber, getChangeColor } from '../../services/fyersApi';
+import { useTradingContext } from '@/contexts/TradingContext';
 
 export default function TradingPage() {
   const [isLive, setIsLive] = useState(false);
+  
+  // Get current market/mode context
+  const { market, mode } = useTradingContext();
   
   // Use market data hooks
   const { 
@@ -72,6 +76,18 @@ export default function TradingPage() {
               <p className="text-xl text-slate-300">
                 Real-time market data and order execution
               </p>
+              {/* Context Indicator */}
+              <div className="mt-2 flex items-center gap-2">
+                <span className="text-sm text-slate-400">Trading:</span>
+                <span className="text-sm font-medium text-blue-400">{market}</span>
+                <span className="text-slate-600">•</span>
+                <span className="text-sm text-slate-400">Mode:</span>
+                <span className={`text-sm font-medium ${
+                  mode === 'Live' ? 'text-red-400' : 
+                  mode === 'Paper' ? 'text-yellow-400' : 
+                  'text-blue-400'
+                }`}>{mode}</span>
+              </div>
             </div>
             
             <div className="flex items-center space-x-4">

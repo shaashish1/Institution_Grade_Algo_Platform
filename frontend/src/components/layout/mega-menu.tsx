@@ -10,6 +10,7 @@ import {
   TrendingDown, Play, Eye, Crown, Award, Lightbulb, Database,
   Globe, Smartphone, Monitor, RefreshCw, Download, Upload
 } from 'lucide-react';
+import MarketModeSelector from '@/components/MarketModeSelector';
 
 interface MenuItem {
   label: string;
@@ -386,6 +387,11 @@ export function MegaMenu({ className = '' }: MegaMenuProps) {
 
           {/* Right Side Icons */}
           <div className="flex items-center space-x-4">
+            {/* Market & Mode Selector */}
+            <div className="hidden lg:flex">
+              <MarketModeSelector />
+            </div>
+
             {/* Search */}
             <button className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">
               <Search className="h-5 w-5" />

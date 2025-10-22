@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google'
 import { Providers } from '@/components/providers'
 import { MegaMenu } from '@/components/layout/mega-menu'
+import { TradingProvider } from '@/contexts/TradingContext'
 import '@/styles/globals.css'
 import { Metadata } from 'next'
 
@@ -21,10 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <body className="antialiased bg-slate-950 text-white">
-        <Providers>
-          <MegaMenu />
-          {children}
-        </Providers>
+        <TradingProvider>
+          <Providers>
+            <MegaMenu />
+            {children}
+          </Providers>
+        </TradingProvider>
       </body>
     </html>
   )

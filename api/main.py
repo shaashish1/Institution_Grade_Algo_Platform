@@ -28,6 +28,9 @@ from settings_api import router as settings_router
 # Import Market Data API router
 from market_data_api import router as market_data_router
 
+# Import User Preferences API router
+from user_preferences_api import router as user_preferences_router
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -51,6 +54,7 @@ app.add_middleware(
 # Include routers
 app.include_router(settings_router)
 app.include_router(market_data_router)
+app.include_router(user_preferences_router)
 
 # Data Models
 class BacktestRequest(BaseModel):
