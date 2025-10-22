@@ -199,6 +199,13 @@ const menuItems: MenuItem[] = [
         description: 'Stock and option screener'
       },
       {
+        label: 'Backend Scripts',
+        href: '/docs/backend-scripts',
+        icon: Database,
+        description: 'API documentation and script inventory',
+        badge: 'New'
+      },
+      {
         label: 'Alerts',
         href: '/tools/alerts',
         icon: Bell,

@@ -156,8 +156,54 @@ export function TradingProvider({ children }: TradingProviderProps) {
     console.log('🔄 Market changed:', newMarket);
   };
 
-  const setMode = (newMode: TradingMode) => {
+  const setMode = async (newMode: TradingMode) => {
     if (newMode === mode) return; // No change
+
+    // ===== LIVE MODE VALIDATION =====
+    if (newMode === 'Live') {
+      console.log('🔴 Attempting to switch to Live mode - validating exchange configuration...');
+      
+      try {
+        // Check if exchange is configured
+        const response = await fetch('http://localhost:8000/api/settings/exchanges');
+        const exchanges = await response.json();
+        
+        const hasConfiguredExchange = exchanges && exchanges.length > 0;
+        
+        if (!hasConfiguredExchange) {
+          console.warn('⚠️ No exchanges configured - cannot switch to Live mode');
+          
+          // Show alert to user
+          if (window.confirm(
+            '⚠️ Live Trading requires exchange configuration.\n\n' +
+            'Please configure your exchange API keys in Settings first.\n\n' +
+            'Click OK to go to Settings, or Cancel to stay in current mode.'
+          )) {
+            window.location.href = '/settings/exchanges';
+          }
+          return; // Don't switch mode
+        }
+        
+        // Show warning dialog before enabling Live mode
+        const userConfirmed = window.confirm(
+          '🔴 LIVE TRADING MODE\n\n' +
+          'You are about to switch to LIVE trading mode.\n' +
+          'Real money will be used for trades.\n\n' +
+          'Are you sure you want to continue?'
+        );
+        
+        if (!userConfirmed) {
+          console.log('❌ User cancelled Live mode switch');
+          return; // Don't switch mode
+        }
+        
+        console.log('✅ Exchange configured - switching to Live mode');
+      } catch (error) {
+        console.error('❌ Error checking exchange configuration:', error);
+        alert('Error: Could not verify exchange configuration. Please check your settings.');
+        return; // Don't switch mode
+      }
+    }
 
     setModeState(newMode);
     persistToLocalStorage(market, newMode);

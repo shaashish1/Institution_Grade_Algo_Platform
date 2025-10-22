@@ -6,7 +6,7 @@ import { ThemeSwitcher } from './theme/theme-switcher';
 import { PricingSection } from './sections/pricing-section';
 import { Footer } from './layout/footer';
 import { SEBIWarning } from './compliance/sebi-warning';
-import { Header } from './layout/new-header';
+import { MegaMenu } from './layout/mega-menu';
 
 // Theme-specific imports
 import { CosmicBackground } from './theme/cosmic-components';
@@ -121,7 +121,7 @@ export function ThemeAwareLandingPage() {
       </div>
 
       <SEBIWarning />
-      <Header />
+      <MegaMenu />
       
       <main className="relative z-10">
         {/* Professional Hero Section */}

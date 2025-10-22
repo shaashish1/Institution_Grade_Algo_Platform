@@ -84,17 +84,17 @@ export default function MarketModeSelector() {
   const currentMode = modeOptions.find(m => m.value === mode);
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2">
       {/* ===== MARKET SELECTOR ===== */}
       <div className="relative">
         <button
           onClick={() => setShowMarketMenu(!showMarketMenu)}
-          className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 transition-colors whitespace-nowrap"
           aria-label="Select Market"
         >
           {currentMarket?.icon}
-          <span className="font-medium text-white">{currentMarket?.label}</span>
-          <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${showMarketMenu ? 'rotate-180' : ''}`} />
+          <span className="font-medium text-white text-sm">{currentMarket?.value}</span>
+          <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform ${showMarketMenu ? 'rotate-180' : ''}`} />
         </button>
 
         {/* Market Dropdown */}
@@ -135,12 +135,12 @@ export default function MarketModeSelector() {
       <div className="relative">
         <button
           onClick={() => setShowModeMenu(!showModeMenu)}
-          className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg border border-gray-600 transition-colors whitespace-nowrap"
           aria-label="Select Trading Mode"
         >
           <span className={currentMode?.color}>{currentMode?.icon}</span>
-          <span className="font-medium text-white">{currentMode?.label}</span>
-          <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${showModeMenu ? 'rotate-180' : ''}`} />
+          <span className="font-medium text-white text-sm">{currentMode?.value}</span>
+          <ChevronDown className={`w-3.5 h-3.5 text-gray-400 transition-transform ${showModeMenu ? 'rotate-180' : ''}`} />
         </button>
 
         {/* Mode Dropdown */}
